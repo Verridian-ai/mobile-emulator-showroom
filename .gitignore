@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -8,6 +11,7 @@ pnpm-debug.log*
 # Environment variables
 .env
 .env.local
+.env.*.local
 .env.development.local
 .env.test.local
 .env.production.local
@@ -15,7 +19,20 @@ pnpm-debug.log*
 # Build outputs
 dist/
 build/
+.cache/
+.vite/
+.output/
 *.log
+
+# Testing
+coverage/
+.nyc_output/
+tests/e2e/screenshots/
+tests/e2e/reports/
+tests/e2e/results/
+.playwright-mcp/
+playwright-report/
+test-results/
 
 # IDE
 .vscode/
@@ -27,6 +44,7 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Claude Code
 .claude/
@@ -35,8 +53,17 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+nul
 
 # Archive - Preserved unused files
 # .archive/ is tracked in git to preserve historical code
 # DO NOT add .archive/ to .gitignore - it should be versioned
+
+# Agent worktrees (local development only)
+../mobile-emulator-worktrees/
+
+# Development documentation (keep in .specify/)
+TASK-*.md
+*VALIDATION*.md
+*HANDOFF*.md
 
