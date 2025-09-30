@@ -71,7 +71,10 @@ function sanitizeHeaders(headers) {
         'content-security-policy-report-only',
         'cross-origin-embedder-policy',
         'cross-origin-opener-policy',
-        'cross-origin-resource-policy'
+        'cross-origin-resource-policy',
+        'content-length',          // Remove to avoid conflicts with transfer-encoding
+        'transfer-encoding',       // Remove to let Express handle encoding
+        'content-encoding'         // Remove since node-fetch auto-decompresses
     ];
 
     for (const [key, value] of Object.entries(headers)) {
