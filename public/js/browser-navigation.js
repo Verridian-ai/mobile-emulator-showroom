@@ -157,9 +157,13 @@ class BrowserNavigation {
             this.saveHistoryToStorage();
         }
 
+        // Use proxy for external URLs to bypass X-Frame-Options
+        // This allows browsing sites like Google that block iframe embedding
+        const proxiedUrl = `/proxy?url=${encodeURIComponent(url)}`;
+
         // Navigate iframe
-        this.iframe.src = url;
-        this.addressBar.value = url;
+        this.iframe.src = proxiedUrl;
+        this.addressBar.value = url; // Show original URL in address bar
         this.updateNavigationButtons();
     }
 

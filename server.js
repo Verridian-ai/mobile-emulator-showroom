@@ -6,6 +6,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { createProxyMiddleware } from './server/proxy-middleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -51,13 +52,20 @@ if (fs.existsSync(publicDir)) {
 
 // Health check endpoint
 app.get('/healthz', (req, res) => {
-  res.json({ 
-    ok: true, 
+  res.json({
+    ok: true,
     timestamp: new Date().toISOString(),
     publicDir: fs.existsSync(publicDir),
     files: fs.existsSync(publicDir) ? fs.readdirSync(publicDir).length : 0
   });
 });
+
+// Proxy endpoint for bypassing X-Frame-Options (Article V: Security)
+// This allows browsing sites like Google.com that block iframe embedding
+app.get('/proxy', createProxyMiddleware({
+  timeout: 30000,
+  userAgent: 'Verridian Mobile Emulator/1.0'
+}));
 
 // Enhanced static file serving with logging
 app.use(express.static(publicDir, {
