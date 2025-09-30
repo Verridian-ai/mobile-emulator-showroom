@@ -1,0 +1,296 @@
+/* ==============================================
+   VERRIDIAN AI ENHANCED HEADER SYSTEM
+   Clean design with video backgrounds only
+   ============================================== */
+
+/* Header Container */
+.verridian-header {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    margin-bottom: 0;
+    min-height: 300px;
+    
+    /* Glassmorphism Effect with background image */
+    background: rgba(16, 0, 43, 0.15);
+    background-image: url('background1.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    /* Border and Shadows */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+    
+    /* Layout */
+    text-align: center;
+    overflow: hidden;
+    z-index: 10;
+    transition: none;
+}
+
+.verridian-header:hover {
+    /* Keep background image static on hover; only preserve color */
+    background-image: url('background1.png');
+    background-color: rgba(16, 0, 43, 0.15);
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Enhanced Logo Styling */
+.verridian-logo-enhanced {
+    width: 300px;
+    height: 300px;
+    margin-bottom: 24px;
+    object-fit: contain;
+    
+    /* Remove glow */
+    filter: none;
+    
+    /* Smooth Transitions */
+    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transform-origin: center;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.verridian-logo-enhanced:hover {
+    filter: none;
+    transform: none;
+}
+
+/* Title Styling */
+.verridian-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 16px 0;
+    letter-spacing: 2px;
+    
+    /* Metallic Text Effect */
+    background: linear-gradient(135deg, 
+        #ffffff 0%,
+        #e0e0e0 25%,
+        #c0c0c0 50%,
+        #ffffff 75%,
+        #f0f0f0 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Text Shadow for Depth */
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(107, 70, 193, 0.3);
+    
+    transition: all 0.4s ease;
+}
+
+.verridian-header:hover .verridian-title {
+    text-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.6),
+        0 0 30px rgba(107, 70, 193, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Subtitle Styling */
+.verridian-subtitle {
+    font-family: 'BraveEightyone', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 1px;
+    
+    /* Subtle Metallic Effect */
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    
+    transition: all 0.4s ease;
+}
+
+.verridian-header:hover .verridian-subtitle {
+    color: rgba(255, 255, 255, 1);
+    text-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.5),
+        0 0 10px rgba(107, 70, 193, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .verridian-header {
+        padding: 40px 20px;
+        min-height: 200px;
+        margin-bottom: 30px;
+    }
+    
+    .verridian-logo-enhanced {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 16px;
+    }
+    
+    .verridian-title {
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+    }
+    
+    .verridian-subtitle {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .verridian-header {
+        padding: 30px 15px;
+        min-height: 160px;
+        border-radius: 0;
+    }
+    
+    .verridian-logo-enhanced {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 12px;
+    }
+    
+    .verridian-title {
+        font-size: 2rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .verridian-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    .verridian-header {
+        padding: 80px 60px;
+        min-height: 350px;
+    }
+    
+    .verridian-logo-enhanced {
+        width: 320px;
+        height: 320px;
+        margin-bottom: 32px;
+    }
+    
+    .verridian-title {
+        font-size: 4rem;
+        letter-spacing: 3px;
+    }
+    
+    .verridian-subtitle {
+        font-size: 1.8rem;
+        letter-spacing: 1.2px;
+    }
+}
+
+/* High DPI Display Support */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .verridian-logo-enhanced {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .verridian-header,
+    .verridian-logo-enhanced,
+    .verridian-title,
+    .verridian-subtitle {
+        transition: none;
+    }
+    
+    .verridian-logo-enhanced:hover {
+        transform: none;
+    }
+    
+    .verridian-header:hover .verridian-title {
+        transform: none;
+    }
+}
+
+@media (prefers-contrast: high) {
+    .verridian-header {
+        background: rgba(0, 0, 0, 0.8);
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    .verridian-title {
+        background: #ffffff;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .verridian-subtitle {
+        color: #ffffff;
+    }
+}
+
+/* Focus States for Accessibility */
+.verridian-logo-enhanced:focus {
+    outline: 3px solid rgba(107, 70, 193, 0.8);
+    outline-offset: 6px;
+    border-radius: 12px;
+}
+
+/* Print Styles */
+@media print {
+    .verridian-header {
+        background: none;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: 2px solid #000;
+    }
+    
+    .verridian-logo-enhanced {
+        filter: none;
+    }
+    
+    .verridian-title {
+        background: #000;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: none;
+    }
+    
+    .verridian-subtitle {
+        color: #000;
+        text-shadow: none;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .verridian-header {
+        background: rgba(16, 0, 43, 0.2);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .verridian-header:hover {
+        background: rgba(16, 0, 43, 0.35);
+        border-color: rgba(107, 70, 193, 0.5);
+    }
+}

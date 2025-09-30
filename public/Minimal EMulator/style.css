@@ -1,0 +1,66 @@
+/* Minimal Emulator styling: black background, header, controls */
+:root {
+  --bg: #000;
+  --text: #eaeaea;
+  --accent: #2ea3ff;
+  --muted: #3a3a3a;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--muted);
+}
+.header img { width: 36px; height: 36px; object-fit: contain; }
+.header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+
+.main {
+  max-width: 1240px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+.controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+@media (min-width: 640px) {
+  .controls { grid-template-columns: 2fr 1fr; }
+}
+.url { display: flex; gap: 8px; }
+.url input {
+  flex: 1; padding: 10px 12px; border: 1px solid var(--muted);
+  background: #0c0c0c; color: var(--text); border-radius: 8px;
+}
+.url button {
+  padding: 10px 14px; border-radius: 8px; border: 1px solid var(--muted);
+  background: #101010; color: var(--text); cursor: pointer;
+}
+
+.device-groups {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px;
+}
+.group { border: 1px solid var(--muted); border-radius: 10px; padding: 10px; }
+.group h3 { margin: 0 0 8px; font-size: 14px; font-weight: 600; color: #cfcfcf; }
+.buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+.button {
+  padding: 8px 10px; background: #121212; border: 1px solid var(--muted);
+  color: var(--text); border-radius: 8px; font-size: 13px; cursor: pointer;
+}
+.button.active { border-color: var(--accent); color: var(--accent); }
+
+.showcase { display: flex; justify-content: center; padding: 20px 0; }
+/* device-skins.css will style .device-mockup + device-* classes */
+.screen iframe { width: 100%; height: 100%; border: 0; }

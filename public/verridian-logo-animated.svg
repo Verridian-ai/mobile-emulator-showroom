@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Cosmic Energy Gradient -->
+    <linearGradient id="verridian-energy" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#F59E0B;#EC4899;#6B46C1;#F59E0B" 
+          dur="4s" 
+          repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#EC4899;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#EC4899;#6B46C1;#2563EB;#EC4899" 
+          dur="4s" 
+          repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#6B46C1;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#6B46C1;#2563EB;#F59E0B;#6B46C1" 
+          dur="4s" 
+          repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Pulsing Glow Filter -->
+    <filter id="verridian-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur">
+        <animate attributeName="stdDeviation" 
+          values="3;6;3" 
+          dur="2s" 
+          repeatCount="indefinite"/>
+      </feGaussianBlur>
+      <feOffset result="offsetblur" in="coloredBlur" dx="0" dy="0"/>
+      <feFlood flood-color="#EC4899" flood-opacity="0.5">
+        <animate attributeName="flood-color" 
+          values="#EC4899;#6B46C1;#2563EB;#EC4899" 
+          dur="3s" 
+          repeatCount="indefinite"/>
+      </feFlood>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Energy Ring -->
+    <circle id="energy-ring" r="90" cx="100" cy="100" fill="none" 
+      stroke="url(#verridian-energy)" stroke-width="2" opacity="0.6">
+      <animate attributeName="r" 
+        values="85;95;85" 
+        dur="3s" 
+        repeatCount="indefinite"/>
+      <animate attributeName="stroke-width" 
+        values="2;3;2" 
+        dur="3s" 
+        repeatCount="indefinite"/>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 100 100"
+        to="360 100 100"
+        dur="20s"
+        repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Orbital Particles -->
+    <g id="orbital-particle">
+      <circle r="2" fill="#F59E0B" filter="url(#verridian-glow)">
+        <animate attributeName="opacity" 
+          values="0;1;0" 
+          dur="2s" 
+          repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Inner Energy Core -->
+    <radialGradient id="core-gradient">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1"/>
+      <stop offset="30%" style="stop-color:#F59E0B;stop-opacity:0.8"/>
+      <stop offset="60%" style="stop-color:#EC4899;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#6B46C1;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background Energy Field -->
+  <circle cx="100" cy="100" r="95" fill="url(#core-gradient)" opacity="0.3">
+    <animate attributeName="opacity" 
+      values="0.2;0.5;0.2" 
+      dur="4s" 
+      repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Rotating Energy Rings -->
+  <g transform="translate(100, 100)">
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 0 0"
+        to="360 0 0"
+        dur="15s"
+        repeatCount="indefinite"/>
+      <circle r="80" fill="none" stroke="url(#verridian-energy)" 
+        stroke-width="1" opacity="0.4" stroke-dasharray="5 10"/>
+    </g>
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 0 0"
+        to="-360 0 0"
+        dur="20s"
+        repeatCount="indefinite"/>
+      <circle r="70" fill="none" stroke="url(#verridian-energy)" 
+        stroke-width="1" opacity="0.4" stroke-dasharray="10 5"/>
+    </g>
+  </g>
+
+  <!-- Verridian V Logo -->
+  <g id="verridian-v" transform="translate(100, 100)" filter="url(#verridian-glow)">
+    <!-- Main V Shape -->
+    <path d="M -30 -20 L 0 30 L 30 -20 L 20 -20 L 0 10 L -20 -20 Z" 
+      fill="url(#verridian-energy)" 
+      stroke="#FFFFFF" 
+      stroke-width="1"
+      opacity="0.9">
+      <animateTransform
+        attributeName="transform"
+        type="scale"
+        values="1;1.1;1"
+        dur="3s"
+        repeatCount="indefinite"/>
+    </path>
+    
+    <!-- Inner V Accent -->
+    <path d="M -20 -15 L 0 20 L 20 -15 L 15 -15 L 0 5 L -15 -15 Z" 
+      fill="#FFFFFF" 
+      opacity="0.8">
+      <animate attributeName="opacity" 
+        values="0.6;1;0.6" 
+        dur="2s" 
+        repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- Orbiting Particles -->
+  <g transform="translate(100, 100)">
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 100 100"
+      to="360 100 100"
+      dur="10s"
+      repeatCount="indefinite"/>
+    
+    <!-- Particle 1 -->
+    <circle cx="0" cy="-85" r="3" fill="#F59E0B" filter="url(#verridian-glow)">
+      <animate attributeName="opacity" 
+        values="0.3;1;0.3" 
+        dur="2s" 
+        repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Particle 2 -->
+    <circle cx="60" cy="60" r="3" fill="#EC4899" filter="url(#verridian-glow)">
+      <animate attributeName="opacity" 
+        values="0.3;1;0.3" 
+        dur="2s" 
+        begin="0.66s"
+        repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Particle 3 -->
+    <circle cx="-60" cy="60" r="3" fill="#6B46C1" filter="url(#verridian-glow)">
+      <animate attributeName="opacity" 
+        values="0.3;1;0.3" 
+        dur="2s" 
+        begin="1.33s"
+        repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Energy Burst Animation -->
+  <g transform="translate(100, 100)" opacity="0">
+    <animate attributeName="opacity" 
+      values="0;0;1;0" 
+      dur="6s" 
+      repeatCount="indefinite"/>
+    <animateTransform
+      attributeName="transform"
+      type="scale"
+      values="0.5;2;2"
+      dur="6s"
+      repeatCount="indefinite"
+      additive="sum"/>
+    
+    <circle r="50" fill="none" stroke="url(#verridian-energy)" stroke-width="2" opacity="0.6"/>
+    <circle r="40" fill="none" stroke="url(#verridian-energy)" stroke-width="1" opacity="0.4"/>
+    <circle r="30" fill="none" stroke="url(#verridian-energy)" stroke-width="1" opacity="0.2"/>
+  </g>
+
+  <!-- Cosmic Sparkles -->
+  <g id="sparkles">
+    <circle cx="30" cy="30" r="1" fill="#FFFFFF">
+      <animate attributeName="opacity" 
+        values="0;1;0" 
+        dur="1.5s" 
+        repeatCount="indefinite"/>
+    </circle>
+    <circle cx="170" cy="40" r="1" fill="#FFFFFF">
+      <animate attributeName="opacity" 
+        values="0;1;0" 
+        dur="1.5s" 
+        begin="0.5s"
+        repeatCount="indefinite"/>
+    </circle>
+    <circle cx="160" cy="160" r="1" fill="#FFFFFF">
+      <animate attributeName="opacity" 
+        values="0;1;0" 
+        dur="1.5s" 
+        begin="1s"
+        repeatCount="indefinite"/>
+    </circle>
+    <circle cx="40" cy="170" r="1" fill="#FFFFFF">
+      <animate attributeName="opacity" 
+        values="0;1;0" 
+        dur="1.5s" 
+        begin="0.75s"
+        repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>

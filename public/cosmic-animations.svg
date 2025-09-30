@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+  <defs>
+    <!-- Cosmic Glow Filters -->
+    <filter id="cosmic-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feOffset result="offsetblur" in="coloredBlur" dx="0" dy="0"/>
+      <feFlood flood-color="#EC4899" flood-opacity="0.3"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 .5 1"/>
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="nebula-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="8" result="bigBlur"/>
+      <feColorMatrix in="bigBlur" type="matrix" 
+        values="1 0 0 0 0.4
+                0 1 0 0 0.2
+                0 0 1 0 0.9
+                0 0 0 1 0"/>
+      <feGaussianBlur stdDeviation="2" result="smallBlur"/>
+      <feColorMatrix in="smallBlur" type="matrix"
+        values="1 0 0 0 0.9
+                0 1 0 0 0.2
+                0 0 1 0 0.7
+                0 0 0 1 0"/>
+      <feMerge>
+        <feMergeNode in="bigBlur"/>
+        <feMergeNode in="smallBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <filter id="energy-pulse">
+      <feGaussianBlur stdDeviation="3">
+        <animate attributeName="stdDeviation" 
+          values="2;5;2" 
+          dur="2s" 
+          repeatCount="indefinite"/>
+      </feGaussianBlur>
+      <feColorMatrix type="matrix"
+        values="1 0 0 0 0.6
+                0 0.3 0 0 0.3
+                0 0 1 0 0.9
+                0 0 0 1 0"/>
+    </filter>
+
+    <!-- Gradient Definitions -->
+    <linearGradient id="cosmic-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B46C1;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#6B46C1;#2563EB;#EC4899;#6B46C1" 
+          dur="10s" 
+          repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" style="stop-color:#2563EB;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#2563EB;#EC4899;#F59E0B;#2563EB" 
+          dur="10s" 
+          repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" style="stop-color:#EC4899;stop-opacity:1">
+        <animate attributeName="stop-color" 
+          values="#EC4899;#6B46C1;#2563EB;#EC4899" 
+          dur="10s" 
+          repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <radialGradient id="star-gradient">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1"/>
+      <stop offset="30%" style="stop-color:#F59E0B;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0"/>
+    </radialGradient>
+
+    <!-- Animated Star Pattern -->
+    <g id="animated-star">
+      <circle r="2" fill="url(#star-gradient)">
+        <animate attributeName="opacity" 
+          values="0;1;0" 
+          dur="3s" 
+          repeatCount="indefinite"/>
+        <animate attributeName="r" 
+          values="1;3;1" 
+          dur="3s" 
+          repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Orbital Ring -->
+    <ellipse id="orbital-ring" rx="100" ry="30" fill="none" 
+      stroke="url(#cosmic-gradient)" stroke-width="2" opacity="0.6">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        from="0 0 0"
+        to="360 0 0"
+        dur="20s"
+        repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Energy Particle -->
+    <g id="energy-particle">
+      <circle r="3" fill="#EC4899" filter="url(#cosmic-glow)">
+        <animate attributeName="opacity" 
+          values="0;1;1;0" 
+          dur="4s" 
+          repeatCount="indefinite"/>
+      </circle>
+      <circle r="1" fill="#FFFFFF">
+        <animate attributeName="opacity" 
+          values="0;1;1;0" 
+          dur="4s" 
+          repeatCount="indefinite"/>
+      </circle>
+    </g>
+
+    <!-- Nebula Cloud -->
+    <radialGradient id="nebula-gradient">
+      <stop offset="0%" style="stop-color:#EC4899;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#6B46C1;stop-opacity:0.2"/>
+      <stop offset="100%" style="stop-color:#2563EB;stop-opacity:0"/>
+    </radialGradient>
+
+    <g id="nebula-cloud">
+      <ellipse rx="150" ry="80" fill="url(#nebula-gradient)" filter="url(#nebula-glow)">
+        <animateTransform
+          attributeName="transform"
+          type="scale"
+          values="1,1;1.2,1.2;1,1"
+          dur="15s"
+          repeatCount="indefinite"/>
+        <animate attributeName="opacity"
+          values="0.3;0.6;0.3"
+          dur="15s"
+          repeatCount="indefinite"/>
+      </ellipse>
+    </g>
+
+    <!-- Comet Trail -->
+    <linearGradient id="comet-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#F59E0B;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:0"/>
+    </linearGradient>
+
+    <g id="comet">
+      <ellipse rx="30" ry="2" fill="url(#comet-gradient)">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="0;360"
+          dur="0.5s"
+          repeatCount="indefinite"/>
+      </ellipse>
+      <circle r="3" fill="#FFFFFF" filter="url(#cosmic-glow)"/>
+    </g>
+  </defs>
+</svg>

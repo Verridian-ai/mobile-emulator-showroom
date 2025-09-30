@@ -1,0 +1,637 @@
+/* ===================================================
+   🏆 AI AGENT FACTORY - GOLD DARK THEME
+   ===================================================
+   Premium rebranding for Verridian Mobile Showroom
+   Transformed into AI Agent Factory Testing Platform
+*/
+
+/* Font Face Declarations */
+@font-face {
+  font-family: 'BraveEightyone';
+  src: url('fonts/BraveEightyoneRegular-ZVGvm.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Decaydence';
+  src: url('fonts/Decaydence-MALnB.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DecaydenceStraight';
+  src: url('fonts/DecaydenceStraight-KVJzZ.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GalacticVanguard';
+  src: url('fonts/GalacticVanguardianNcv-myVP.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* ===================================================
+   CSS CUSTOM PROPERTIES - GOLD DARK THEME
+   ===================================================
+*/
+:root {
+  /* === GOLD COLOR PALETTE === */
+  --gold-50: #fffbf0;
+  --gold-100: #fef3c7;
+  --gold-200: #fde68a;
+  --gold-300: #fcd34d;
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+  --gold-700: #b45309;
+  --gold-800: #92400e;
+  --gold-900: #78350f;
+  --gold-950: #451a03;
+
+  /* === DARK BACKGROUND COLORS === */
+  --dark-bg-primary: #0a0a0a;
+  --dark-bg-secondary: #111111;
+  --dark-bg-tertiary: #1a1a1a;
+  --dark-bg-elevated: #222222;
+  --dark-bg-surface: #2a2a2a;
+  
+  /* === CIRCUIT PATTERN COLORS === */
+  --circuit-primary: #fbbf24;
+  --circuit-secondary: #f59e0b;
+  --circuit-accent: #d97706;
+  --circuit-glow: rgba(251, 191, 36, 0.3);
+  --circuit-pulse: rgba(251, 191, 36, 0.6);
+
+  /* === TEXT COLORS === */
+  --text-primary: #ffffff;
+  --text-secondary: #e5e5e5;
+  --text-muted: #a3a3a3;
+  --text-gold: var(--gold-400);
+  --text-gold-bright: var(--gold-300);
+
+  /* === BORDER COLORS === */
+  --border-primary: rgba(251, 191, 36, 0.2);
+  --border-secondary: rgba(251, 191, 36, 0.1);
+  --border-glow: rgba(251, 191, 36, 0.4);
+
+  /* === SHADOW DEFINITIONS === */
+  --shadow-gold: 0 4px 20px rgba(251, 191, 36, 0.15);
+  --shadow-gold-lg: 0 8px 40px rgba(251, 191, 36, 0.2);
+  --shadow-dark: 0 4px 20px rgba(0, 0, 0, 0.3);
+  
+  /* === GRADIENT DEFINITIONS === */
+  --gradient-gold: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
+  --gradient-gold-dark: linear-gradient(135deg, var(--gold-600) 0%, var(--gold-800) 100%);
+  --gradient-circuit: linear-gradient(135deg, var(--dark-bg-primary) 0%, var(--dark-bg-secondary) 50%, var(--dark-bg-tertiary) 100%);
+  
+  /* === ANIMATION TIMINGS === */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.25s ease-out;
+  --transition-slow: 0.4s ease-out;
+  
+  /* === TYPOGRAPHY === */
+  --font-primary: 'BraveEightyone', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'DecaydenceStraight', 'Orbitron', monospace;
+  --font-accent: 'GalacticVanguard', 'Exo 2', sans-serif;
+  --font-mono: 'Decaydence', 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* ===================================================
+   REBRANDED BODY AND BACKGROUND
+   ===================================================
+*/
+
+body {
+  font-family: var(--font-primary) !important;
+  background: var(--dark-bg-primary) !important;
+  color: var(--text-primary) !important;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.video-background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  background: var(--dark-bg-primary);
+}
+
+.cosmic-video-background {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  filter: hue-rotate(45deg) saturate(0.8);
+}
+
+.video-fallback-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    url('gold_1.png'),
+    radial-gradient(circle at 25% 25%, var(--circuit-glow) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, var(--circuit-glow) 0%, transparent 50%),
+    var(--dark-bg-primary);
+  background-size: cover, 400px 400px, 400px 400px, auto;
+  background-position: center, 0 0, 50% 50%, center;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* ===================================================
+   HEADER REBRANDING
+   ===================================================
+*/
+
+.verridian-header {
+  background: rgba(26, 26, 26, 0.95) !important;
+  border: 1px solid var(--border-primary) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: var(--shadow-gold) !important;
+  padding: 2rem !important;
+  margin: 2rem !important;
+  border-radius: 16px !important;
+}
+
+.verridian-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-gold);
+  border-radius: 16px 16px 0 0;
+}
+
+/* Replace Verridian logo with AI Agent Factory logo */
+.verridian-logo-enhanced {
+  width: 120px !important;
+  height: 120px !important;
+  content: url('new_electronic_logo.png') !important;
+  filter: drop-shadow(0 4px 12px rgba(251, 191, 36, 0.3)) !important;
+  transition: all var(--transition-normal) !important;
+  margin: 0 auto 1rem !important;
+  display: block !important;
+}
+
+.verridian-logo-enhanced:hover {
+  filter: 
+    drop-shadow(0 8px 24px rgba(251, 191, 36, 0.5))
+    brightness(1.1) !important;
+  transform: scale(1.05) rotate(2deg) !important;
+}
+
+.verridian-subtitle {
+  color: var(--text-gold-bright) !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin: 0 !important;
+  text-shadow: 0 0 20px rgba(251, 191, 36, 0.3) !important;
+}
+
+.verridian-subtitle::before {
+  content: "🤖 AI Agent Factory " !important;
+}
+
+/* ===================================================
+   DEVICE CONTROL BUTTONS REBRANDING
+   ===================================================
+*/
+
+.btn-cosmic {
+  background: rgba(26, 26, 26, 0.8) !important;
+  border: 1px solid var(--border-primary) !important;
+  color: var(--text-secondary) !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-family: var(--font-primary) !important;
+  font-weight: 600 !important;
+  transition: all var(--transition-normal) !important;
+  backdrop-filter: blur(8px) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.btn-cosmic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(251, 191, 36, 0.1) 50%, transparent 100%);
+  transition: left 0.5s ease !important;
+}
+
+.btn-cosmic:hover {
+  border-color: var(--border-glow) !important;
+  color: var(--text-gold) !important;
+  box-shadow: var(--shadow-gold) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-cosmic:hover::before {
+  left: 100%;
+}
+
+.btn-cosmic.active {
+  background: var(--gradient-gold) !important;
+  color: var(--dark-bg-primary) !important;
+  border-color: var(--gold-500) !important;
+  box-shadow: var(--shadow-gold-lg) !important;
+  font-weight: bold !important;
+}
+
+.device-group-title {
+  color: var(--text-gold-bright) !important;
+  font-family: var(--font-display) !important;
+  font-size: 1.25rem !important;
+  font-weight: bold !important;
+  text-align: center !important;
+  margin-bottom: 1rem !important;
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.3) !important;
+}
+
+/* ===================================================
+   URL INPUT REBRANDING
+   ===================================================
+*/
+
+.url-container {
+  background: rgba(26, 26, 26, 0.9) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: 12px !important;
+  padding: 1rem !important;
+  margin: 2rem !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+.input-glass-premium {
+  background: rgba(42, 42, 42, 0.8) !important;
+  border: 1px solid var(--border-secondary) !important;
+  color: var(--text-primary) !important;
+  border-radius: 8px !important;
+  padding: 1rem !important;
+  font-family: var(--font-primary) !important;
+  font-size: 1rem !important;
+  width: 100% !important;
+  transition: all var(--transition-normal) !important;
+}
+
+.input-glass-premium:focus {
+  outline: none !important;
+  border-color: var(--gold-400) !important;
+  box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.2) !important;
+  background: rgba(42, 42, 42, 1) !important;
+}
+
+.input-glass-premium::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.url-submit-btn {
+  background: var(--gradient-gold) !important;
+  color: var(--dark-bg-primary) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 1rem 1.5rem !important;
+  font-family: var(--font-primary) !important;
+  font-weight: bold !important;
+  font-size: 1.2rem !important;
+  cursor: pointer !important;
+  transition: all var(--transition-normal) !important;
+  margin-left: 1rem !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+.url-submit-btn:hover {
+  background: var(--gradient-gold-dark) !important;
+  box-shadow: var(--shadow-gold-lg) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ===================================================
+   DEVICE SHOWCASE REBRANDING
+   ===================================================
+*/
+
+.device-showcase-cosmic {
+  background: rgba(26, 26, 26, 0.9) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: 16px !important;
+  margin: 2rem !important;
+  padding: 2rem !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow: var(--shadow-gold-lg) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.device-showcase-cosmic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-gold);
+}
+
+.device-mockup {
+  position: relative !important;
+  margin: 0 auto !important;
+  transition: all var(--transition-slow) !important;
+}
+
+.device-mockup:hover {
+  transform: scale(0.82) !important;
+  filter: drop-shadow(0 12px 32px rgba(251, 191, 36, 0.2)) !important;
+}
+
+.device-mockup .screen {
+  border-radius: 20px !important;
+  overflow: hidden !important;
+  box-shadow: 
+    inset 0 0 0 1px rgba(251, 191, 36, 0.1),
+    0 4px 20px rgba(0, 0, 0, 0.3) !important;
+}
+
+.device-mockup iframe {
+  border: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ===================================================
+   CONTROL PANEL REBRANDING
+   ===================================================
+*/
+
+.control-panel {
+  background: rgba(26, 26, 26, 0.8) !important;
+  border: 1px solid var(--border-primary) !important;
+  border-radius: 16px !important;
+  padding: 2rem !important;
+  margin: 2rem !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: var(--shadow-gold) !important;
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+  gap: 2rem !important;
+}
+
+.device-group-cosmic {
+  background: rgba(34, 34, 34, 0.6) !important;
+  border: 1px solid var(--border-secondary) !important;
+  border-radius: 12px !important;
+  padding: 1.5rem !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.75rem !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.device-group-cosmic:hover {
+  border-color: var(--border-primary) !important;
+  box-shadow: var(--shadow-gold) !important;
+}
+
+/* ===================================================
+   LOADING ANIMATION REBRANDING
+   ===================================================
+*/
+
+#cosmic-loader {
+  background: var(--dark-bg-primary) !important;
+}
+
+#cosmic-loader img {
+  content: url('new_electronic_logo.png') !important;
+  filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)) !important;
+  animation: logoGlow 2s ease-in-out infinite alternate !important;
+}
+
+@keyframes logoGlow {
+  from {
+    filter: drop-shadow(0 0 20px rgba(251, 191, 36, 0.4)) !important;
+    transform: scale(1) !important;
+  }
+  to {
+    filter: drop-shadow(0 0 30px rgba(251, 191, 36, 0.6)) brightness(1.1) !important;
+    transform: scale(1.05) !important;
+  }
+}
+
+.loader-progress {
+  background: rgba(26, 26, 26, 0.8) !important;
+  border: 1px solid var(--border-primary) !important;
+  box-shadow: var(--shadow-gold-lg) !important;
+}
+
+.progress-ring .ring-fill {
+  stroke: var(--gold-400) !important;
+}
+
+.progress-ring .percent-text {
+  color: var(--text-gold-bright) !important;
+  font-family: var(--font-display) !important;
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.6) !important;
+}
+
+.progress-fill {
+  background: var(--gradient-gold) !important;
+  box-shadow: 0 0 16px rgba(251, 191, 36, 0.6) !important;
+}
+
+/* ===================================================
+   CIRCUIT ANIMATIONS
+   ===================================================
+*/
+
+.control-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 98px,
+      rgba(251, 191, 36, 0.03) 100px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98px,
+      rgba(251, 191, 36, 0.03) 100px
+    );
+  pointer-events: none;
+  opacity: 0.5;
+  animation: circuitGrid 8s linear infinite;
+}
+
+@keyframes circuitGrid {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(100px, 100px); }
+}
+
+/* ===================================================
+   RESPONSIVE DESIGN IMPROVEMENTS
+   ===================================================
+*/
+
+@media (max-width: 768px) {
+  .verridian-logo-enhanced {
+    width: 80px !important;
+    height: 80px !important;
+  }
+  
+  .verridian-subtitle {
+    font-size: 1.2rem !important;
+  }
+  
+  .control-panel {
+    grid-template-columns: 1fr !important;
+    padding: 1rem !important;
+    margin: 1rem !important;
+  }
+  
+  .device-group-cosmic {
+    padding: 1rem !important;
+  }
+  
+  .btn-cosmic {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .verridian-logo-enhanced {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .verridian-subtitle {
+    font-size: 1rem !important;
+  }
+}
+
+/* ===================================================
+   ACCESSIBILITY IMPROVEMENTS
+   ===================================================
+*/
+
+.btn-cosmic:focus-visible,
+.input-glass-premium:focus-visible,
+.url-submit-btn:focus-visible {
+  outline: 2px solid var(--gold-400) !important;
+  outline-offset: 2px !important;
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-primary: rgba(251, 191, 36, 0.8);
+    --text-muted: #cccccc;
+    --border-secondary: rgba(251, 191, 36, 0.4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===================================================
+   CONTAINER AND LAYOUT FIXES
+   ===================================================
+*/
+
+.container {
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 1rem !important;
+}
+
+.video-background-section {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+.section-video-bg,
+.device-emulator-video-bg {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1 !important;
+  opacity: 0.1 !important;
+  overflow: hidden !important;
+  border-radius: inherit !important;
+}
+
+.background-video-layer {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  filter: hue-rotate(45deg) saturate(0.6) !important;
+}
+
+.video-overlay-gradient {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(
+    45deg,
+    rgba(10, 10, 10, 0.8) 0%,
+    rgba(26, 26, 26, 0.6) 50%,
+    rgba(10, 10, 10, 0.8) 100%
+  ) !important;
+}
+
+/* ===================================================
+   BRANDING WATERMARK
+   ===================================================
+*/
+
+.container::before {
+  content: "🤖 AI Agent Factory - Mobile Device Testing Platform";
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(26, 26, 26, 0.9);
+  color: var(--text-gold);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border: 1px solid var(--border-secondary);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  pointer-events: none;
+}

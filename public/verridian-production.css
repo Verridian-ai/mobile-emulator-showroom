@@ -1,0 +1,570 @@
+/**
+ * Verridian AI Production CSS
+ * Enhanced glassmorphism with material realism and performance optimizations
+ * Version: 1.0.0
+ * Performance Target: 60fps on all animations
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENHANCED GLASSMORPHISM SYSTEM V2.0
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Advanced Glass Materials with Realistic Properties */
+.glass-premium {
+  /* Multi-layer gradient for depth */
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.125) 25%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.125) 75%,
+      rgba(255, 255, 255, 0.15) 100%),
+    radial-gradient(ellipse at top left,
+      rgba(107, 70, 193, 0.15) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at bottom right,
+      rgba(37, 99, 235, 0.1) 0%,
+      transparent 50%),
+    rgba(255, 255, 255, 0.08);
+  
+  /* Advanced backdrop filters */
+  backdrop-filter: 
+    blur(20px) 
+    saturate(180%) 
+    contrast(105%) 
+    brightness(105%);
+  -webkit-backdrop-filter: 
+    blur(20px) 
+    saturate(180%) 
+    contrast(105%) 
+    brightness(105%);
+  
+  /* Complex border with gradient */
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  
+  /* Layered shadows for depth */
+  box-shadow: 
+    /* Ambient shadow */
+    0 2px 4px -1px rgba(0, 0, 0, 0.2),
+    /* Key shadow */
+    0 4px 5px 0 rgba(0, 0, 0, 0.14),
+    /* Ambient occlusion */
+    0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    /* Inner light */
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    /* Inner shadow */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    /* Glow */
+    0 0 40px rgba(107, 70, 193, 0.1);
+  
+  /* Performance optimizations */
+  will-change: backdrop-filter, transform, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style paint;
+}
+
+/* Gradient border effect */
+.glass-premium::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2));
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Crystalline Glass Effect */
+.glass-crystal {
+  background: 
+    /* Prismatic effect */
+    conic-gradient(from 180deg at 50% 50%,
+      rgba(236, 72, 153, 0.1) 0deg,
+      rgba(107, 70, 193, 0.1) 60deg,
+      rgba(37, 99, 235, 0.1) 120deg,
+      rgba(34, 197, 94, 0.1) 180deg,
+      rgba(245, 158, 11, 0.1) 240deg,
+      rgba(236, 72, 153, 0.1) 360deg),
+    /* Base glass */
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0.05) 100%);
+  
+  backdrop-filter: blur(30px) saturate(200%) hue-rotate(10deg);
+  -webkit-backdrop-filter: blur(30px) saturate(200%) hue-rotate(10deg);
+  
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Animated crystal refraction */
+.glass-crystal::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%);
+  animation: crystal-refraction 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes crystal-refraction {
+  0%, 100% { transform: rotate(0deg) translateX(-50%); }
+  50% { transform: rotate(180deg) translateX(50%); }
+}
+
+/* Frosted Glass with Noise Texture */
+.glass-frosted-premium {
+  background: 
+    /* Noise texture */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='5'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E"),
+    /* Gradient overlay */
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0.08) 100%);
+  
+  backdrop-filter: blur(40px) saturate(150%);
+  -webkit-backdrop-filter: blur(40px) saturate(150%);
+  
+  border: 0.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px rgba(31, 38, 135, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Aurora Glass Effect */
+.glass-aurora {
+  background: 
+    /* Aurora gradient */
+    radial-gradient(ellipse at top,
+      rgba(34, 197, 94, 0.15) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at bottom,
+      rgba(236, 72, 153, 0.15) 0%,
+      transparent 50%),
+    radial-gradient(ellipse at left,
+      rgba(37, 99, 235, 0.1) 0%,
+      transparent 50%),
+    /* Base */
+    rgba(255, 255, 255, 0.05);
+  
+  backdrop-filter: blur(25px) saturate(170%);
+  -webkit-backdrop-filter: blur(25px) saturate(170%);
+  
+  animation: aurora-shift 15s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes aurora-shift {
+  0%, 100% { 
+    background-position: 0% 0%, 100% 100%, 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  33% { 
+    background-position: 100% 0%, 0% 100%, 100% 50%;
+    filter: hue-rotate(60deg);
+  }
+  66% { 
+    background-position: 50% 100%, 50% 0%, 50% 50%;
+    filter: hue-rotate(-60deg);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MATERIAL INTERACTION STATES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Hover State with Depth Change */
+.glass-interactive {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.glass-interactive:hover {
+  backdrop-filter: blur(25px) saturate(190%) brightness(110%);
+  -webkit-backdrop-filter: blur(25px) saturate(190%) brightness(110%);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 10px 40px rgba(107, 70, 193, 0.25),
+    0 0 60px rgba(107, 70, 193, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.glass-interactive:active {
+  transform: translateY(0) scale(0.98);
+  backdrop-filter: blur(15px) saturate(160%);
+  -webkit-backdrop-filter: blur(15px) saturate(160%);
+  box-shadow: 
+    0 2px 8px rgba(107, 70, 193, 0.2),
+    inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Focus State for Accessibility */
+.glass-interactive:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(107, 70, 193, 0.5),
+    0 0 0 6px rgba(107, 70, 193, 0.25),
+    0 10px 40px rgba(107, 70, 193, 0.25);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENHANCED BUTTON SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.btn-glass-premium {
+  /* Base styling */
+  font-family: 'BraveEightyone', system-ui, sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  
+  /* Glass effect */
+  background: 
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 100%),
+    rgba(107, 70, 193, 0.1);
+  
+  backdrop-filter: blur(10px) saturate(150%);
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  
+  /* Shadows */
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+  
+  /* Transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Performance */
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
+}
+
+/* Ripple effect container */
+.btn-glass-premium::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255, 255, 255, 0.5) 0%,
+    transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s, opacity 0.6s;
+  opacity: 0;
+}
+
+/* Shine effect */
+.btn-glass-premium::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 70%);
+  transform: rotate(45deg) translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn-glass-premium:hover::before {
+  width: 300px;
+  height: 300px;
+  opacity: 1;
+}
+
+.btn-glass-premium:hover::after {
+  transform: rotate(45deg) translateX(100%);
+}
+
+.btn-glass-premium:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 
+    0 6px 20px rgba(107, 70, 193, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25),
+    0 0 40px rgba(107, 70, 193, 0.15);
+  
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+}
+
+.btn-glass-premium:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 
+    0 1px 4px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENHANCED INPUT FIELDS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.input-glass-premium {
+  /* Base styling */
+  font-family: 'BraveEightyone', system-ui, sans-serif;
+  font-size: 1rem;
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  width: 100%;
+  
+  /* Glass background */
+  background: 
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.05) 100%);
+  
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  
+  /* Text styling */
+  color: rgba(255, 255, 255, 0.95);
+  
+  /* Transitions */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Focus optimization */
+  will-change: border-color, box-shadow;
+}
+
+.input-glass-premium::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-style: italic;
+}
+
+.input-glass-premium:focus {
+  outline: none;
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 
+    0 0 0 3px rgba(245, 158, 11, 0.1),
+    0 0 20px rgba(245, 158, 11, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  
+  background: 
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.1) 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CARD SYSTEM WITH DEPTH HIERARCHY
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.card-glass-premium {
+  /* Structural properties */
+  padding: 24px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  
+  /* Glass layers */
+  background: 
+    /* Highlight gradient */
+    radial-gradient(ellipse at top left,
+      rgba(255, 255, 255, 0.15) 0%,
+      transparent 50%),
+    /* Shadow gradient */
+    radial-gradient(ellipse at bottom right,
+      rgba(0, 0, 0, 0.1) 0%,
+      transparent 50%),
+    /* Base glass */
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.06) 100%);
+  
+  /* Filters */
+  backdrop-filter: blur(20px) saturate(170%);
+  -webkit-backdrop-filter: blur(20px) saturate(170%);
+  
+  /* Border */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  
+  /* Shadows for depth */
+  box-shadow: 
+    /* Elevation shadow */
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    /* Ambient shadow */
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    /* Inner light */
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    /* Glow */
+    0 0 60px rgba(107, 70, 193, 0.05);
+  
+  /* Performance */
+  transform: translateZ(0);
+  will-change: transform, box-shadow;
+}
+
+/* Card hover lift effect */
+.card-glass-premium:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.15),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 80px rgba(107, 70, 193, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MODAL SYSTEM WITH BACKDROP
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.modal-backdrop-glass {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 0, 32, 0.4);
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  z-index: 1000;
+  opacity: 0;
+  animation: fade-in 0.3s forwards;
+}
+
+.modal-glass-premium {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  max-width: 90%;
+  max-height: 90vh;
+  padding: 32px;
+  border-radius: 24px;
+  z-index: 1001;
+  
+  /* Enhanced glass */
+  background: 
+    linear-gradient(135deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.85) 100%);
+  
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.2),
+    0 12px 24px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 120px rgba(107, 70, 193, 0.2);
+  
+  animation: modal-enter 0.3s forwards;
+}
+
+@keyframes fade-in {
+  to { opacity: 1; }
+}
+
+@keyframes modal-enter {
+  to { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERFORMANCE & ACCESSIBILITY
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* GPU Optimization Hints */
+.gpu-optimized {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+  contain: layout style paint;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .glass-premium,
+  .glass-crystal,
+  .glass-aurora {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .glass-premium,
+  .glass-crystal,
+  .glass-frosted-premium {
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Dark Mode Optimizations */
+@media (prefers-color-scheme: dark) {
+  .glass-premium {
+    background: 
+      linear-gradient(135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.05) 100%),
+      rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .glass-interactive {
+    transition: none;
+  }
+  
+  .glass-interactive:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .glass-premium,
+  .glass-crystal,
+  .glass-aurora {
+    background: white !important;
+    border: 1px solid #000 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+}

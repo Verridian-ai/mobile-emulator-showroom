@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Integration Test</title>
+    <style>
+        body { 
+            font-family: system-ui; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .test-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .test-section { 
+            margin: 20px 0; 
+            padding: 20px; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px; 
+        }
+        .test-button { 
+            background: #3b82f6; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            margin: 5px;
+            font-weight: 500;
+        }
+        .test-button:hover { 
+            background: #2563eb; 
+        }
+        .status { 
+            padding: 8px; 
+            border-radius: 4px; 
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .success { background: #dcfce7; color: #166534; }
+        .error { background: #fee2e2; color: #dc2626; }
+        .warning { background: #fef3c7; color: #92400e; }
+        .info { background: #dbeafe; color: #1e40af; }
+        h1, h2 { color: #1f2937; }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+        .feature-card {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .stats-display {
+            background: #111827;
+            color: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 16px 0;
+        }
+        .api-key-demo {
+            background: #fef7f7;
+            border: 1px dashed #f87171;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🤖 Enhanced AI Chat Integration Test</h1>
+        <p>This page tests the Claude API integration and all AI chat features.</p>
+        
+        <div class="api-key-demo">
+            <h3>🔐 API Key Configuration</h3>
+            <p><strong>Important:</strong> You need a Claude API key to test the chat functionality.</p>
+            <p>Get your key at: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></p>
+            <button class="test-button" onclick="configureAPI()">Configure API Key</button>
+            <button class="test-button" onclick="checkConfiguration()">Check Configuration</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>🚀 Feature Overview</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>💬 Real-time Chat</h4>
+                    <p>Direct Claude API integration with streaming responses</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📸 Screenshot Analysis</h4>
+                    <p>Computer vision capabilities for UI/UX analysis</p>
+                </div>
+                <div class="feature-card">
+                    <h4>♿ Accessibility Check</h4>
+                    <p>WCAG 2.1 compliance analysis and recommendations</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🔍 Element Inspection</h4>
+                    <p>Click-to-analyze specific page elements</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Performance Monitor</h4>
+                    <p>Request timing and usage statistics</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🛡️ Rate Limiting</h4>
+                    <p>Built-in protection against API overuse</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🧪 Component Tests</h2>
+            <button class="test-button" onclick="testClaudeConfig()">Test Claude Config</button>
+            <button class="test-button" onclick="testChatIntegration()">Test Chat Integration</button>
+            <button class="test-button" onclick="testRateLimiting()">Test Rate Limiting</button>
+            <button class="test-button" onclick="testUsageStats()">Show Usage Stats</button>
+            <button class="test-button" onclick="testPerformance()">Performance Stats</button>
+            <div id="test-results"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎯 Quick Actions</h2>
+            <button class="test-button" onclick="openAIChat()">Open AI Chat Panel</button>
+            <button class="test-button" onclick="sendTestMessage()">Send Test Message</button>
+            <button class="test-button" onclick="triggerScreenshot()">Take Screenshot</button>
+            <button class="test-button" onclick="runAccessibilityCheck()">Check Accessibility</button>
+            <button class="test-button" onclick="showKeyboardShortcuts()">Show Shortcuts</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>📊 Live Statistics</h2>
+            <div id="stats-display" class="stats-display">
+                Loading statistics...
+            </div>
+            <button class="test-button" onclick="refreshStats()">Refresh Stats</button>
+            <button class="test-button" onclick="clearAllData()">Clear All Data</button>
+        </div>
+        
+        <div class="test-section">
+            <h2>🎹 Keyboard Shortcuts</h2>
+            <ul>
+                <li><kbd>Ctrl+Shift+A</kbd> - Toggle AI Chat panel</li>
+                <li><kbd>Ctrl+Shift+Q</kbd> - Quick screenshot analysis</li>
+                <li><kbd>Ctrl+Enter</kbd> - Send message (while typing)</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Include required scripts -->
+    <script src="claude-api-config.js"></script>
+    <script src="ai-chat-integration.js"></script>
+    
+    <script>
+        // Test functions
+        function logStatus(message, type = 'info') {
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        function configureAPI() {
+            if (window.claudeAPIConfig) {
+                window.claudeAPIConfig.promptForApiKey().then(success => {
+                    if (success) {
+                        logStatus('API key configured successfully!', 'success');
+                        refreshStats();
+                    } else {
+                        logStatus('API key configuration cancelled', 'warning');
+                    }
+                });
+            } else {
+                logStatus('Claude API config not loaded', 'error');
+            }
+        }
+        
+        function checkConfiguration() {
+            if (window.claudeAPIConfig && window.claudeAPIConfig.isConfigured()) {
+                logStatus('✅ Claude API is properly configured', 'success');
+            } else {
+                logStatus('❌ Claude API is not configured', 'error');
+            }
+        }
+        
+        function testClaudeConfig() {
+            if (!window.claudeAPIConfig) {
+                logStatus('❌ Claude API config not loaded', 'error');
+                return;
+            }
+            
+            logStatus('✅ Claude API config loaded', 'success');
+            logStatus(`Model: ${window.claudeAPIConfig.modelName}`, 'info');
+            logStatus(`Max tokens: ${window.claudeAPIConfig.maxTokens}`, 'info');
+            logStatus(`Configured: ${window.claudeAPIConfig.isConfigured()}`, 'info');
+        }
+        
+        function testChatIntegration() {
+            if (!window.aiChatIntegration) {
+                logStatus('❌ AI Chat integration not loaded', 'error');
+                return;
+            }
+            
+            logStatus('✅ AI Chat integration loaded', 'success');
+            logStatus(`Initialized: ${window.aiChatIntegration.isInitialized}`, 'info');
+            logStatus(`Chat history: ${window.aiChatIntegration.getChatHistory().length} messages`, 'info');
+        }
+        
+        function testRateLimiting() {
+            if (!window.claudeAPIConfig) {
+                logStatus('❌ Cannot test rate limiting - config not loaded', 'error');
+                return;
+            }
+            
+            const stats = window.claudeAPIConfig.getUsageStats();
+            logStatus('Rate limiting test:', 'info');
+            logStatus(`Requests remaining: ${stats.rateLimitRemaining.requests}/30 per minute`, 'info');
+            logStatus(`Tokens remaining: ${stats.rateLimitRemaining.tokens}/40000 per minute`, 'info');
+            logStatus(`Daily remaining: ${stats.rateLimitRemaining.daily}/1000`, 'info');
+        }
+        
+        function testUsageStats() {
+            if (!window.claudeAPIConfig) {
+                logStatus('❌ Cannot show usage stats - config not loaded', 'error');
+                return;
+            }
+            
+            const stats = window.claudeAPIConfig.getUsageStats();
+            logStatus('📊 Usage Statistics:', 'info');
+            logStatus(`Total requests: ${stats.totalRequests}`, 'info');
+            logStatus(`Total tokens: ${stats.totalTokens}`, 'info');
+            logStatus(`Daily requests: ${stats.dailyRequests}`, 'info');
+            logStatus(`Daily tokens: ${stats.dailyTokens}`, 'info');
+        }
+        
+        function testPerformance() {
+            if (!window.aiChatIntegration) {
+                logStatus('❌ Cannot show performance stats - integration not loaded', 'error');
+                return;
+            }
+            
+            const stats = window.aiChatIntegration.getPerformanceStats();
+            logStatus('⚡ Performance Statistics:', 'info');
+            logStatus(`Total requests: ${stats.totalRequests}`, 'info');
+            logStatus(`Success rate: ${stats.successRate?.toFixed(1) || 0}%`, 'info');
+            logStatus(`Avg response time: ${stats.averageResponseTime}ms`, 'info');
+        }
+        
+        function openAIChat() {
+            if (window.aiChatIntegration) {
+                const chatPanel = document.getElementById('ai-chat-panel');
+                if (chatPanel) {
+                    chatPanel.classList.remove('collapsed');
+                    logStatus('AI Chat panel opened', 'success');
+                } else {
+                    logStatus('AI Chat panel not found', 'warning');
+                }
+            } else {
+                logStatus('AI Chat integration not available', 'error');
+            }
+        }
+        
+        async function sendTestMessage() {
+            if (!window.aiChatIntegration) {
+                logStatus('AI Chat not available', 'error');
+                return;
+            }
+            
+            if (!window.claudeAPIConfig || !window.claudeAPIConfig.isConfigured()) {
+                logStatus('Please configure Claude API key first', 'warning');
+                return;
+            }
+            
+            try {
+                logStatus('Sending test message to Claude...', 'info');
+                // This would normally be done through the UI
+                await window.aiChatIntegration.sendToClaudeAPI('Hello! This is a test message. Please respond briefly.');
+                logStatus('Test message sent successfully', 'success');
+            } catch (error) {
+                logStatus(`Test message failed: ${error.message}`, 'error');
+            }
+        }
+        
+        function triggerScreenshot() {
+            if (window.aiChatIntegration && window.aiChatIntegration.captureScreenshotForChat) {
+                window.aiChatIntegration.captureScreenshotForChat();
+                logStatus('Screenshot capture triggered', 'success');
+            } else {
+                logStatus('Screenshot system not available', 'error');
+            }
+        }
+        
+        function runAccessibilityCheck() {
+            if (window.aiChatIntegration && window.aiChatIntegration.checkAccessibility) {
+                window.aiChatIntegration.checkAccessibility();
+                logStatus('Accessibility check initiated', 'success');
+            } else {
+                logStatus('Accessibility check not available', 'error');
+            }
+        }
+        
+        function showKeyboardShortcuts() {
+            logStatus('Keyboard Shortcuts:', 'info');
+            logStatus('Ctrl+Shift+A - Toggle AI Chat', 'info');
+            logStatus('Ctrl+Shift+Q - Quick Screenshot', 'info');
+            logStatus('Ctrl+Enter - Send Message', 'info');
+        }
+        
+        function refreshStats() {
+            const statsDiv = document.getElementById('stats-display');
+            let statsText = 'AI Chat Integration Statistics\n\n';
+            
+            if (window.claudeAPIConfig) {
+                const usage = window.claudeAPIConfig.getUsageStats();
+                statsText += `API Configuration:\n`;
+                statsText += `- Model: ${window.claudeAPIConfig.modelName}\n`;
+                statsText += `- Configured: ${window.claudeAPIConfig.isConfigured()}\n`;
+                statsText += `- Total Requests: ${usage.totalRequests}\n`;
+                statsText += `- Total Tokens: ${usage.totalTokens}\n`;
+                statsText += `- Daily Requests: ${usage.dailyRequests}\n`;
+                statsText += `- Daily Tokens: ${usage.dailyTokens}\n\n`;
+            }
+            
+            if (window.aiChatIntegration) {
+                const perf = window.aiChatIntegration.getPerformanceStats();
+                statsText += `Performance Metrics:\n`;
+                statsText += `- Total Requests: ${perf.totalRequests}\n`;
+                statsText += `- Success Rate: ${perf.successRate?.toFixed(1) || 0}%\n`;
+                statsText += `- Avg Response: ${perf.averageResponseTime}ms\n`;
+                statsText += `- Chat History: ${window.aiChatIntegration.getChatHistory().length} messages\n`;
+            }
+            
+            statsDiv.textContent = statsText;
+        }
+        
+        function clearAllData() {
+            if (confirm('Clear all chat history and configuration data?')) {
+                if (window.claudeAPIConfig) {
+                    window.claudeAPIConfig.clearConfiguration();
+                }
+                if (window.aiChatIntegration) {
+                    window.aiChatIntegration.clearChatHistory();
+                }
+                logStatus('All data cleared', 'success');
+                refreshStats();
+            }
+        }
+        
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            logStatus('Test page loaded', 'success');
+            
+            // Wait for scripts to load
+            setTimeout(() => {
+                testClaudeConfig();
+                testChatIntegration();
+                refreshStats();
+            }, 1000);
+            
+            // Auto-refresh stats every 30 seconds
+            setInterval(refreshStats, 30000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Minimal EMulator</title>
+  <link rel="icon" href="favicon.svg">
+  <!-- Full device + skins UI powered by shared assets -->
+  <link rel="stylesheet" href="device-skins.css">
+  <link rel="stylesheet" href="minimal.css">
+</head>
+<body>
+  <header class="header">
+    <img src="new_electronic_logo.png" alt="Logo">
+    <h1>Minimal EMulator</h1>
+  </header>
+
+  <main class="main">
+    <div class="controls">
+      <div class="url">
+        <input id="urlInput" placeholder="Enter URL (e.g., example.com)">
+        <button id="urlBtn">Open</button>
+      </div>
+      <div></div>
+    </div>
+
+    <section class="device-groups">
+      <div class="group">
+        <h3>iPhone (Classic)</h3>
+        <div class="buttons">
+          <button class="button" data-device="iphone-6">iPhone 6</button>
+          <button class="button" data-device="iphone-6s">iPhone 6s</button>
+          <button class="button" data-device="iphone-7">iPhone 7</button>
+          <button class="button" data-device="iphone-8">iPhone 8</button>
+          <button class="button" data-device="iphone-x">iPhone X</button>
+          <button class="button" data-device="iphone-11">iPhone 11</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>iPhone (Modern)</h3>
+        <div class="buttons">
+          <button class="button" data-device="iphone-12">iPhone 12</button>
+          <button class="button" data-device="iphone-13">iPhone 13</button>
+          <button class="button" data-device="iphone-14">iPhone 14</button>
+          <button class="button active" data-device="iphone-14-pro">iPhone 14 Pro</button>
+          <button class="button" data-device="iphone-15">iPhone 15</button>
+          <button class="button" data-device="iphone-15-pro">iPhone 15 Pro</button>
+          <button class="button" data-device="iphone-16-pro">iPhone 16 Pro</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Samsung Galaxy</h3>
+        <div class="buttons">
+          <button class="button" data-device="galaxy-s7">Galaxy S7</button>
+          <button class="button" data-device="galaxy-s10">Galaxy S10</button>
+          <button class="button" data-device="galaxy-s21">Galaxy S21</button>
+          <button class="button" data-device="galaxy-s22">Galaxy S22</button>
+          <button class="button" data-device="galaxy-s24">Galaxy S24</button>
+          <button class="button" data-device="galaxy-s25-ultra">Galaxy S25 Ultra</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Google Pixel</h3>
+        <div class="buttons">
+          <button class="button" data-device="pixel-3">Pixel 3</button>
+          <button class="button" data-device="pixel-5">Pixel 5</button>
+          <button class="button" data-device="pixel-7">Pixel 7</button>
+          <button class="button" data-device="pixel-8">Pixel 8</button>
+          <button class="button" data-device="pixel-9-pro">Pixel 9 Pro</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Tablets & Desktop</h3>
+        <div class="buttons">
+          <button class="button" data-device="ipad-air-2022">iPad Air 2022</button>
+          <button class="button" data-device="ipad-pro-13-m4">iPad Pro 13&quot; M4</button>
+          <button class="button" data-device="desktop-chrome">Desktop Chrome</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Skins</h3>
+        <div class="buttons" id="skins">
+          <button class="button active" data-skin="black">Black</button>
+          <button class="button" data-skin="white">White</button>
+          <button class="button" data-skin="gold">Gold</button>
+          <button class="button" data-skin="silver">Silver</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Orientation</h3>
+        <div class="buttons" id="orientation">
+          <button class="button active" data-orientation="portrait">Portrait</button>
+          <button class="button" data-orientation="landscape">Landscape</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Scale</h3>
+        <div class="buttons" id="scale">
+          <button class="button" data-scale="scale-50">50%</button>
+          <button class="button active" data-scale="scale-75">75%</button>
+          <button class="button" data-scale="">100%</button>
+          <button class="button" data-scale="scale-125">125%</button>
+        </div>
+      </div>
+      <div class="group">
+        <h3>Motion</h3>
+        <div class="buttons" id="motion">
+          <button class="button" data-motion="">None</button>
+          <button class="button active" data-motion="animate-hover">Hover Lift</button>
+          <button class="button" data-motion="animate-float">Float</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase">
+      <div id="deviceFrame" class="device-mockup device-iphone-14-pro black portrait scale-75 animate-hover">
+        <div class="screen">
+          <iframe id="deviceIframe" src="https://google.com"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="minimal.js" defer></script>
+</body>
+</html>
+
