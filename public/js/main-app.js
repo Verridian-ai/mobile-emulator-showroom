@@ -192,11 +192,10 @@ const handleAgentCommand = (data) => {
             }
             break;
         case 'screenshot':
-            // For now, just log - would need server-side screenshot capability
-            console.log('Screenshot requested');
+            // For now, just acknowledge - would need server-side screenshot capability
             break;
         default:
-            console.log('Unknown command:', data.command);
+            // Unknown command - no action needed
     }
 };
 

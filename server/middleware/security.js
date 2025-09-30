@@ -12,10 +12,10 @@
  * - Article I (Architecture): Modular middleware design
  */
 
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const validator = require('validator');
-const crypto = require('crypto');
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import validator from 'validator';
+import crypto from 'crypto';
 
 /**
  * CSP Violation Log (in-memory for development, use database in production)
@@ -334,7 +334,7 @@ const getCspViolationStats = () => {
   };
 };
 
-module.exports = {
+export {
   helmetConfig,
   rateLimiter,
   strictRateLimiter,

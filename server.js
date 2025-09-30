@@ -1,9 +1,14 @@
 // Load environment variables from .env file (Article V: Security)
-require('dotenv').config();
+import 'dotenv/config';
 
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Validate required environment variables (Article V: Security)
 const requiredEnvVars = [];

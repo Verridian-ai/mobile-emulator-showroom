@@ -64,6 +64,12 @@ nul
 
 # Development documentation (keep in .specify/)
 TASK-*.md
+TASK_*.md
 *VALIDATION*.md
 *HANDOFF*.md
+*TESTING*.md
+PHASE-*.md
+PHASE_*.md
+*COMPLETION_REPORT*.md
+*SUMMARY*.md
 

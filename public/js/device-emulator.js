@@ -203,11 +203,10 @@
         }
         break;
       case 'screenshot':
-        // For now, just log - would need server-side screenshot capability
-        console.log('Screenshot requested');
+        // For now, just acknowledge - would need server-side screenshot capability
         break;
       default:
-        console.log('Unknown command:', data.command);
+        // Unknown command - no action needed
     }
   }
 
@@ -241,8 +240,6 @@
 
       btn.addEventListener('click', () => handleDeviceSwitch(btn));
     });
-
-    console.log('Device Emulator initialized');
   }
 
   // Initialize when DOM is ready
