@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="verridian-theme.css">
     <link rel="stylesheet" href="verridian-production.css">
     <link rel="stylesheet" href="verridian-media-optimized.css">
+    <link rel="stylesheet" href="screenshot-styles.css">
     
     <!-- Global Configuration -->
     <script src="js/config.js"></script>
@@ -29,7 +30,16 @@
 
     <!-- Browser Navigation Module -->
     <script src="js/browser-navigation.js" defer></script>
-    
+
+    <!-- html2canvas for screenshot capture -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+    <!-- Screenshot and IDE Integration Modules -->
+    <script src="js/screenshot-capture.js" defer></script>
+    <script src="js/ide-integration.js" defer></script>
+    <script src="js/error-monitor.js" defer></script>
+    <script src="js/screenshot-integration.js" defer></script>
+
     <!-- Removed dev-only Button Test Script -->
     <style>
         /* Override any conflicting base styles */
@@ -132,6 +142,31 @@
                             <rect x="6" y="6" width="12" height="12"/>
                         </svg>
                     </button>
+                    <div class="nav-separator"></div>
+                    <button id="screenshotBtn" class="nav-btn glass-btn screenshot-btn" title="Take Screenshot (Ctrl+Shift+S)" aria-label="Take screenshot">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </button>
+                    <button id="inspectionBtn" class="nav-btn glass-btn inspection-btn" title="Element Inspection Mode (Ctrl+Shift+E)" aria-label="Toggle element inspection">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </button>
+                    <button id="screenshotSettingsBtn" class="nav-btn glass-btn settings-btn" title="Screenshot Settings" aria-label="Open screenshot settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v6m0 6v6M5.6 5.6l4.2 4.2m4.2 4.2l4.2 4.2M1 12h6m6 0h6M5.6 18.4l4.2-4.2m4.2-4.2l4.2-4.2"/>
+                        </svg>
+                    </button>
+                    <button id="screenshotHistoryBtn" class="nav-btn glass-btn history-btn" title="Screenshot History" aria-label="View screenshot history">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </button>
                 </div>
                 <div class="browser-address-container">
                     <div class="loading-indicator" id="loadingIndicator">
@@ -207,6 +242,82 @@
                 </div>
             </div>
         </section>
+    </div>
+
+    <!-- Screenshot Settings Modal -->
+    <div id="screenshotSettingsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-dark glass-depth-3">
+            <div class="modal-header">
+                <h3>Screenshot Settings</h3>
+                <button class="close-modal-btn" aria-label="Close settings">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-group">
+                    <label for="captureMode">Capture Mode</label>
+                    <select id="captureMode" class="settings-select">
+                        <option value="full">Full Device Frame</option>
+                        <option value="viewport">Viewport Only</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="imageFormat">Image Format</label>
+                    <select id="imageFormat" class="settings-select">
+                        <option value="png">PNG (Lossless)</option>
+                        <option value="jpeg">JPEG (Smaller)</option>
+                        <option value="webp">WebP (Modern)</option>
+                    </select>
+                </div>
+                <div class="setting-group">
+                    <label for="imageQuality">Image Quality</label>
+                    <input type="range" id="imageQuality" min="0.1" max="1" step="0.05" value="0.92">
+                    <span id="qualityValue">92%</span>
+                </div>
+                <div class="setting-group">
+                    <label>
+                        <input type="checkbox" id="autoScreenshotOnError" checked>
+                        Auto-capture on errors
+                    </label>
+                </div>
+                <div class="setting-group">
+                    <label for="preferredIDE">Preferred IDE</label>
+                    <select id="preferredIDE" class="settings-select">
+                        <option value="">Auto-detect</option>
+                        <option value="claudeCode">Claude Code</option>
+                        <option value="vsCode">VS Code</option>
+                        <option value="cursor">Cursor</option>
+                        <option value="filesystem">Filesystem</option>
+                    </select>
+                </div>
+                <div class="setting-group ide-status">
+                    <p id="ideStatus">Detecting IDE...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screenshot History Modal -->
+    <div id="screenshotHistoryModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-dark glass-depth-3 history-modal">
+            <div class="modal-header">
+                <h3>Screenshot History</h3>
+                <button class="close-modal-btn" aria-label="Close history">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="screenshotHistoryList" class="screenshot-history-list">
+                    <!-- Screenshots will be populated here -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Main Application Logic (CSP Compliant) -->
