@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🤖 AI Agent Factory - Mobile Device Testing Platform</title>
-    <!-- Favicons -->
-    <link rel="icon" type="image/png" sizes="32x32" href="new_electronic_logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="new_electronic_logo.png">
-    <link rel="apple-touch-icon" href="new_electronic_logo.png">
-    <link rel="icon" type="image/png" href="new_electronic_logo.png">
+    <!-- Favicons - Using optimized PNG -->
+    <link rel="icon" type="image/png" sizes="32x32" href="new_electronic_logo.optimized.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="new_electronic_logo.optimized.png">
+    <link rel="apple-touch-icon" href="new_electronic_logo.optimized.png">
+    <link rel="icon" type="image/png" href="new_electronic_logo.optimized.png">
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="device-skins.css">
@@ -96,7 +96,10 @@
     <div class="container">
         <!-- Premium Glass Header with Enhanced Depth System -->
         <header class="verridian-header glass-premium glass-crystal glass-depth-3" role="banner">
-            <img src="new_electronic_logo.png" alt="AI Agent Factory Logo" class="verridian-logo-enhanced" id="logo">
+            <picture>
+                <source srcset="new_electronic_logo.optimized.webp" type="image/webp">
+                <img src="new_electronic_logo.optimized.png" alt="AI Agent Factory Logo" class="verridian-logo-enhanced" id="logo">
+            </picture>
             <p class="verridian-subtitle">Device Testing Platform</p>
         </header>
         
@@ -353,8 +356,8 @@
             }
         };
         
-        // Connect to broker on load
-        connectToBroker();
+        // TODO: Connect to broker when WebSocket integration is completed
+        // connectToBroker(); // Function not yet implemented - removed to prevent errors
     </script>
 </body>
 </html>

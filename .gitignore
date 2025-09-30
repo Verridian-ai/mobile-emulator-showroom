@@ -36,3 +36,7 @@ Thumbs.db
 *.tmp
 *.temp
 
+# Archive - Preserved unused files
+# .archive/ is tracked in git to preserve historical code
+# DO NOT add .archive/ to .gitignore - it should be versioned
+
