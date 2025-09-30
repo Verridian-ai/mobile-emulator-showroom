@@ -1,0 +1,1015 @@
+/* 
+ * Verridian AI Cosmic Theme
+ * Premium space-themed design system with glassmorphism
+ * Version: 1.0.0
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CUSTOM PROPERTIES & VARIABLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Core Colors */
+  --verridian-deep-space: #0a0020;
+  --verridian-void: #000511;
+  --verridian-nebula: #6B46C1;
+  --verridian-cosmic-blue: #2563EB;
+  --verridian-plasma-pink: #EC4899;
+  --verridian-stellar-gold: #F59E0B;
+  --verridian-stardust: rgba(255, 255, 255, 0.1);
+  --verridian-cosmic-white: rgba(255, 255, 255, 0.95);
+  
+  /* Gradient Definitions */
+  --verridian-gradient-primary: linear-gradient(135deg, #0a0020 0%, #6B46C1 50%, #2563EB 100%);
+  --verridian-gradient-nebula: radial-gradient(ellipse at center, #6B46C1 0%, #0a0020 70%);
+  --verridian-gradient-plasma: linear-gradient(90deg, #EC4899 0%, #6B46C1 50%, #2563EB 100%);
+  --verridian-gradient-gold: linear-gradient(135deg, #F59E0B 0%, #EC4899 100%);
+  
+  /* Glass Effects */
+  --glass-blur: 20px;
+  --glass-opacity: 0.15;
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px rgba(107, 70, 193, 0.3);
+  --glass-glow: 0 0 40px rgba(107, 70, 193, 0.5);
+  
+  /* Animation Timing */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --animation-slow: 3s;
+  --animation-medium: 1.5s;
+  --animation-fast: 0.3s;
+  
+  /* Spacing System */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FONT LOADING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@font-face {
+  font-family: 'Decaydence';
+  src: url('fonts/Decaydence-MALnB.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BraveEightyone';
+  src: url('fonts/BraveEightyoneRegular-ZVGvm.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'GalacticVanguardian';
+  src: url('fonts/GalacticVanguardianNcv-myVP.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE STYLES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+body, body::before, body::after {
+  background: #000000 !important;
+}
+
+/* Override header glass effect */
+.verridian-header {
+  background: #000000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'BraveEightyone', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--verridian-cosmic-white);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Cosmic Background */
+body::before {
+  content: '';
+  background: none !important;
+}
+
+/* Particle Overlay */
+body::after {
+  content: '';
+  background: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLASSMORPHISM COMPONENTS - ADVANCED SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Base Glass System with Depth Layers */
+.glass-panel {
+  background: rgba(255, 255, 255, var(--glass-opacity));
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 
+    var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition: all var(--animation-fast) var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+  will-change: backdrop-filter, transform;
+  contain: layout style paint;
+}
+
+/* Glass Depth System - Z-Index Management */
+.glass-depth-1 {
+  --glass-blur: 8px;
+  --glass-opacity: 0.08;
+  z-index: 10;
+}
+
+.glass-depth-2 {
+  --glass-blur: 16px;
+  --glass-opacity: 0.12;
+  z-index: 20;
+  box-shadow: 
+    0 8px 32px rgba(107, 70, 193, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-depth-3 {
+  --glass-blur: 24px;
+  --glass-opacity: 0.18;
+  z-index: 30;
+  box-shadow: 
+    0 16px 48px rgba(107, 70, 193, 0.35),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25),
+    0 0 80px rgba(107, 70, 193, 0.15);
+}
+
+/* Apple-style Liquid Glass */
+.glass-liquid {
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.25) 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      rgba(255, 255, 255, 0.15) 100%),
+    rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40px) saturate(180%) brightness(95%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%) brightness(95%);
+  border: 0.5px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.10),
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(107, 70, 193, 0.08);
+}
+
+/* Microsoft Fluent Acrylic Style */
+.glass-acrylic {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  background-image: 
+    linear-gradient(0deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='turbulence' baseFrequency='0.9' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+  box-shadow: 
+    0 1.6px 3.6px rgba(0, 0, 0, 0.13),
+    0 0.3px 0.9px rgba(0, 0, 0, 0.11);
+}
+
+/* Material Glass Card */
+.glass-material {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.125);
+  box-shadow: 
+    0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-material:hover {
+  box-shadow: 
+    0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.glass-panel:hover {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: var(--glass-glow);
+  transform: translateY(-2px) scale(1.01);
+  backdrop-filter: blur(calc(var(--glass-blur) + 5px)) saturate(170%);
+}
+
+/* Glass Panel Shine Effect */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 50%;
+  background: linear-gradient(
+    0deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: all 0.5s;
+  opacity: 0;
+}
+
+.glass-panel:hover::before {
+  opacity: 1;
+  animation: glass-shine 0.5s ease-out;
+}
+
+.video-background-container {
+    display: none;
+}
+
+@keyframes glass-shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.glass-dark {
+  background: rgba(10, 0, 32, 0.7);
+  backdrop-filter: blur(var(--glass-blur)) brightness(80%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) brightness(80%);
+  border: 1px solid rgba(107, 70, 193, 0.3);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HEADER & BRANDING
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.verridian-header {
+  text-align: center;
+  padding: var(--space-2xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-2xl);
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+/* Header Glow Effect */
+.header-glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--verridian-nebula), transparent);
+  opacity: 0.3;
+  filter: blur(100px);
+  animation: none !important;
+  pointer-events: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { 
+    opacity: 0.3;
+    transform: translateX(-50%) scale(1);
+  }
+  50% { 
+    opacity: 0.5;
+    transform: translateX(-50%) scale(1.2);
+  }
+}
+
+.verridian-logo {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto var(--space-lg);
+  display: block;
+  animation: none !important;
+  filter: drop-shadow(0 0 20px var(--verridian-nebula));
+}
+
+/* Removed VERRIDIAN AI title in header */
+
+.verridian-subtitle {
+  font-family: 'GalacticVanguardian', sans-serif;
+  font-size: 1.2rem;
+  color: var(--verridian-stellar-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  opacity: 0.9;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CONTROLS & BUTTONS - ENHANCED WITH MATERIAL DESIGN
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.control-section {
+  position: relative;
+  z-index: 100;
+  padding: 0 0 var(--space-xl) 0;
+}
+
+.url-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  max-width: 800px;
+  margin: var(--space-lg) auto var(--space-2xl);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 16px;
+  position: relative;
+  z-index: 25;
+}
+
+.url-submit-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: linear-gradient(135deg, var(--verridian-nebula), var(--verridian-cosmic-blue));
+  color: white;
+  font-size: 1.5rem;
+  transition: all var(--animation-fast) var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.url-submit-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(107, 70, 193, 0.4);
+}
+
+.url-submit-btn:active {
+  transform: scale(0.98);
+}
+
+.url-submit-btn span {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+}
+
+.url-submit-btn:hover span {
+  transform: translateX(2px);
+}
+
+.control-panel {
+  /* Uniform grid for responsive device cards */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-lg);
+  justify-content: center;
+  align-items: start;
+  padding: var(--space-xl);
+  margin: var(--space-xl) auto;
+  max-width: 1400px;
+}
+
+.device-group-cosmic {
+  padding: var(--space-lg);
+  min-width: 220px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--animation-fast) var(--transition-smooth);
+  border-radius: 16px;
+  /* Clear glass card */
+  background: rgba(10, 0, 32, 0.35);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.device-group-cosmic::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--verridian-nebula) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--animation-fast) var(--transition-smooth);
+  pointer-events: none;
+}
+
+.device-group-cosmic:hover::before {
+  opacity: 0.18;
+}
+
+.device-group-title {
+  font-family: 'GalacticVanguardian', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--verridian-stellar-gold);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+/* Cosmic Buttons */
+.btn-cosmic {
+  font-family: 'BraveEightyone', sans-serif;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--verridian-cosmic-white);
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--animation-fast) var(--transition-smooth);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  width: 100%;
+  margin: 6px 0;
+}
+
+.btn-cosmic::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, var(--verridian-plasma-pink), transparent);
+  transition: width var(--animation-fast), height var(--animation-fast);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.btn-cosmic:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(107, 70, 193, 0.35);
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn-cosmic:hover::before {
+  width: 300px;
+  height: 300px;
+  opacity: 0.3;
+}
+
+.btn-cosmic.active {
+  background: linear-gradient(135deg, rgba(107,70,193,0.35), rgba(37,99,235,0.35));
+  border-color: rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 22px rgba(245, 158, 11, 0.45);
+}
+
+/* URL Input */
+.url-input-cosmic {
+  font-family: 'BraveEightyone', sans-serif;
+  padding: var(--space-md) var(--space-lg);
+  background: rgba(10, 0, 32, 0.8);
+  border: 1px solid var(--verridian-nebula);
+  color: var(--verridian-cosmic-white);
+  border-radius: 12px;
+  min-width: 400px;
+  font-size: 1rem;
+  transition: all var(--animation-fast) var(--transition-smooth);
+  backdrop-filter: blur(10px);
+}
+
+.url-input-cosmic:focus {
+  outline: none;
+  border-color: var(--verridian-stellar-gold);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  background: rgba(10, 0, 32, 0.9);
+}
+
+.url-input-cosmic::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DEVICE SHOWCASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.device-showcase-cosmic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 700px;
+  padding: var(--space-2xl);
+  position: relative;
+  /* Background for emulator area */
+  background: none !important;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Remove orbital decorations for a cleaner emulator area */
+.device-showcase-cosmic::before,
+.device-showcase-cosmic::after {
+  content: none !important;
+}
+
+/* Apply cosmic styling to device frames */
+.device-mockup {
+  position: relative;
+  z-index: 10;
+  filter: drop-shadow(0 20px 60px rgba(107, 70, 193, 0.4));
+  transition: all var(--animation-medium) var(--transition-smooth);
+}
+
+.device-mockup:hover {
+  transform: scale(0.82) rotateY(5deg);
+  filter: drop-shadow(0 30px 80px rgba(107, 70, 193, 0.6));
+}
+
+/* Orbital Decoration */
+.device-showcase-cosmic::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border: 2px dashed rgba(107, 70, 193, 0.2);
+  border-radius: 50%;
+  animation: none !important;
+  pointer-events: none;
+}
+
+.device-showcase-cosmic::after {
+  content: '';
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 50%;
+  animation: none !important;
+  pointer-events: none;
+}
+
+/* Enhanced Device Frame */
+.device-frame-cosmic {
+  position: relative;
+  z-index: 10;
+  filter: drop-shadow(0 20px 60px rgba(107, 70, 193, 0.4));
+  transition: all var(--animation-medium) var(--transition-smooth);
+}
+
+.device-frame-cosmic:hover {
+  transform: scale(1.02) rotateY(5deg);
+  filter: drop-shadow(0 30px 80px rgba(107, 70, 193, 0.6));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes nebula-drift {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes particle-float {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100px, -100px); }
+}
+
+@keyframes logo-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes title-glow {
+  0% { filter: brightness(1); }
+  100% { filter: brightness(1.2); }
+}
+
+@keyframes orbital-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 0 0 20px rgba(107, 70, 193, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 40px rgba(107, 70, 193, 0.6);
+  }
+}
+
+.pulse {
+  animation: pulse 0.5s ease-out;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PERFORMANCE OPTIMIZATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* GPU Acceleration for Glass Elements */
+.glass-panel,
+.glass-liquid,
+.glass-acrylic,
+.glass-material,
+.glass-dark {
+  transform: translateZ(0);
+  will-change: backdrop-filter, transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce complexity on slower devices */
+@media (max-width: 768px) {
+  .glass-panel::before,
+  .glass-panel::after {
+    display: none;
+  }
+  
+  .glass-panel {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+}
+
+/* Disable animations for performance */
+@media (prefers-reduced-data: reduce) {
+  .glass-panel,
+  .btn-cosmic,
+  .device-mockup {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN - ADVANCED BREAKPOINT SYSTEM
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Mobile First - 375px (iPhone SE/Mini) */
+@media (max-width: 480px) {
+  :root {
+    --mobile-glass-blur: 12px;
+    --mobile-glass-opacity: 0.18;
+    --space-mobile: 0.75rem;
+  }
+
+  /* Simplified glass for performance */
+  .glass-panel {
+    backdrop-filter: blur(var(--mobile-glass-blur));
+    -webkit-backdrop-filter: blur(var(--mobile-glass-blur));
+    background: rgba(255, 255, 255, var(--mobile-glass-opacity));
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .verridian-header {
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .verridian-title {
+    font-size: 2rem;
+    letter-spacing: 0.05em;
+  }
+
+  .verridian-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+  }
+
+  .control-panel {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .url-input-cosmic {
+    width: 100%;
+    min-width: unset;
+    font-size: 0.9rem;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .device-group-cosmic {
+    width: 100%;
+    padding: var(--space-sm);
+    margin-bottom: var(--space-sm);
+  }
+
+  .btn-cosmic {
+    min-width: unset;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: 0.65rem;
+    margin: 2px;
+  }
+
+  .device-showcase-cosmic {
+    min-height: 500px;
+    padding: var(--space-md);
+  }
+
+  .device-showcase-cosmic::before,
+  .device-showcase-cosmic::after {
+    display: none;
+  }
+
+  .device-frame {
+    transform: scale(0.5) !important;
+  }
+
+  /* Stack device groups vertically */
+  .control-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Tablet - 768px (iPad Mini/Standard) */
+@media (min-width: 481px) and (max-width: 1024px) {
+  :root {
+    --tablet-glass-blur: 20px;
+    --tablet-glass-opacity: 0.15;
+  }
+
+  .glass-panel {
+    backdrop-filter: blur(var(--tablet-glass-blur));
+    -webkit-backdrop-filter: blur(var(--tablet-glass-blur));
+  }
+
+  .verridian-title {
+    font-size: 3rem;
+  }
+
+  .verridian-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .control-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .url-input-cosmic {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: unset;
+  }
+
+  .device-group-cosmic {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: var(--space-md);
+  }
+
+  .btn-cosmic {
+    flex: 0 1 calc(25% - var(--space-xs) * 2);
+    min-width: 100px;
+  }
+
+  .device-showcase-cosmic {
+    min-height: 600px;
+  }
+
+  .device-frame {
+    transform: scale(0.65) !important;
+  }
+
+  /* 2-column grid for device groups on larger tablets */
+  @media (min-width: 768px) {
+    .control-panel {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .url-input-cosmic {
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+/* Desktop - 1024px+ */
+@media (min-width: 1025px) {
+  :root {
+    --desktop-glass-blur: 25px;
+    --desktop-glass-opacity: 0.12;
+  }
+
+  .container {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+
+  .control-panel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    padding: var(--space-xl);
+    margin: var(--space-2xl) auto;
+    max-width: 1400px;
+  }
+
+  .url-input-cosmic {
+    grid-column: 1 / -1;
+    max-width: 600px;
+    margin: 0 auto var(--space-lg);
+  }
+
+  .device-group-cosmic {
+    min-width: 180px;
+    padding: var(--space-lg);
+  }
+
+  .btn-cosmic {
+    display: block;
+    width: calc(100% - var(--space-xs) * 2);
+    margin: var(--space-xs);
+  }
+
+  .device-showcase-cosmic {
+    min-height: 700px;
+  }
+
+  .device-frame {
+    transform: scale(0.8) !important;
+  }
+}
+
+/* Ultra-wide Desktop - 1440px+ (2K/4K monitors) */
+@media (min-width: 1440px) {
+  .control-panel {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: var(--space-xl);
+    padding: var(--space-2xl);
+  }
+
+  .url-input-cosmic {
+    flex: 0 1 600px;
+  }
+
+  .device-group-cosmic {
+    flex: 0 1 auto;
+    min-width: 200px;
+  }
+
+  .device-showcase-cosmic {
+    min-height: 800px;
+  }
+
+  .device-frame {
+    transform: scale(0.9) !important;
+  }
+
+  /* Enhanced glass effects for high-res displays */
+  .glass-panel {
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+}
+
+/* Landscape Mobile Optimization */
+@media (orientation: landscape) and (max-height: 600px) {
+  .verridian-header {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .verridian-title {
+    font-size: 2rem;
+  }
+
+  .control-panel {
+    display: flex;
+    overflow-x: auto;
+    padding: var(--space-sm);
+  }
+
+  .device-group-cosmic {
+    flex: 0 0 auto;
+    min-width: 150px;
+  }
+
+  .device-showcase-cosmic {
+    min-height: 400px;
+  }
+
+  .device-frame {
+    transform: scale(0.45) !important;
+  }
+}
+
+/* High DPI/Retina Display Enhancements */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .glass-panel {
+    backdrop-filter: blur(calc(var(--glass-blur) * 1.5)) saturate(200%);
+    -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.5)) saturate(200%);
+    background-image: 
+      radial-gradient(
+        circle at 25% 25%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 60%
+      );
+  }
+
+  .glass-panel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  body::before,
+  body::after,
+  .device-showcase-cosmic::before,
+  .device-showcase-cosmic::after {
+    display: none;
+  }
+
+  .glass-panel {
+    background: white;
+    border: 1px solid #ddd;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .btn-cosmic {
+    border: 1px solid #333;
+    background: white;
+    color: black;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .glass-panel {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+/* Dark Mode Adaptations */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --glass-opacity: 0.08;
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-panel {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-dark {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
