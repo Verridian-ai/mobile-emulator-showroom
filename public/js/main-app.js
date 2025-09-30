@@ -158,9 +158,9 @@ deviceButtons.forEach(btn => {
 });
 
 /**
- * Helper function to update device frame (SECURITY ENHANCED)
+ * Helper function to update device frame (SECURITY ENHANCED + VIEWPORT SCALING)
  * Article V: Security - Safe DOM manipulation
- * Article II: Performance - Efficient DOM updates
+ * Article II: Performance - Efficient DOM updates + viewport scaling
  * @param {string} deviceClass - The device class to apply
  */
 function updateDeviceFrame(deviceClass) {
@@ -177,7 +177,13 @@ function updateDeviceFrame(deviceClass) {
         };
 
         // Cache current iframe source
-        const currentSrc = deviceIframe ? deviceIframe.src : 'https://verridian.ai';
+        const currentSrc = deviceIframe ? deviceIframe.src : 'https://google.com';
+
+        // Get device specifications for viewport scaling
+        const deviceSpec = window.DeviceSpecifications?.getDeviceSpec(deviceClass);
+        if (deviceSpec) {
+            console.log(`[MainApp] Switching to ${deviceClass}: ${deviceSpec.viewport.width}x${deviceSpec.viewport.height}px`);
+        }
 
         // Clear existing content safely
         while (deviceFrame.firstChild) {
@@ -214,12 +220,24 @@ function updateDeviceFrame(deviceClass) {
         const screen = document.createElement('div');
         screen.className = 'screen';
 
-        // Create new iframe
+        // Create new iframe with viewport scaling
         const newIframe = document.createElement('iframe');
         newIframe.id = 'deviceIframe';
         newIframe.src = currentSrc;
         newIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
         newIframe.setAttribute('loading', 'lazy');
+
+        // Apply viewport dimensions based on device specifications
+        if (deviceSpec) {
+            newIframe.style.width = `${deviceSpec.viewport.width}px`;
+            newIframe.style.height = `${deviceSpec.viewport.height}px`;
+
+            // Initialize viewport scaling if available
+            if (window.ViewportScaler) {
+                window.ViewportScaler.scaleIframeContent(deviceClass, newIframe);
+                window.ViewportScaler.initViewportScaling(deviceClass, newIframe);
+            }
+        }
 
         screen.appendChild(newIframe);
         deviceFrame.appendChild(screen);

@@ -2,13 +2,18 @@
  * Device Emulator - Main Application Logic
  * Article V (Security): Externalized from inline script, XSS-safe DOM manipulation
  * Article III (Code Quality): Modular, testable, well-documented
+ * Article II (Performance): Viewport scaling for optimal content display
  *
  * This module handles:
  * - Device switching with animations
  * - URL input and iframe updates
  * - Security-enhanced DOM manipulation (no innerHTML with user input)
+ * - Viewport scaling and content fitting
  * - Agent command handling
  */
+
+import { getDeviceSpec } from './device-specifications.js';
+import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
 
 (function initDeviceEmulator() {
   'use strict';
@@ -76,12 +81,19 @@
   /**
    * Update device frame with new device class
    * Security: Uses programmatic DOM manipulation (no innerHTML)
+   * Performance: Applies viewport scaling for proper content display
    * @param {string} deviceClass - Device class identifier (e.g., 'iphone-14-pro')
    */
   function updateDeviceFrame(deviceClass) {
     // Cache current iframe source
     const currentIframe = document.getElementById('deviceIframe');
     const currentSrc = currentIframe ? currentIframe.src : 'https://google.com';
+
+    // Get device specifications
+    const deviceSpec = getDeviceSpec(deviceClass);
+    if (deviceSpec) {
+      console.log(`[DeviceEmulator] Switching to ${deviceClass}: ${deviceSpec.viewport.width}x${deviceSpec.viewport.height}px`);
+    }
 
     // Clear existing content safely
     while (deviceFrame.firstChild) {
@@ -125,11 +137,25 @@
     newIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms');
     newIframe.setAttribute('loading', 'lazy');
 
+    // Apply viewport scaling
+    if (deviceSpec) {
+      scaleIframeContent(deviceClass, newIframe);
+
+      // Set iframe dimensions to match device viewport
+      newIframe.style.width = `${deviceSpec.viewport.width}px`;
+      newIframe.style.height = `${deviceSpec.viewport.height}px`;
+    }
+
     screen.appendChild(newIframe);
     deviceFrame.appendChild(screen);
 
     // Update global reference
     window.deviceIframe = newIframe;
+
+    // Initialize viewport scaling
+    if (deviceSpec) {
+      initViewportScaling(deviceClass, newIframe);
+    }
   }
 
   /**
