@@ -21,7 +21,11 @@
     "test:e2e:chromium": "playwright test --project=chromium",
     "test:e2e:firefox": "playwright test --project=firefox",
     "test:e2e:webkit": "playwright test --project=webkit",
-    "playwright:install": "playwright install"
+    "playwright:install": "playwright install",
+    "perf:lighthouse": "node tests/performance/lighthouse-audit.js",
+    "perf:bundle": "node tests/performance/bundle-analysis.js",
+    "perf:report": "node tests/performance/generate-report.js",
+    "perf:all": "npm run build && npm run perf:bundle && npm run perf:lighthouse && npm run perf:report"
   },
   "dependencies": {
     "dompurify": "^3.2.7",
@@ -44,7 +48,9 @@
     "@vitejs/plugin-legacy": "^7.2.1",
     "@vitest/coverage-v8": "^3.2.4",
     "@vitest/ui": "^3.2.4",
+    "chrome-launcher": "^1.2.1",
     "jsdom": "^27.0.0",
+    "lighthouse": "^12.8.2",
     "rollup-plugin-visualizer": "^6.0.3",
     "supertest": "^7.1.4",
     "terser": "^5.44.0",
