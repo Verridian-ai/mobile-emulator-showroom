@@ -42,8 +42,9 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       assetsDir: 'assets',
-      sourcemap: isDevelopment ? 'inline' : false,
+      sourcemap: isDevelopment ? 'inline' : true, // Enable production source maps for debugging
       minify: isDevelopment ? false : 'terser',
+      target: 'es2015', // Support modern browsers while maintaining compatibility
 
       // Terser minification options
       terserOptions: {
@@ -144,8 +145,9 @@ export default defineConfig(({ mode }) => {
         },
       },
 
-      // Performance budgets
-      chunkSizeWarningLimit: 200, // 200 KB warning threshold
+      // Performance budgets (Article II: Constitution)
+      chunkSizeWarningLimit: 500, // 500 KB warning threshold per constitutional requirement
+      reportCompressedSize: true, // Report compressed sizes for accuracy
 
       // Ensure assets are optimized
       assetsInlineLimit: 4096, // 4kb - inline small assets as base64
@@ -176,6 +178,28 @@ export default defineConfig(({ mode }) => {
 
     // Plugins
     plugins: [
+      // Legacy browser support (transpile to ES5 if needed)
+      !isDevelopment && legacy({
+        targets: ['defaults', 'not IE 11'],
+        renderLegacyChunks: false, // Modern build only, no legacy chunks
+      }),
+
+      // Gzip compression for production
+      !isDevelopment && compression({
+        algorithm: 'gzip',
+        ext: '.gz',
+        threshold: 1024, // Only compress files > 1KB
+        deleteOriginFile: false,
+      }),
+
+      // Brotli compression for production (better compression ratio)
+      !isDevelopment && compression({
+        algorithm: 'brotliCompress',
+        ext: '.br',
+        threshold: 1024,
+        deleteOriginFile: false,
+      }),
+
       // Bundle analyzer
       (isAnalyze || process.env.ANALYZE) && visualizer({
         open: true,
