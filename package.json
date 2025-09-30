@@ -34,7 +34,7 @@
     "validator": "^13.15.15"
   },
   "description": "",
-  "keywords": [],
+  "keywords": "",
   "author": "",
   "license": "ISC",
   "devDependencies": {
