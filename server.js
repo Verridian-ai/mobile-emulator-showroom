@@ -1,41 +1,22 @@
-// Load environment variables from .env file (Article V: Security)
-require('dotenv').config();
+// Load and validate configuration (Article V: Security, Article III: Centralized Config)
+const config = require('./server/config');
 
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-// Validate required environment variables (Article V: Security)
-const requiredEnvVars = [];
-const optionalEnvVars = ['PORT', 'NODE_ENV', 'SESSION_SECRET', 'CORS_ALLOWED_ORIGINS'];
-
-// Check if we're in production and require SESSION_SECRET
-if (process.env.NODE_ENV === 'production') {
-  requiredEnvVars.push('SESSION_SECRET');
-}
-
-const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
-if (missingVars.length > 0) {
-  console.error('❌ SECURITY ERROR: Required environment variables missing:');
-  missingVars.forEach(varName => {
-    console.error(`   - ${varName}`);
-  });
-  console.error('\n📝 Please set these in your .env file (see .env.example)');
-  process.exit(1);
-}
-
 const app = express();
-const port = Number(process.env.PORT || process.env.SHOWROOM_PORT || 4175);
-const nodeEnv = process.env.NODE_ENV || 'development';
 
 // Enhanced error handling and logging
-console.log('🚀 Starting Verridian Showroom Server...');
-console.log('📁 Public directory:', path.join(__dirname, 'public'));
-console.log('🌐 Server port:', port);
-console.log('🔧 Environment:', nodeEnv);
+console.log('🚀 Starting Mobile Emulator Platform...');
+console.log('📁 Public directory:', path.join(__dirname, config.publicDir));
+console.log('🌐 Server port:', config.port);
+console.log('🔧 Environment:', config.env);
+console.log('🐛 Debug mode:', config.enableDebugMode);
+console.log('📊 Analytics:', config.enableAnalytics);
 
 // Check if public directory exists
-const publicDir = path.join(__dirname, 'public');
+const publicDir = path.join(__dirname, config.publicDir);
 if (fs.existsSync(publicDir)) {
   console.log('✅ Public directory found');
   const files = fs.readdirSync(publicDir);
@@ -44,10 +25,23 @@ if (fs.existsSync(publicDir)) {
   console.error('❌ Public directory not found!');
 }
 
-// Health check endpoint
+// Health check endpoint (Article II: Performance Monitoring)
+// Used by Docker HEALTHCHECK and monitoring systems
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: 'healthy',
+    uptime: process.uptime(),
+    timestamp: Date.now(),
+    environment: config.env,
+    publicDir: fs.existsSync(publicDir),
+    files: fs.existsSync(publicDir) ? fs.readdirSync(publicDir).length : 0
+  });
+});
+
+// Legacy health check endpoint (keep for backwards compatibility)
 app.get('/healthz', (req, res) => {
-  res.json({ 
-    ok: true, 
+  res.status(200).json({
+    ok: true,
     timestamp: new Date().toISOString(),
     publicDir: fs.existsSync(publicDir),
     files: fs.existsSync(publicDir) ? fs.readdirSync(publicDir).length : 0
@@ -60,24 +54,21 @@ app.use(express.static(publicDir, {
   lastModified: true,
   setHeaders: (res, path) => {
     // Add CORS headers for all static files (Article V: Configurable CORS)
-    const corsOrigin = process.env.CORS_ALLOWED_ORIGINS || '*';
+    const corsOrigin = config.corsOrigins.length === 1 && config.corsOrigins[0] === '*'
+      ? '*'
+      : config.corsOrigins.join(',');
     res.set('Access-Control-Allow-Origin', corsOrigin);
     res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-    // Security warning for wildcard CORS in production
-    if (nodeEnv === 'production' && corsOrigin === '*') {
-      console.warn('⚠️  WARNING: CORS set to wildcard (*) in production. Set CORS_ALLOWED_ORIGINS in .env');
-    }
-
-    // Cache control for different file types
+    // Cache control for different file types (Article II: Performance)
     if (path.endsWith('.js') || path.endsWith('.css')) {
       res.set('Cache-Control', 'public, max-age=3600'); // 1 hour
     } else if (path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.svg')) {
       res.set('Cache-Control', 'public, max-age=86400'); // 24 hours
     }
 
-    if (process.env.LOG_LEVEL === 'debug') {
+    if (config.logLevel === 'debug') {
       console.log(`📤 Serving: ${path}`);
     }
   }
@@ -96,9 +87,10 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(port, '0.0.0.0', () => {
-  console.log(`✅ Showroom listening on http://0.0.0.0:${port}`);
-  console.log(`🌍 Access at: http://localhost:${port}`);
+app.listen(config.port, config.host, () => {
+  console.log(`✅ Mobile Emulator Platform listening on http://${config.host}:${config.port}`);
+  console.log(`🌍 Access at: http://localhost:${config.port}`);
+  console.log(`🏥 Health check: http://localhost:${config.port}/health`);
   console.log('🎬 Ready for device emulation testing!');
 });
 

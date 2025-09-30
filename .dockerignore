@@ -1,0 +1,59 @@
+# Node modules
+node_modules
+npm-debug.log
+yarn-error.log
+# Keep package-lock.json for Docker builds (npm ci needs it)
+
+# Git files
+.git
+.gitignore
+.gitattributes
+
+# Environment files (never include in Docker image - Article V: Security)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.staging
+.env.production
+
+# Build artifacts
+dist
+.cache
+coverage
+
+# Test files
+tests
+test
+*.test.js
+*.spec.js
+__tests__
+.playwright-mcp
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+README.md
+CHANGELOG.md
+DEPLOYMENT.md
+*.md
+!server/*.md
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+
+# Logs
+*.log
+logs
+
+# Archive files
+.archive
+archives
