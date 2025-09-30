@@ -23,18 +23,64 @@ const deviceButtons = document.querySelectorAll('[data-device]');
 const urlInput = document.getElementById('urlInput');
 const urlSubmit = document.getElementById('urlSubmit');
 
+// Initialize Browser Navigation System
+let browserNav = null;
+
+/**
+ * Initialize browser navigation after DOM is ready
+ * Article I: Architecture - Clean module initialization
+ */
+function initializeBrowserNavigation() {
+    if (typeof BrowserNavigation === 'undefined') {
+        console.warn('BrowserNavigation module not loaded yet');
+        return;
+    }
+
+    browserNav = new BrowserNavigation();
+
+    // Get DOM elements for navigation
+    const navElements = {
+        iframe: document.getElementById('deviceIframe'),
+        addressBar: document.getElementById('urlInput'),
+        backBtn: document.getElementById('backBtn'),
+        forwardBtn: document.getElementById('forwardBtn'),
+        refreshBtn: document.getElementById('refreshBtn'),
+        homeBtn: document.getElementById('homeBtn'),
+        stopBtn: document.getElementById('stopBtn'),
+        loadingIndicator: document.getElementById('loadingIndicator')
+    };
+
+    // Initialize navigation system
+    browserNav.init(navElements);
+
+    console.log('Browser navigation initialized');
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeBrowserNavigation);
+} else {
+    initializeBrowserNavigation();
+}
+
 /**
  * Updates iframe URL with proper protocol handling
  * Article V: Security - URL validation
+ * Note: This function is now handled by browserNav.navigate()
  */
 const updateIframeUrl = () => {
-    let url = urlInput.value.trim();
-    const currentIframe = document.getElementById('deviceIframe');
-    if (url && currentIframe) {
-        if (!url.startsWith('http://') && !url.startsWith('https://')) {
-            url = 'https://' + url;
+    if (browserNav) {
+        browserNav.navigate(urlInput.value);
+    } else {
+        // Fallback if browser navigation not initialized
+        let url = urlInput.value.trim();
+        const currentIframe = document.getElementById('deviceIframe');
+        if (url && currentIframe) {
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+            currentIframe.src = url;
         }
-        currentIframe.src = url;
     }
 };
 
@@ -45,6 +91,9 @@ urlInput.addEventListener('keypress', (e) => {
         updateIframeUrl();
     }
 });
+
+// Make browserNav globally accessible for error overlay buttons
+window.browserNav = browserNav;
 
 // Handle device switching with enhanced animations
 deviceButtons.forEach(btn => {
@@ -177,6 +226,14 @@ function updateDeviceFrame(deviceClass) {
 
         // Update global reference
         window.deviceIframe = newIframe;
+
+        // Re-initialize browser navigation with new iframe
+        if (browserNav) {
+            browserNav.iframe = newIframe;
+            // Re-attach iframe event listeners
+            newIframe.addEventListener('load', () => browserNav.handleIframeLoad());
+            newIframe.addEventListener('error', () => browserNav.handleIframeError());
+        }
 }
 
 /**
