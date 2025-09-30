@@ -1,7 +1,7 @@
 /**
- * Global Configuration for Mobile Emulator Platform
- * Article V (Security): Externalized from inline script
- * Article III (Code Quality): Clean, documented configuration
+ * Global Application Configuration
+ * Article V: Security - Centralized configuration management
+ * Article III: Code Quality - Clean separation of concerns
  */
 
 // Set global WebSocket token for all components
