@@ -93,7 +93,7 @@ export default [
       quotes: ['error', 'single', { avoidEscape: true }],
 
       // Indentation and spacing
-      indent: ['error', 2],
+      indent: ['error', 2, { SwitchCase: 0 }], // No extra indentation for switch cases (Prettier style)
       'comma-dangle': ['error', 'always-multiline'],
       'no-trailing-spaces': 'error',
       'eol-last': ['error', 'always'],
