@@ -20,36 +20,36 @@ describe('Device Emulation Module', () => {
       width: 393,
       height: 852,
       pixelRatio: 3,
-      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)'
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_0 like Mac OS X)',
     },
     'iphone-se': {
       name: 'iPhone SE',
       width: 375,
       height: 667,
       pixelRatio: 2,
-      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)'
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)',
     },
     'ipad-pro': {
       name: 'iPad Pro',
       width: 1024,
       height: 1366,
       pixelRatio: 2,
-      userAgent: 'Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X)'
+      userAgent: 'Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X)',
     },
     'samsung-galaxy-s21': {
       name: 'Samsung Galaxy S21',
       width: 360,
       height: 800,
       pixelRatio: 3,
-      userAgent: 'Mozilla/5.0 (Linux; Android 11; Samsung Galaxy S21)'
+      userAgent: 'Mozilla/5.0 (Linux; Android 11; Samsung Galaxy S21)',
     },
     'desktop-chrome': {
       name: 'Desktop Chrome',
       width: 1920,
       height: 1080,
       pixelRatio: 1,
-      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0'
-    }
+      userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0',
+    },
   };
 
   beforeEach(() => {
@@ -61,7 +61,7 @@ describe('Device Emulation Module', () => {
       insertBefore: vi.fn(),
       appendChild: vi.fn(),
       removeChild: vi.fn(),
-      firstChild: null
+      firstChild: null,
     };
 
     mockIframe = {
@@ -69,28 +69,32 @@ describe('Device Emulation Module', () => {
       style: {},
       contentWindow: {
         innerWidth: 0,
-        innerHeight: 0
-      }
+        innerHeight: 0,
+      },
     };
 
     mockDocument = {
-      getElementById: vi.fn((id) => {
-        if (id === 'deviceFrame') return mockDeviceFrame;
-        if (id === 'deviceIframe') return mockIframe;
+      getElementById: vi.fn(id => {
+        if (id === 'deviceFrame') {
+          return mockDeviceFrame;
+        }
+        if (id === 'deviceIframe') {
+          return mockIframe;
+        }
         return null;
       }),
       querySelectorAll: vi.fn(() => []),
-      createElement: vi.fn((tag) => {
+      createElement: vi.fn(tag => {
         const element = {
           tagName: tag.toUpperCase(),
           className: '',
           textContent: '',
           style: {},
           appendChild: vi.fn(),
-          remove: vi.fn()
+          remove: vi.fn(),
         };
         return element;
-      })
+      }),
     };
 
     global.document = mockDocument;
@@ -103,7 +107,7 @@ describe('Device Emulation Module', () => {
           skin: 'black',
           orientation: 'portrait',
           scale: 'scale-75',
-          motion: 'animate-hover'
+          motion: 'animate-hover',
         };
 
         this.devices = DEVICE_CONFIGS;
@@ -124,7 +128,7 @@ describe('Device Emulation Module', () => {
 
         return {
           device: deviceId,
-          config: this.devices[deviceId]
+          config: this.devices[deviceId],
         };
       }
 
@@ -154,7 +158,7 @@ describe('Device Emulation Module', () => {
           width,
           height,
           pixelRatio: device.pixelRatio,
-          scaleFactor
+          scaleFactor,
         };
       }
 
@@ -166,7 +170,7 @@ describe('Device Emulation Module', () => {
           'scale-50': 0.5,
           'scale-75': 0.75,
           'scale-100': 1.0,
-          'scale-125': 1.25
+          'scale-125': 1.25,
         };
 
         return scaleMap[this.state.scale] || 1.0;
@@ -176,7 +180,9 @@ describe('Device Emulation Module', () => {
        * Apply current state to device frame
        */
       applyState() {
-        if (!this.deviceFrame) return;
+        if (!this.deviceFrame) {
+          return;
+        }
 
         const classes = [
           'device-mockup',
@@ -184,8 +190,10 @@ describe('Device Emulation Module', () => {
           this.state.skin,
           this.state.orientation,
           this.state.scale,
-          this.state.motion
-        ].filter(Boolean).join(' ');
+          this.state.motion,
+        ]
+          .filter(Boolean)
+          .join(' ');
 
         this.deviceFrame.className = classes;
 
@@ -204,7 +212,9 @@ describe('Device Emulation Module', () => {
        * Apply viewport dimensions to iframe
        */
       applyViewportToIframe() {
-        if (!this.deviceIframe) return;
+        if (!this.deviceIframe) {
+          return;
+        }
 
         const viewport = this.calculateViewport();
         this.deviceIframe.style.width = `${viewport.width}px`;
@@ -217,7 +227,9 @@ describe('Device Emulation Module', () => {
        * Add browser header for desktop devices
        */
       addBrowserHeader() {
-        if (!this.deviceFrame) return;
+        if (!this.deviceFrame) {
+          return;
+        }
 
         // Check if header already exists
         if (this.deviceFrame.querySelector('.browser-header')) {
@@ -250,7 +262,9 @@ describe('Device Emulation Module', () => {
        * Remove browser header
        */
       removeBrowserHeader() {
-        if (!this.deviceFrame) return;
+        if (!this.deviceFrame) {
+          return;
+        }
 
         const header = this.deviceFrame.querySelector('.browser-header');
         if (header) {
@@ -325,7 +339,7 @@ describe('Device Emulation Module', () => {
           id: this.state.device,
           config: this.devices[this.state.device],
           viewport: this.calculateViewport(),
-          state: { ...this.state }
+          state: { ...this.state },
         };
       }
 
@@ -337,7 +351,7 @@ describe('Device Emulation Module', () => {
           id,
           name: this.devices[id].name,
           width: this.devices[id].width,
-          height: this.devices[id].height
+          height: this.devices[id].height,
         }));
       }
 
@@ -382,7 +396,7 @@ describe('Device Emulation Module', () => {
           skin: 'black',
           orientation: 'portrait',
           scale: 'scale-75',
-          motion: 'animate-hover'
+          motion: 'animate-hover',
         };
         this.applyState();
       }

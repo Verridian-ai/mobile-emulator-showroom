@@ -7,8 +7,9 @@
  * Constitutional Compliance: Article V (Security) - Input Validation
  */
 
-const { URLValidator } = require('../validators/url-validator');
 const rateLimit = require('express-rate-limit');
+
+const { URLValidator } = require('../validators/url-validator');
 
 // Track failed validation attempts for security monitoring
 const failedAttempts = new Map();
@@ -46,7 +47,7 @@ const urlValidationRateLimiter = rateLimit({
     retryAfter: '1 minute',
   },
   // Skip successful requests from rate limit
-  skip: (req) => {
+  skip: req => {
     return req.urlValidationSuccess === true;
   },
   handler: (req, res) => {
@@ -158,8 +159,8 @@ function hasExceededFailedAttempts(ip) {
 function validateUrl(options = {}) {
   const {
     urlField = 'url', // Field name in request body/query
-    required = true,  // Whether URL is required
-    source = 'body',  // 'body', 'query', or 'both'
+    required = true, // Whether URL is required
+    source = 'body', // 'body', 'query', or 'both'
   } = options;
 
   return (req, res, next) => {
@@ -301,9 +302,7 @@ function getFailedAttemptsStats() {
   }
 
   // Sort by most recent
-  stats.recentAttempts.sort((a, b) =>
-    new Date(b.lastAttempt) - new Date(a.lastAttempt)
-  );
+  stats.recentAttempts.sort((a, b) => new Date(b.lastAttempt) - new Date(a.lastAttempt));
 
   // Keep only top 50
   stats.recentAttempts = stats.recentAttempts.slice(0, 50);

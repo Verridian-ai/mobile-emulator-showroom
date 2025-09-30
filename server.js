@@ -1,25 +1,25 @@
 // Load environment variables first
 require('dotenv').config();
 
-const express = require('express');
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+
+const express = require('express');
+
 const {
   helmetConfig,
   rateLimiter,
   sanitizeRequest,
   httpsRedirect,
   handleCspViolation,
-  getCspViolationStats
+  getCspViolationStats,
 } = require('./server/middleware/security');
-
 const {
   validateUrl,
   urlValidationRateLimiter,
   iframeSecurityHeaders,
-  getFailedAttemptsStats
+  getFailedAttemptsStats,
 } = require('./server/middleware/url-validation');
-
 const { URLValidator } = require('./server/validators/url-validator');
 
 const app = express();
@@ -68,7 +68,7 @@ app.get('/healthz', (req, res) => {
     ok: true,
     timestamp: new Date().toISOString(),
     publicDir: fs.existsSync(publicDir),
-    files: fs.existsSync(publicDir) ? fs.readdirSync(publicDir).length : 0
+    files: fs.existsSync(publicDir) ? fs.readdirSync(publicDir).length : 0,
   });
 });
 
@@ -83,7 +83,8 @@ app.get('/healthz', (req, res) => {
  * Request body: { url: string }
  * Response: { valid: boolean, sanitized: string, errors: array }
  */
-app.post('/api/validate-url',
+app.post(
+  '/api/validate-url',
   urlValidationRateLimiter,
   validateUrl({ urlField: 'url', required: true, source: 'body' }),
   (req, res) => {
@@ -92,7 +93,7 @@ app.post('/api/validate-url',
       valid: true,
       url: req.validatedUrl,
       original: req.urlValidation.original,
-      warnings: req.urlValidation.warnings
+      warnings: req.urlValidation.warnings,
     });
   }
 );
@@ -104,7 +105,8 @@ app.post('/api/validate-url',
  * Request body: { url: string }
  * Response: { success: boolean, url: string }
  */
-app.post('/api/load-url',
+app.post(
+  '/api/load-url',
   urlValidationRateLimiter,
   validateUrl({ urlField: 'url', required: true, source: 'body' }),
   iframeSecurityHeaders,
@@ -113,7 +115,7 @@ app.post('/api/load-url',
     res.json({
       success: true,
       url: req.validatedUrl,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   }
 );
@@ -125,7 +127,8 @@ app.post('/api/load-url',
  *
  * Note: Body must be parsed as JSON with type 'application/csp-report'
  */
-app.post('/api/csp-report',
+app.post(
+  '/api/csp-report',
   express.json({ type: ['application/json', 'application/csp-report'] }),
   handleCspViolation
 );
@@ -143,7 +146,7 @@ app.get('/api/security-stats', (req, res) => {
   res.json({
     urlValidation: urlStats,
     csp: cspStats,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   });
 });
 
@@ -152,22 +155,28 @@ app.get('/api/security-stats', (req, res) => {
 // ============================================================================
 
 // Enhanced static file serving with security and caching
-app.use(express.static(publicDir, {
-  etag: true,
-  lastModified: true,
-  setHeaders: (res, filePath) => {
-    // Cache control for different file types
-    if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
-      res.set('Cache-Control', 'public, max-age=3600'); // 1 hour
-    } else if (filePath.endsWith('.png') || filePath.endsWith('.jpg') || filePath.endsWith('.svg')) {
-      res.set('Cache-Control', 'public, max-age=86400'); // 24 hours
-    } else if (filePath.endsWith('.woff') || filePath.endsWith('.woff2')) {
-      res.set('Cache-Control', 'public, max-age=604800'); // 7 days
-    }
+app.use(
+  express.static(publicDir, {
+    etag: true,
+    lastModified: true,
+    setHeaders: (res, filePath) => {
+      // Cache control for different file types
+      if (filePath.endsWith('.js') || filePath.endsWith('.css')) {
+        res.set('Cache-Control', 'public, max-age=3600'); // 1 hour
+      } else if (
+        filePath.endsWith('.png') ||
+        filePath.endsWith('.jpg') ||
+        filePath.endsWith('.svg')
+      ) {
+        res.set('Cache-Control', 'public, max-age=86400'); // 24 hours
+      } else if (filePath.endsWith('.woff') || filePath.endsWith('.woff2')) {
+        res.set('Cache-Control', 'public, max-age=604800'); // 7 days
+      }
 
-    console.log(`📤 Serving: ${filePath}`);
-  }
-}));
+      console.log(`📤 Serving: ${filePath}`);
+    },
+  })
+);
 
 // Handle 404s for missing files
 app.use((req, res, next) => {
@@ -190,9 +199,10 @@ app.use((err, req, res, next) => {
 
   // Send generic error to client (don't leak sensitive info)
   res.status(err.status || 500).json({
-    error: process.env.NODE_ENV === 'production'
-      ? 'Internal server error'
-      : err.message || 'Internal server error'
+    error:
+      process.env.NODE_ENV === 'production'
+        ? 'Internal server error'
+        : err.message || 'Internal server error',
   });
 });
 
@@ -202,4 +212,3 @@ app.listen(port, '0.0.0.0', () => {
   console.log(`🌍 Access at: http://localhost:${port}`);
   console.log('🎬 Ready for device emulation testing!');
 });
-

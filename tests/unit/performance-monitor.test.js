@@ -21,7 +21,7 @@ describe('PerformanceMonitor Class', () => {
     intervalId = 0;
 
     // Mock requestAnimationFrame
-    global.requestAnimationFrame = vi.fn((callback) => {
+    global.requestAnimationFrame = vi.fn(callback => {
       const id = rafCallbacks.length;
       rafCallbacks.push(callback);
       return id;
@@ -35,9 +35,11 @@ describe('PerformanceMonitor Class', () => {
     });
 
     // Mock clearInterval
-    global.clearInterval = vi.fn((id) => {
+    global.clearInterval = vi.fn(id => {
       const index = mockIntervals.findIndex(i => i.id === id);
-      if (index > -1) mockIntervals.splice(index, 1);
+      if (index > -1) {
+        mockIntervals.splice(index, 1);
+      }
     });
 
     // Mock performance API
@@ -46,13 +48,13 @@ describe('PerformanceMonitor Class', () => {
       memory: {
         usedJSHeapSize: 50 * 1048576, // 50MB
         jsHeapSizeLimit: 2048 * 1048576,
-        totalJSHeapSize: 100 * 1048576
-      }
+        totalJSHeapSize: 100 * 1048576,
+      },
     };
     global.performance = mockPerformance;
 
     // Mock PerformanceObserver
-    global.PerformanceObserver = vi.fn(function(callback) {
+    global.PerformanceObserver = vi.fn(function (callback) {
       this.observe = vi.fn();
       this.disconnect = vi.fn();
       this.callback = callback;
@@ -60,17 +62,17 @@ describe('PerformanceMonitor Class', () => {
 
     // Mock document
     mockDocument = {
-      createElement: vi.fn((tag) => ({
+      createElement: vi.fn(tag => ({
         id: '',
         style: { cssText: '' },
         innerHTML: '',
-        remove: vi.fn()
+        remove: vi.fn(),
       })),
       body: {
-        appendChild: vi.fn()
+        appendChild: vi.fn(),
       },
       hidden: false,
-      addEventListener: vi.fn()
+      addEventListener: vi.fn(),
     };
     global.document = mockDocument;
 
@@ -78,13 +80,13 @@ describe('PerformanceMonitor Class', () => {
     global.console = {
       log: vi.fn(),
       warn: vi.fn(),
-      error: vi.fn()
+      error: vi.fn(),
     };
 
     // Mock window
     global.window = {
       location: { hostname: 'localhost' },
-      DEBUG_MODE: false
+      DEBUG_MODE: false,
     };
 
     // Create PerformanceMonitor class
@@ -98,7 +100,7 @@ describe('PerformanceMonitor Class', () => {
           warnThreshold: options.warnThreshold || 45,
           criticalThreshold: options.criticalThreshold || 30,
           autoOptimize: options.autoOptimize !== false,
-          logInterval: options.logInterval || 5000
+          logInterval: options.logInterval || 5000,
         };
 
         this.metrics = {
@@ -108,7 +110,7 @@ describe('PerformanceMonitor Class', () => {
           paintTime: [],
           scriptTime: [],
           layoutTime: [],
-          timestamp: []
+          timestamp: [],
         };
 
         this.state = {
@@ -116,7 +118,7 @@ describe('PerformanceMonitor Class', () => {
           lastTime: performance.now(),
           frameCount: 0,
           optimizationLevel: 0,
-          hasPerformanceObserver: 'PerformanceObserver' in window
+          hasPerformanceObserver: 'PerformanceObserver' in window,
         };
 
         this.observers = [];
@@ -151,7 +153,7 @@ describe('PerformanceMonitor Class', () => {
 
       setupPerformanceObservers() {
         try {
-          const paintObserver = new PerformanceObserver((list) => {
+          const paintObserver = new PerformanceObserver(list => {
             for (const entry of list.getEntries()) {
               if (entry.name === 'first-contentful-paint') {
                 this.recordMetric('paintTime', entry.startTime);
@@ -161,7 +163,7 @@ describe('PerformanceMonitor Class', () => {
           paintObserver.observe({ entryTypes: ['paint'] });
           this.observers.push(paintObserver);
 
-          const layoutObserver = new PerformanceObserver((list) => {
+          const layoutObserver = new PerformanceObserver(list => {
             for (const entry of list.getEntries()) {
               if (entry.value > 0.1) {
                 this.triggerCallback('layoutShift', entry);
@@ -171,7 +173,7 @@ describe('PerformanceMonitor Class', () => {
           layoutObserver.observe({ entryTypes: ['layout-shift'] });
           this.observers.push(layoutObserver);
 
-          const taskObserver = new PerformanceObserver((list) => {
+          const taskObserver = new PerformanceObserver(list => {
             for (const entry of list.getEntries()) {
               if (entry.duration > 50) {
                 this.recordMetric('scriptTime', entry.duration);
@@ -186,7 +188,7 @@ describe('PerformanceMonitor Class', () => {
       }
 
       startFPSMonitoring() {
-        const measureFPS = (currentTime) => {
+        const measureFPS = currentTime => {
           if (!this.state.isMonitoring) {
             this.state.isMonitoring = true;
           }
@@ -256,7 +258,9 @@ describe('PerformanceMonitor Class', () => {
 
       getAverageMetric(type) {
         const values = this.metrics[type];
-        if (!values || values.length === 0) return 0;
+        if (!values || values.length === 0) {
+          return 0;
+        }
         const sum = values.reduce((a, b) => a + b, 0);
         return sum / values.length;
       }
@@ -271,7 +275,7 @@ describe('PerformanceMonitor Class', () => {
           avg: this.getAverageMetric(type),
           min: Math.min(...values),
           max: Math.max(...values),
-          current: values[values.length - 1]
+          current: values[values.length - 1],
         };
       }
 
@@ -304,25 +308,25 @@ describe('PerformanceMonitor Class', () => {
           case 1:
             this.triggerCallback('optimize', {
               level: 1,
-              actions: ['reduceParticles', 'disableHoverEffects']
+              actions: ['reduceParticles', 'disableHoverEffects'],
             });
             break;
           case 2:
             this.triggerCallback('optimize', {
               level: 2,
-              actions: ['disableParticles', 'reduceAnimations', 'lowerQuality']
+              actions: ['disableParticles', 'reduceAnimations', 'lowerQuality'],
             });
             break;
           case 3:
             this.triggerCallback('optimize', {
               level: 3,
-              actions: ['disableAllEffects', 'staticMode', 'minimalUI']
+              actions: ['disableAllEffects', 'staticMode', 'minimalUI'],
             });
             break;
           default:
             this.triggerCallback('optimize', {
               level: 0,
-              actions: ['restoreAll']
+              actions: ['restoreAll'],
             });
         }
       }
@@ -336,12 +340,18 @@ describe('PerformanceMonitor Class', () => {
       }
 
       updateOverlay() {
-        if (!this.overlayElement) return;
+        if (!this.overlayElement) {
+          return;
+        }
         const fpsStats = this.getMetricStats('fps');
         const memoryStats = this.getMetricStats('memory');
         const frameTimeStats = this.getMetricStats('frameTime');
-        const fpsColor = fpsStats.current >= this.config.targetFPS ? '#0f0' :
-                        fpsStats.current >= this.config.warnThreshold ? '#ff0' : '#f00';
+        const fpsColor =
+          fpsStats.current >= this.config.targetFPS
+            ? '#0f0'
+            : fpsStats.current >= this.config.warnThreshold
+              ? '#ff0'
+              : '#f00';
         this.overlayElement.innerHTML = `
           <div style="color: ${fpsColor}">FPS: ${fpsStats.current.toFixed(1)}</div>
           <div>Frame: ${frameTimeStats.current.toFixed(2)}ms</div>
@@ -355,7 +365,7 @@ describe('PerformanceMonitor Class', () => {
           frameTime: this.getMetricStats('frameTime'),
           memory: this.getMetricStats('memory'),
           optimizationLevel: this.state.optimizationLevel,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         };
         this.triggerCallback('report', report);
         return report;
@@ -461,7 +471,7 @@ describe('PerformanceMonitor Class', () => {
       monitor = new PerformanceMonitor({
         targetFPS: 120,
         warnThreshold: 90,
-        sampleSize: 100
+        sampleSize: 100,
       });
       expect(monitor.config.targetFPS).toBe(120);
       expect(monitor.config.warnThreshold).toBe(90);
@@ -579,9 +589,7 @@ describe('PerformanceMonitor Class', () => {
       monitor.checkAndOptimize(25);
 
       expect(monitor.state.optimizationLevel).toBe(3);
-      expect(callback).toHaveBeenCalledWith(
-        expect.objectContaining({ level: 3 })
-      );
+      expect(callback).toHaveBeenCalledWith(expect.objectContaining({ level: 3 }));
     });
 
     it('should trigger level 2 optimization for warning FPS', () => {
@@ -755,7 +763,9 @@ describe('PerformanceMonitor Class', () => {
     });
 
     it('should handle callback errors gracefully', () => {
-      const errorCallback = vi.fn(() => { throw new Error('Test error'); });
+      const errorCallback = vi.fn(() => {
+        throw new Error('Test error');
+      });
       monitor.on('test', errorCallback);
       expect(() => monitor.triggerCallback('test', {})).not.toThrow();
     });

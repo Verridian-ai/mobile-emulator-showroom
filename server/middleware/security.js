@@ -12,10 +12,11 @@
  * - Article I (Architecture): Modular middleware design
  */
 
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const validator = require('validator');
 const crypto = require('crypto');
+
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const validator = require('validator');
 
 /**
  * CSP Violation Log (in-memory for development, use database in production)
@@ -72,12 +73,12 @@ const helmetConfig = helmet({
         // (req, res) => `'nonce-${res.locals.cspNonce}'`
       ],
       // Images: self + data URIs + HTTPS (for external images in iframes)
-      imgSrc: ["'self'", "data:", "https:"],
+      imgSrc: ["'self'", 'data:', 'https:'],
       // Connect: self + WebSocket (localhost for dev, configure for prod)
       connectSrc: [
         "'self'",
-        "ws://localhost:7071", // WebSocket broker (dev)
-        "wss://localhost:7071" // WebSocket broker (dev, HTTPS)
+        'ws://localhost:7071', // WebSocket broker (dev)
+        'wss://localhost:7071', // WebSocket broker (dev, HTTPS)
         // TODO: Add production WebSocket URL from environment variable
       ],
       // Fonts: same-origin only
@@ -97,16 +98,16 @@ const helmetConfig = helmet({
       // Force HTTPS for all requests (production)
       upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
       // Report CSP violations to this endpoint
-      reportUri: ['/api/csp-report']
+      reportUri: ['/api/csp-report'],
     },
     // Report-only mode for testing (set to false for enforcement)
-    reportOnly: false
+    reportOnly: false,
   },
   // Strict Transport Security - Force HTTPS in production
   hsts: {
     maxAge: 31536000, // 1 year
     includeSubDomains: true,
-    preload: true
+    preload: true,
   },
   // Prevent MIME type sniffing
   noSniff: true,
@@ -114,10 +115,10 @@ const helmetConfig = helmet({
   hidePoweredBy: true,
   // Prevent clickjacking
   frameguard: {
-    action: 'deny'
+    action: 'deny',
   },
   // XSS protection (legacy browsers)
-  xssFilter: true
+  xssFilter: true,
 });
 
 /**
@@ -136,12 +137,12 @@ const rateLimiter = rateLimit({
   max: 100, // Limit each IP to 100 requests per windowMs
   message: {
     error: 'Too many requests from this IP, please try again later.',
-    retryAfter: '15 minutes'
+    retryAfter: '15 minutes',
   },
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
   // Skip rate limiting for health checks
-  skip: (req) => req.path === '/healthz' || req.path === '/health'
+  skip: req => req.path === '/healthz' || req.path === '/health',
 });
 
 /**
@@ -153,10 +154,10 @@ const strictRateLimiter = rateLimit({
   max: 10,
   message: {
     error: 'Too many authentication attempts, please try again later.',
-    retryAfter: '15 minutes'
+    retryAfter: '15 minutes',
   },
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
 });
 
 /**
@@ -170,8 +171,10 @@ const inputValidation = {
    * @param {string} input - User input to sanitize
    * @returns {string} - Sanitized string
    */
-  sanitizeString: (input) => {
-    if (typeof input !== 'string') return '';
+  sanitizeString: input => {
+    if (typeof input !== 'string') {
+      return '';
+    }
     return validator.escape(validator.trim(input));
   },
 
@@ -182,13 +185,15 @@ const inputValidation = {
    * @returns {string|null} - Sanitized URL or null if invalid
    */
   validateUrl: (url, options = {}) => {
-    if (typeof url !== 'string') return null;
+    if (typeof url !== 'string') {
+      return null;
+    }
 
     const defaultOptions = {
       protocols: ['http', 'https'],
       require_protocol: true,
       require_valid_protocol: true,
-      ...options
+      ...options,
     };
 
     if (validator.isURL(url, defaultOptions)) {
@@ -203,8 +208,10 @@ const inputValidation = {
    * @param {string} email - Email to validate
    * @returns {boolean} - True if valid email
    */
-  isValidEmail: (email) => {
-    if (typeof email !== 'string') return false;
+  isValidEmail: email => {
+    if (typeof email !== 'string') {
+      return false;
+    }
     return validator.isEmail(email);
   },
 
@@ -213,8 +220,10 @@ const inputValidation = {
    * @param {string} input - Input to validate
    * @returns {boolean} - True if alphanumeric
    */
-  isAlphanumeric: (input) => {
-    if (typeof input !== 'string') return false;
+  isAlphanumeric: input => {
+    if (typeof input !== 'string') {
+      return false;
+    }
     return validator.isAlphanumeric(input);
   },
 
@@ -223,8 +232,10 @@ const inputValidation = {
    * @param {object} obj - Object with potentially unsafe strings
    * @returns {object} - Object with sanitized strings
    */
-  sanitizeObject: (obj) => {
-    if (typeof obj !== 'object' || obj === null) return {};
+  sanitizeObject: obj => {
+    if (typeof obj !== 'object' || obj === null) {
+      return {};
+    }
 
     const sanitized = {};
     for (const [key, value] of Object.entries(obj)) {
@@ -237,7 +248,7 @@ const inputValidation = {
       }
     }
     return sanitized;
-  }
+  },
 };
 
 /**
@@ -294,14 +305,14 @@ const handleCspViolation = (req, res) => {
     violatedDirective: violation['violated-directive'],
     originalPolicy: violation['original-policy'],
     timestamp: new Date().toISOString(),
-    userAgent: req.headers['user-agent']
+    userAgent: req.headers['user-agent'],
   });
 
   // Store violation (keep only last MAX_VIOLATIONS_STORED)
   cspViolations.push({
     ...violation,
     timestamp: new Date().toISOString(),
-    ip: req.ip
+    ip: req.ip,
   });
 
   if (cspViolations.length > MAX_VIOLATIONS_STORED) {
@@ -330,7 +341,7 @@ const getCspViolationStats = () => {
   return {
     totalViolations: cspViolations.length,
     byDirective: groupedByDirective,
-    recentViolations: cspViolations.slice(-10) // Last 10 violations
+    recentViolations: cspViolations.slice(-10), // Last 10 violations
   };
 };
 
@@ -343,5 +354,5 @@ module.exports = {
   httpsRedirect,
   cspNonce,
   handleCspViolation,
-  getCspViolationStats
+  getCspViolationStats,
 };

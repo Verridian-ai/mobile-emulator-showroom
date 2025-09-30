@@ -1,5 +1,5 @@
 // Full minimal app logic: device + skins + orientation + scale + motion + URL
-(function(){
+(function () {
   const deviceFrame = document.getElementById('deviceFrame');
   const deviceIframe = document.getElementById('deviceIframe');
 
@@ -18,35 +18,43 @@
     skin: 'black',
     orientation: 'portrait',
     scale: 'scale-75',
-    motion: 'animate-hover'
+    motion: 'animate-hover',
   };
 
-  function normalizeUrl(u){
-    if(!u) return '';
-    if(!/^https?:\/\//i.test(u)) return 'https://' + u;
+  function normalizeUrl(u) {
+    if (!u) {
+      return '';
+    }
+    if (!/^https?:\/\//i.test(u)) {
+      return 'https://' + u;
+    }
     return u;
   }
 
-  function applyState(){
-    if(!deviceFrame) return;
+  function applyState() {
+    if (!deviceFrame) {
+      return;
+    }
     const classes = [
       'device-mockup',
       `device-${state.device}`,
       state.skin || '',
       state.orientation || '',
       state.scale || '',
-      state.motion || ''
-    ].filter(Boolean).join(' ');
+      state.motion || '',
+    ]
+      .filter(Boolean)
+      .join(' ');
     deviceFrame.className = classes;
 
     // Desktop browser header support
-    if(state.device === 'desktop-chrome'){
-      if(!deviceFrame.querySelector('.browser-header')){
+    if (state.device === 'desktop-chrome') {
+      if (!deviceFrame.querySelector('.browser-header')) {
         const header = document.createElement('div');
         header.className = 'browser-header';
         const btns = document.createElement('div');
         btns.className = 'browser-buttons';
-        ['close','minimize','maximize'].forEach(t=>{
+        ['close', 'minimize', 'maximize'].forEach(t => {
           const s = document.createElement('span');
           s.className = `browser-button ${t}`;
           btns.appendChild(s);
@@ -60,12 +68,14 @@
       }
     } else {
       const header = deviceFrame.querySelector('.browser-header');
-      if(header) header.remove();
+      if (header) {
+        header.remove();
+      }
     }
   }
 
-  function setActive(btns, btn){
-    btns.forEach(b=>b.classList.remove('active'));
+  function setActive(btns, btn) {
+    btns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
   }
 
@@ -115,16 +125,22 @@
   });
 
   // URL handling
-  function loadUrl(){
+  function loadUrl() {
     const u = normalizeUrl(urlInput.value.trim());
-    if(u && deviceIframe) {
+    if (u && deviceIframe) {
       deviceIframe.src = u;
       const bar = deviceFrame.querySelector('.browser-address-bar');
-      if(bar) bar.textContent = u;
+      if (bar) {
+        bar.textContent = u;
+      }
     }
   }
   urlBtn.addEventListener('click', loadUrl);
-  urlInput.addEventListener('keydown', (e) => { if(e.key === 'Enter') loadUrl(); });
+  urlInput.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      loadUrl();
+    }
+  });
 
   // Initial
   applyState();

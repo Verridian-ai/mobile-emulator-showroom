@@ -35,16 +35,11 @@ const CONFIG = {
     /import\(/i,
     /document\./i,
     /window\./i,
-    /\.\.[\\/]/,  // Path traversal
-    /%00/i,       // Null byte injection
-    /%0[ad]/i,    // CRLF injection
+    /\.\.[\\/]/, // Path traversal
+    /%00/i, // Null byte injection
+    /%0[ad]/i, // CRLF injection
   ],
-  LOCALHOST_PATTERNS: [
-    'localhost',
-    '127.0.0.1',
-    '0.0.0.0',
-    '[::1]',
-  ],
+  LOCALHOST_PATTERNS: ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'],
 };
 
 /**
@@ -112,10 +107,7 @@ class URLValidator {
       try {
         parsedUrl = new URL(sanitized);
       } catch (parseError) {
-        throw new URLValidationError(
-          'URL is malformed or invalid',
-          'PARSE_ERROR'
-        );
+        throw new URLValidationError('URL is malformed or invalid', 'PARSE_ERROR');
       }
 
       // 7. Protocol validation
@@ -142,38 +134,26 @@ class URLValidator {
 
       // 9. Validate hostname
       if (!parsedUrl.hostname || parsedUrl.hostname.length === 0) {
-        throw new URLValidationError(
-          'URL must have a valid hostname',
-          'INVALID_HOSTNAME'
-        );
+        throw new URLValidationError('URL must have a valid hostname', 'INVALID_HOSTNAME');
       }
 
       // 10. Validate query parameters
       const paramValidation = this.validateQueryParams(parsedUrl);
       if (!paramValidation.valid) {
-        throw new URLValidationError(
-          paramValidation.error,
-          'INVALID_PARAMS'
-        );
+        throw new URLValidationError(paramValidation.error, 'INVALID_PARAMS');
       }
 
       // 11. Validate URL hash/fragment
       const hashValidation = this.validateHash(parsedUrl);
       if (!hashValidation.valid) {
-        throw new URLValidationError(
-          hashValidation.error,
-          'INVALID_HASH'
-        );
+        throw new URLValidationError(hashValidation.error, 'INVALID_HASH');
       }
 
       // 12. Check for suspicious ports
       if (parsedUrl.port) {
         const port = parseInt(parsedUrl.port, 10);
         if (port < 1 || port > 65535) {
-          throw new URLValidationError(
-            'Invalid port number',
-            'INVALID_PORT'
-          );
+          throw new URLValidationError('Invalid port number', 'INVALID_PORT');
         }
         // Warn on uncommon ports (except development ports)
         const commonPorts = [80, 443, 3000, 4000, 5000, 8000, 8080, 4175, 4176, 7071];
@@ -200,18 +180,19 @@ class URLValidator {
         warnings,
         errors: [],
       };
-
     } catch (error) {
       if (error instanceof URLValidationError) {
         return {
           valid: false,
           sanitized: null,
           original: urlString,
-          errors: [{
-            code: error.code,
-            message: error.message,
-            safeMessage: error.safeMessage,
-          }],
+          errors: [
+            {
+              code: error.code,
+              message: error.message,
+              safeMessage: error.safeMessage,
+            },
+          ],
           warnings,
         };
       }
@@ -222,11 +203,13 @@ class URLValidator {
         valid: false,
         sanitized: null,
         original: urlString,
-        errors: [{
-          code: 'VALIDATION_ERROR',
-          message: 'URL validation failed',
-          safeMessage: 'Invalid URL provided',
-        }],
+        errors: [
+          {
+            code: 'VALIDATION_ERROR',
+            message: 'URL validation failed',
+            safeMessage: 'Invalid URL provided',
+          },
+        ],
         warnings,
       };
     }
@@ -385,16 +368,16 @@ class URLValidator {
 
     // Map specific errors to user-friendly messages
     const errorMap = {
-      'INVALID_TYPE': 'Please provide a valid URL',
-      'URL_TOO_LONG': 'URL is too long',
-      'MALICIOUS_PATTERN': 'URL contains invalid characters',
-      'PARSE_ERROR': 'URL format is invalid',
-      'INVALID_PROTOCOL': 'Only HTTPS URLs are allowed',
-      'HTTP_NOT_ALLOWED': 'Only HTTPS URLs are allowed',
-      'INVALID_HOSTNAME': 'URL must have a valid domain name',
-      'INVALID_PARAMS': 'URL parameters are invalid',
-      'INVALID_HASH': 'URL fragment is invalid',
-      'INVALID_PORT': 'URL port is invalid',
+      INVALID_TYPE: 'Please provide a valid URL',
+      URL_TOO_LONG: 'URL is too long',
+      MALICIOUS_PATTERN: 'URL contains invalid characters',
+      PARSE_ERROR: 'URL format is invalid',
+      INVALID_PROTOCOL: 'Only HTTPS URLs are allowed',
+      HTTP_NOT_ALLOWED: 'Only HTTPS URLs are allowed',
+      INVALID_HOSTNAME: 'URL must have a valid domain name',
+      INVALID_PARAMS: 'URL parameters are invalid',
+      INVALID_HASH: 'URL fragment is invalid',
+      INVALID_PORT: 'URL port is invalid',
     };
 
     const firstError = errors[0];

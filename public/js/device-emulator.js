@@ -23,7 +23,7 @@
     FPS_WARNING_THRESHOLD: 30,
     PARTICLE_REDUCTION_FACTOR: 0.8,
     BROKER_URL: 'ws://localhost:7071',
-    BROKER_TOKEN: 'devtoken123'
+    BROKER_TOKEN: 'devtoken123',
   };
 
   // DOM element references
@@ -50,7 +50,9 @@
    */
   function normalizeUrl(url) {
     const trimmed = url.trim();
-    if (!trimmed) return '';
+    if (!trimmed) {
+      return '';
+    }
 
     // Add https:// if no protocol specified
     if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
@@ -149,14 +151,20 @@
 
     // Animate button (if motion library available)
     if (typeof motion !== 'undefined') {
-      motion.spring(btn, {
-        scale: 1.1,
-        opacity: 1
-      }, {
-        spring: motion.springs.bouncy
-      }).then(() => {
-        motion.spring(btn, { scale: 1 }, { spring: motion.springs.snappy });
-      });
+      motion
+        .spring(
+          btn,
+          {
+            scale: 1.1,
+            opacity: 1,
+          },
+          {
+            spring: motion.springs.bouncy,
+          }
+        )
+        .then(() => {
+          motion.spring(btn, { scale: 1 }, { spring: motion.springs.snappy });
+        });
     }
 
     // Update device frame class with animation
@@ -164,25 +172,35 @@
 
     // Animate device frame transition
     if (typeof motion !== 'undefined') {
-      motion.spring(deviceFrame, {
-        opacity: 0,
-        scale: 0.95
-      }, {
-        spring: motion.springs.snappy,
-        duration: 200
-      }).then(() => {
-        // Update frame after fade out
-        updateDeviceFrame(deviceClass);
+      motion
+        .spring(
+          deviceFrame,
+          {
+            opacity: 0,
+            scale: 0.95,
+          },
+          {
+            spring: motion.springs.snappy,
+            duration: 200,
+          }
+        )
+        .then(() => {
+          // Update frame after fade out
+          updateDeviceFrame(deviceClass);
 
-        // Animate back in
-        motion.spring(deviceFrame, {
-          opacity: 1,
-          scale: 1
-        }, {
-          spring: motion.springs.smooth,
-          duration: 300
+          // Animate back in
+          motion.spring(
+            deviceFrame,
+            {
+              opacity: 1,
+              scale: 1,
+            },
+            {
+              spring: motion.springs.smooth,
+              duration: 300,
+            }
+          );
         });
-      });
     } else {
       updateDeviceFrame(deviceClass);
     }
@@ -221,7 +239,7 @@
     }
 
     if (urlInput) {
-      urlInput.addEventListener('keypress', (e) => {
+      urlInput.addEventListener('keypress', e => {
         if (e.key === 'Enter') {
           updateIframeUrl();
         }
@@ -235,7 +253,7 @@
         motion.gesture(btn, {
           hover: { scale: 1.05, opacity: 0.9 },
           tap: { scale: 0.95 },
-          initial: { scale: 1, opacity: 1 }
+          initial: { scale: 1, opacity: 1 },
         });
       }
 
@@ -256,6 +274,6 @@
   window.DeviceEmulator = {
     handleAgentCommand,
     updateDeviceFrame,
-    updateIframeUrl
+    updateIframeUrl,
   };
 })();

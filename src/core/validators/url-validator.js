@@ -76,27 +76,21 @@ const ALLOWED_PROTOCOLS = ['http:', 'https:'];
 export function validateUrl(url) {
   // Article V: Input validation - Type check
   if (typeof url !== 'string') {
-    throw new InvalidUrlError(
-      'URL must be a string',
-      'INVALID_TYPE'
-    );
+    throw new InvalidUrlError('URL must be a string', 'INVALID_TYPE');
   }
 
   // Article V: Input validation - Empty check
   const trimmedUrl = url.trim();
   if (trimmedUrl === '') {
-    throw new InvalidUrlError(
-      'URL cannot be empty',
-      'EMPTY_URL'
-    );
+    throw new InvalidUrlError('URL cannot be empty', 'EMPTY_URL');
   }
 
   // Article V: Sanitize input with DOMPurify FIRST
   // This removes script tags, event handlers, and dangerous HTML
   const sanitized = purify.sanitize(trimmedUrl, {
-    ALLOWED_TAGS: [],  // No HTML tags allowed
-    ALLOWED_ATTR: [],  // No HTML attributes allowed
-    KEEP_CONTENT: true // Keep text content (the URL itself)
+    ALLOWED_TAGS: [], // No HTML tags allowed
+    ALLOWED_ATTR: [], // No HTML attributes allowed
+    KEEP_CONTENT: true, // Keep text content (the URL itself)
   });
 
   // Handle URLs without protocol (auto-add https)
@@ -111,10 +105,7 @@ export function validateUrl(url) {
   try {
     parsedUrl = new URL(urlToValidate);
   } catch (error) {
-    throw new InvalidUrlError(
-      `Invalid URL format: ${error.message}`,
-      'MALFORMED_URL'
-    );
+    throw new InvalidUrlError(`Invalid URL format: ${error.message}`, 'MALFORMED_URL');
   }
 
   // Article V: Protocol allowlist (security critical)
@@ -128,10 +119,7 @@ export function validateUrl(url) {
 
   // Additional validation: Check for spaces in hostname
   if (parsedUrl.hostname.includes(' ')) {
-    throw new InvalidUrlError(
-      'Invalid hostname: spaces not allowed',
-      'INVALID_HOSTNAME'
-    );
+    throw new InvalidUrlError('Invalid hostname: spaces not allowed', 'INVALID_HOSTNAME');
   }
 
   // Sanitize the final URL again to ensure no injection in query params
@@ -139,14 +127,14 @@ export function validateUrl(url) {
   const finalSanitized = purify.sanitize(finalUrl, {
     ALLOWED_TAGS: [],
     ALLOWED_ATTR: [],
-    KEEP_CONTENT: true
+    KEEP_CONTENT: true,
   });
 
   // Article III: Return clean, structured output
   return {
     valid: true,
     sanitized: finalSanitized,
-    protocol: parsedUrl.protocol
+    protocol: parsedUrl.protocol,
   };
 }
 
@@ -166,10 +154,7 @@ export function validateUrl(url) {
  */
 export function validateUrls(urls) {
   if (!Array.isArray(urls)) {
-    throw new InvalidUrlError(
-      'Input must be an array of URLs',
-      'INVALID_INPUT'
-    );
+    throw new InvalidUrlError('Input must be an array of URLs', 'INVALID_INPUT');
   }
 
   return urls.map(url => {

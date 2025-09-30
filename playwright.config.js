@@ -38,7 +38,7 @@ export default defineConfig({
 
     // Timeouts
     actionTimeout: 10000,
-    navigationTimeout: 30000
+    navigationTimeout: 30000,
   },
 
   // Output configuration
@@ -48,7 +48,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html', { outputFolder: 'tests/e2e/reports', open: 'never' }],
-    ['json', { outputFile: 'tests/e2e/reports/results.json' }]
+    ['json', { outputFile: 'tests/e2e/reports/results.json' }],
   ],
 
   // Projects for multi-browser testing - Constitution Article VI compliance
@@ -58,36 +58,36 @@ export default defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         contextOptions: {
-          permissions: ['clipboard-read', 'clipboard-write']
-        }
-      }
+          permissions: ['clipboard-read', 'clipboard-write'],
+        },
+      },
     },
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox']
-      }
+        ...devices['Desktop Firefox'],
+      },
     },
     {
       name: 'webkit',
       use: {
-        ...devices['Desktop Safari']
-      }
+        ...devices['Desktop Safari'],
+      },
     },
 
     // Mobile device testing
     {
       name: 'mobile-chrome',
       use: {
-        ...devices['Pixel 5']
-      }
+        ...devices['Pixel 5'],
+      },
     },
     {
       name: 'mobile-safari',
       use: {
-        ...devices['iPhone 13']
-      }
-    }
+        ...devices['iPhone 13'],
+      },
+    },
   ],
 
   // Web server for local development

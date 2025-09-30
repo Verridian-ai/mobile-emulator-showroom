@@ -12,9 +12,9 @@
  * - Security stats endpoint includes CSP data
  */
 
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import request from 'supertest';
 import express from 'express';
+import request from 'supertest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 
 // Note: We'll test the middleware directly and also with a test server
 // For full integration tests, we'd test the main server.js
@@ -30,7 +30,7 @@ describe('CSP Headers', () => {
     const {
       helmetConfig,
       handleCspViolation,
-      getCspViolationStats
+      getCspViolationStats,
     } = require('../../server/middleware/security');
 
     app.use(helmetConfig);
@@ -128,7 +128,7 @@ describe('CSP Headers', () => {
         'document-uri': 'http://localhost:4175/',
         'violated-directive': 'script-src',
         'blocked-uri': 'inline',
-        'original-policy': "default-src 'self'; script-src 'self'"
+        'original-policy': "default-src 'self'; script-src 'self'",
       };
 
       const response = await request(app)
@@ -145,12 +145,10 @@ describe('CSP Headers', () => {
       const violation = {
         'violated-directive': 'script-src',
         'blocked-uri': 'inline',
-        'original-policy': "default-src 'self'"
+        'original-policy': "default-src 'self'",
       };
 
-      await request(app)
-        .post('/api/csp-report')
-        .send(violation);
+      await request(app).post('/api/csp-report').send(violation);
 
       // Check stats
       const statsResponse = await request(app).get('/api/security-stats');
@@ -164,13 +162,11 @@ describe('CSP Headers', () => {
       const violations = [
         { 'violated-directive': 'script-src', 'blocked-uri': 'inline' },
         { 'violated-directive': 'style-src', 'blocked-uri': 'inline' },
-        { 'violated-directive': 'script-src', 'blocked-uri': 'eval' }
+        { 'violated-directive': 'script-src', 'blocked-uri': 'eval' },
       ];
 
       for (const violation of violations) {
-        await request(app)
-          .post('/api/csp-report')
-          .send(violation);
+        await request(app).post('/api/csp-report').send(violation);
       }
 
       const statsResponse = await request(app).get('/api/security-stats');
@@ -239,7 +235,7 @@ describe('CSP Integration with HTML', () => {
       'Script tags': 'Must use src attribute (no inline code)',
       'Event handlers': 'Must use addEventListener (no onclick)',
       'Style tags': 'Must be in external CSS files',
-      'Inline styles': 'Avoid or use nonce (requires server-side rendering)'
+      'Inline styles': 'Avoid or use nonce (requires server-side rendering)',
     };
 
     // Verify documentation exists

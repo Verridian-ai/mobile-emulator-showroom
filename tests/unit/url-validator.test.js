@@ -4,7 +4,12 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { validateUrl, validateUrls, InvalidUrlError } from '../../src/core/validators/url-validator.js';
+
+import {
+  validateUrl,
+  validateUrls,
+  InvalidUrlError,
+} from '../../src/core/validators/url-validator.js';
 
 describe('URL Validator - Valid URLs', () => {
   it('should accept valid HTTP URLs', () => {
@@ -226,11 +231,7 @@ describe('URL Validator - Security Requirements (Article V)', () => {
 
 describe('Batch URL Validation - validateUrls()', () => {
   it('should validate multiple URLs successfully', () => {
-    const urls = [
-      'https://example.com',
-      'http://test.org',
-      'https://localhost:3000'
-    ];
+    const urls = ['https://example.com', 'http://test.org', 'https://localhost:3000'];
     const results = validateUrls(urls);
     expect(results).toHaveLength(3);
     expect(results[0].result.valid).toBe(true);
@@ -240,11 +241,7 @@ describe('Batch URL Validation - validateUrls()', () => {
   });
 
   it('should handle mix of valid and invalid URLs', () => {
-    const urls = [
-      'https://example.com',
-      'javascript:alert(1)',
-      'https://test.org'
-    ];
+    const urls = ['https://example.com', 'javascript:alert(1)', 'https://test.org'];
     const results = validateUrls(urls);
     expect(results).toHaveLength(3);
     expect(results[0].result.valid).toBe(true);

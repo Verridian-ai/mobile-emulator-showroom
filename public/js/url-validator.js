@@ -39,12 +39,7 @@
       /%00/i,
       /%0[ad]/i,
     ],
-    LOCALHOST_PATTERNS: [
-      'localhost',
-      '127.0.0.1',
-      '0.0.0.0',
-      '[::1]',
-    ],
+    LOCALHOST_PATTERNS: ['localhost', '127.0.0.1', '0.0.0.0', '[::1]'],
   };
 
   /**
@@ -78,7 +73,11 @@
         // 4. Check for malicious patterns FIRST
         for (const pattern of CONFIG.BLOCKED_PATTERNS) {
           if (pattern.test(sanitized)) {
-            return this._errorResult(urlString, 'URL contains invalid characters', 'MALICIOUS_PATTERN');
+            return this._errorResult(
+              urlString,
+              'URL contains invalid characters',
+              'MALICIOUS_PATTERN'
+            );
           }
         }
 
@@ -112,7 +111,11 @@
 
         // 9. Hostname validation
         if (!parsedUrl.hostname || parsedUrl.hostname.length === 0) {
-          return this._errorResult(urlString, 'URL must have a valid domain name', 'INVALID_HOSTNAME');
+          return this._errorResult(
+            urlString,
+            'URL must have a valid domain name',
+            'INVALID_HOSTNAME'
+          );
         }
 
         // 10. Validate query parameters
@@ -151,7 +154,6 @@
           warnings,
           errors: [],
         };
-
       } catch (error) {
         console.error('URL validation error:', error);
         return this._errorResult(urlString, 'Invalid URL provided', 'VALIDATION_ERROR');
@@ -338,7 +340,9 @@
           }
           inputElement.classList.remove('url-invalid', 'url-valid');
           lastValidationResult = null;
-          if (onValidate) onValidate(null);
+          if (onValidate) {
+            onValidate(null);
+          }
           return;
         }
 
@@ -457,5 +461,4 @@
     `;
     document.head.appendChild(style);
   }
-
 })(window);

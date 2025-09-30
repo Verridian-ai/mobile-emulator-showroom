@@ -114,7 +114,9 @@ test.describe('Mobile Emulator Platform - E2E Testing', () => {
       await page.goto('/');
 
       // Verify test runs in all configured browsers
-      expect(['chromium', 'firefox', 'webkit', 'mobile-chrome', 'mobile-safari']).toContain(browserName);
+      expect(['chromium', 'firefox', 'webkit', 'mobile-chrome', 'mobile-safari']).toContain(
+        browserName
+      );
 
       // Basic functionality should work in all browsers
       await expect(page.locator('body')).toBeVisible();

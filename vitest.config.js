@@ -1,5 +1,6 @@
-import { defineConfig } from 'vitest/config';
 import path from 'path';
+
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -10,7 +11,12 @@ export default defineConfig({
     environment: 'jsdom',
 
     // Test file patterns
-    include: ['tests/unit/**/*.test.js', 'tests/integration/**/*.test.js', 'tests/unit/**/*.spec.js', 'tests/integration/**/*.spec.js'],
+    include: [
+      'tests/unit/**/*.test.js',
+      'tests/integration/**/*.test.js',
+      'tests/unit/**/*.spec.js',
+      'tests/integration/**/*.spec.js',
+    ],
     exclude: ['node_modules', 'dist', '.idea', '.git', '.cache'],
 
     // Coverage configuration
@@ -28,8 +34,8 @@ export default defineConfig({
         lines: 80,
         functions: 80,
         branches: 80,
-        statements: 80
-      }
+        statements: 80,
+      },
     },
 
     // Reporters
@@ -47,12 +53,12 @@ export default defineConfig({
 
     // Output
     silent: false,
-    passWithNoTests: false
+    passWithNoTests: false,
   },
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  }
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
 });

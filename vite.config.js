@@ -1,8 +1,9 @@
-import { defineConfig } from 'vite';
-import legacy from '@vitejs/plugin-legacy';
-import compression from 'vite-plugin-compression';
-import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path';
+
+import legacy from '@vitejs/plugin-legacy';
+import { visualizer } from 'rollup-plugin-visualizer';
+import { defineConfig } from 'vite';
+import compression from 'vite-plugin-compression';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -71,7 +72,7 @@ export default defineConfig(({ mode }) => {
 
         output: {
           // Manual chunk splitting strategy
-          manualChunks: (id) => {
+          manualChunks: id => {
             // Vendor chunks for node_modules
             if (id.includes('node_modules')) {
               return 'vendor';
@@ -97,11 +98,7 @@ export default defineConfig(({ mode }) => {
             }
 
             // AI/Claude integration (lazy loaded)
-            if (
-              id.includes('claude') ||
-              id.includes('ai-chat') ||
-              id.includes('dom-analysis')
-            ) {
+            if (id.includes('claude') || id.includes('ai-chat') || id.includes('dom-analysis')) {
               return 'ai-integration';
             }
 
@@ -116,27 +113,27 @@ export default defineConfig(({ mode }) => {
           },
 
           // Asset file naming
-          assetFileNames: (assetInfo) => {
+          assetFileNames: assetInfo => {
             const info = assetInfo.name.split('.');
-            let extType = info[info.length - 1];
+            const extType = info[info.length - 1];
 
             // Images
             if (/png|jpe?g|svg|gif|tiff|bmp|ico|webp/i.test(extType)) {
-              return `assets/images/[name]-[hash][extname]`;
+              return 'assets/images/[name]-[hash][extname]';
             }
 
             // Fonts
             if (/woff2?|eot|ttf|otf/i.test(extType)) {
-              return `assets/fonts/[name]-[hash][extname]`;
+              return 'assets/fonts/[name]-[hash][extname]';
             }
 
             // CSS
             if (extType === 'css') {
-              return `assets/styles/[name]-[hash][extname]`;
+              return 'assets/styles/[name]-[hash][extname]';
             }
 
             // Default
-            return `assets/[name]-[hash][extname]`;
+            return 'assets/[name]-[hash][extname]';
           },
 
           // Chunk file naming
@@ -179,35 +176,39 @@ export default defineConfig(({ mode }) => {
     // Plugins
     plugins: [
       // Legacy browser support (transpile to ES5 if needed)
-      !isDevelopment && legacy({
-        targets: ['defaults', 'not IE 11'],
-        renderLegacyChunks: false, // Modern build only, no legacy chunks
-      }),
+      !isDevelopment &&
+        legacy({
+          targets: ['defaults', 'not IE 11'],
+          renderLegacyChunks: false, // Modern build only, no legacy chunks
+        }),
 
       // Gzip compression for production
-      !isDevelopment && compression({
-        algorithm: 'gzip',
-        ext: '.gz',
-        threshold: 1024, // Only compress files > 1KB
-        deleteOriginFile: false,
-      }),
+      !isDevelopment &&
+        compression({
+          algorithm: 'gzip',
+          ext: '.gz',
+          threshold: 1024, // Only compress files > 1KB
+          deleteOriginFile: false,
+        }),
 
       // Brotli compression for production (better compression ratio)
-      !isDevelopment && compression({
-        algorithm: 'brotliCompress',
-        ext: '.br',
-        threshold: 1024,
-        deleteOriginFile: false,
-      }),
+      !isDevelopment &&
+        compression({
+          algorithm: 'brotliCompress',
+          ext: '.br',
+          threshold: 1024,
+          deleteOriginFile: false,
+        }),
 
       // Bundle analyzer
-      (isAnalyze || process.env.ANALYZE) && visualizer({
-        open: true,
-        gzipSize: true,
-        brotliSize: true,
-        filename: 'dist/bundle-analysis.html',
-        template: 'treemap', // 'sunburst', 'treemap', 'network'
-      }),
+      (isAnalyze || process.env.ANALYZE) &&
+        visualizer({
+          open: true,
+          gzipSize: true,
+          brotliSize: true,
+          filename: 'dist/bundle-analysis.html',
+          template: 'treemap', // 'sunburst', 'treemap', 'network'
+        }),
     ].filter(Boolean),
 
     // Optimization configuration

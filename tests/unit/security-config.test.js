@@ -16,22 +16,22 @@ describe('SecurityConfig Module', () => {
     mockWindow = {
       location: {
         hostname: 'localhost',
-        protocol: 'http:'
+        protocol: 'http:',
       },
       crypto: {
-        getRandomValues: vi.fn((array) => {
+        getRandomValues: vi.fn(array => {
           for (let i = 0; i < array.length; i++) {
             array[i] = Math.floor(Math.random() * 256);
           }
           return array;
-        })
+        }),
       },
       WEBSOCKET_TOKEN: null,
-      BROKER_PORT: null
+      BROKER_PORT: null,
     };
 
     mockDocument = {
-      createElement: vi.fn((tag) => {
+      createElement: vi.fn(tag => {
         const element = {
           tagName: tag.toUpperCase(),
           textContent: '',
@@ -40,18 +40,18 @@ describe('SecurityConfig Module', () => {
           httpEquiv: '',
           content: '',
           appendChild: vi.fn(),
-          remove: vi.fn()
+          remove: vi.fn(),
         };
         return element;
       }),
       head: {
-        appendChild: vi.fn()
+        appendChild: vi.fn(),
       },
       body: {
-        appendChild: vi.fn()
+        appendChild: vi.fn(),
       },
       readyState: 'complete',
-      addEventListener: vi.fn()
+      addEventListener: vi.fn(),
     };
 
     global.window = mockWindow;
@@ -64,30 +64,30 @@ describe('SecurityConfig Module', () => {
         brokerPort: 7071,
         secure: false,
         reconnectInterval: 5000,
-        maxReconnectAttempts: 10
+        maxReconnectAttempts: 10,
       },
       csp: {
         allowedImageSources: ['self', 'data:', 'blob:'],
         allowedScriptSources: ['self'],
         allowedStyleSources: ['self', 'unsafe-inline'],
-        allowedConnectSources: ['self', 'ws://localhost:*', 'wss://localhost:*']
+        allowedConnectSources: ['self', 'ws://localhost:*', 'wss://localhost:*'],
       },
       xss: {
         sanitizeHTML: true,
         escapeUserInput: true,
-        validateURLs: true
+        validateURLs: true,
       },
       debug: {
         enabled: true,
         verboseLogging: false,
-        performanceMonitoring: true
+        performanceMonitoring: true,
       },
-      sanitizeHTML: function(html) {
+      sanitizeHTML: function (html) {
         const div = document.createElement('div');
         div.textContent = html;
         return div.innerHTML;
       },
-      validateURL: function(url) {
+      validateURL: function (url) {
         try {
           const parsed = new URL(url);
           if (!['http:', 'https:', 'ws:', 'wss:'].includes(parsed.protocol)) {
@@ -101,18 +101,20 @@ describe('SecurityConfig Module', () => {
           return false;
         }
       },
-      escapeInput: function(input) {
-        if (typeof input !== 'string') return input;
+      escapeInput: function (input) {
+        if (typeof input !== 'string') {
+          return input;
+        }
         const escapeMap = {
           '&': '&amp;',
           '<': '&lt;',
           '>': '&gt;',
           '"': '&quot;',
           "'": '&#x27;',
-          '/': '&#x2F;'
+          '/': '&#x2F;',
         };
         return input.replace(/[&<>"'/]/g, char => escapeMap[char]);
-      }
+      },
     };
 
     global.SecurityConfig = SecurityConfig;
@@ -371,7 +373,7 @@ describe('SecurityConfig Module', () => {
         'javascript:alert(1)',
         'data:text/html,<script>alert(1)</script>',
         'file:///etc/passwd',
-        '<script>alert(1)</script>'
+        '<script>alert(1)</script>',
       ];
 
       patterns.forEach(pattern => {
