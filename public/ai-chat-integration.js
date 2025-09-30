@@ -303,10 +303,17 @@ class AIChatIntegration {
     }
 
     setupWebSocket() {
-        // Use environment variable or configuration for WebSocket URL
-        const wsToken = window.WEBSOCKET_TOKEN || 'secure-token';
+        // Article V: Never use hardcoded tokens - require configuration
+        const wsToken = window.WEBSOCKET_TOKEN;
+
+        if (!wsToken) {
+            console.error('❌ SECURITY: WEBSOCKET_TOKEN is required. Set via server configuration.');
+            console.error('See server/ENVIRONMENT_VARIABLES.md for setup instructions.');
+            return;
+        }
+
         const brokerUrl = `ws://localhost:${window.BROKER_PORT || 7071}?token=${wsToken}`;
-        
+
         try {
             this.websocket = new WebSocket(brokerUrl);
             

@@ -1,13 +1,38 @@
+// Load environment variables from .env file (Article V: Security)
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+
+// Validate required environment variables (Article V: Security)
+const requiredEnvVars = [];
+const optionalEnvVars = ['PORT', 'NODE_ENV', 'SESSION_SECRET', 'CORS_ALLOWED_ORIGINS'];
+
+// Check if we're in production and require SESSION_SECRET
+if (process.env.NODE_ENV === 'production') {
+  requiredEnvVars.push('SESSION_SECRET');
+}
+
+const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
+if (missingVars.length > 0) {
+  console.error('❌ SECURITY ERROR: Required environment variables missing:');
+  missingVars.forEach(varName => {
+    console.error(`   - ${varName}`);
+  });
+  console.error('\n📝 Please set these in your .env file (see .env.example)');
+  process.exit(1);
+}
+
 const app = express();
 const port = Number(process.env.PORT || process.env.SHOWROOM_PORT || 4175);
+const nodeEnv = process.env.NODE_ENV || 'development';
 
 // Enhanced error handling and logging
 console.log('🚀 Starting Verridian Showroom Server...');
 console.log('📁 Public directory:', path.join(__dirname, 'public'));
 console.log('🌐 Server port:', port);
+console.log('🔧 Environment:', nodeEnv);
 
 // Check if public directory exists
 const publicDir = path.join(__dirname, 'public');
@@ -34,19 +59,27 @@ app.use(express.static(publicDir, {
   etag: true,
   lastModified: true,
   setHeaders: (res, path) => {
-    // Add CORS headers for all static files
-    res.set('Access-Control-Allow-Origin', '*');
+    // Add CORS headers for all static files (Article V: Configurable CORS)
+    const corsOrigin = process.env.CORS_ALLOWED_ORIGINS || '*';
+    res.set('Access-Control-Allow-Origin', corsOrigin);
     res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    
+
+    // Security warning for wildcard CORS in production
+    if (nodeEnv === 'production' && corsOrigin === '*') {
+      console.warn('⚠️  WARNING: CORS set to wildcard (*) in production. Set CORS_ALLOWED_ORIGINS in .env');
+    }
+
     // Cache control for different file types
     if (path.endsWith('.js') || path.endsWith('.css')) {
       res.set('Cache-Control', 'public, max-age=3600'); // 1 hour
     } else if (path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.svg')) {
       res.set('Cache-Control', 'public, max-age=86400'); // 24 hours
     }
-    
-    console.log(`📤 Serving: ${path}`);
+
+    if (process.env.LOG_LEVEL === 'debug') {
+      console.log(`📤 Serving: ${path}`);
+    }
   }
 }));
 
