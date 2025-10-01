@@ -82,6 +82,7 @@ import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
    * Update device frame with new device class
    * Security: Uses programmatic DOM manipulation (no innerHTML)
    * Performance: Applies viewport scaling for proper content display
+   * CLS Fix: Reserves space and adds loading state to prevent layout shift
    * @param {string} deviceClass - Device class identifier (e.g., 'iphone-14-pro')
    */
   function updateDeviceFrame(deviceClass) {
@@ -95,13 +96,20 @@ import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
       console.log(`[DeviceEmulator] Switching to ${deviceClass}: ${deviceSpec.viewport.width}x${deviceSpec.viewport.height}px`);
     }
 
+    // CLS Fix: Reserve space BEFORE clearing to prevent layout shift
+    const currentHeight = deviceFrame.offsetHeight;
+    deviceFrame.style.minHeight = currentHeight + 'px';
+
+    // CLS Fix: Add loading state for skeleton screen
+    deviceFrame.classList.add('is-loading');
+
     // Clear existing content safely
     while (deviceFrame.firstChild) {
       deviceFrame.removeChild(deviceFrame.firstChild);
     }
 
     // Update frame class
-    deviceFrame.className = `device-mockup device-${deviceClass} scale-75 animate-hover`;
+    deviceFrame.className = `device-mockup device-${deviceClass} scale-75 animate-hover is-loading`;
 
     // Add speaker grille for applicable devices (mobile phones, not iPads/Desktop)
     const devicesWithSpeaker = [
@@ -116,6 +124,13 @@ import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
       const speaker = document.createElement('div');
       speaker.className = 'speaker-top';
       deviceFrame.appendChild(speaker);
+    }
+
+    // Add Camera Control button for iPhone 16 Pro (CSS only allows 2 pseudo-elements)
+    if (deviceClass === 'iphone-16-pro') {
+      const cameraControl = document.createElement('div');
+      cameraControl.className = 'camera-control-button';
+      deviceFrame.appendChild(cameraControl);
     }
 
     // Build DOM structure programmatically (safer than innerHTML)
@@ -171,6 +186,13 @@ import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
     if (deviceSpec) {
       initViewportScaling(deviceClass, newIframe);
     }
+
+    // CLS Fix: Remove loading state and reserved space after frame is built
+    // Use requestAnimationFrame to ensure DOM has updated
+    requestAnimationFrame(() => {
+      deviceFrame.classList.remove('is-loading');
+      deviceFrame.style.minHeight = '';
+    });
   }
 
   /**

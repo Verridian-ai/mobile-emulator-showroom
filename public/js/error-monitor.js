@@ -26,13 +26,16 @@ class ErrorMonitor {
     /**
      * Initialize error monitoring
      * Article V: Security - Safe error interception
+     * Article III: Code Quality - Defensive initialization
      */
     init() {
         // Intercept window errors
-        window.addEventListener('error', this.handleWindowError);
+        if (typeof window !== 'undefined') {
+            window.addEventListener('error', this.handleWindowError);
 
-        // Intercept unhandled promise rejections
-        window.addEventListener('unhandledrejection', this.handleUnhandledRejection);
+            // Intercept unhandled promise rejections
+            window.addEventListener('unhandledrejection', this.handleUnhandledRejection);
+        }
 
         // Intercept console errors
         this.interceptConsoleError();
@@ -40,7 +43,10 @@ class ErrorMonitor {
         // Monitor iframe errors (if same-origin)
         this.monitorIframeErrors();
 
-        console.log('Error monitoring initialized');
+        // Safe console.log call
+        if (console && typeof console.log === 'function') {
+            console.log('Error monitoring initialized');
+        }
     }
 
     /**
@@ -59,7 +65,11 @@ class ErrorMonitor {
         };
 
         this.addToErrorHistory(error);
-        console.error('Window error detected:', error);
+
+        // Safe console.error call
+        if (console && typeof console.error === 'function') {
+            console.error('Window error detected:', error);
+        }
 
         // Show error overlay
         this.showErrorOverlay(error);
@@ -82,7 +92,11 @@ class ErrorMonitor {
         };
 
         this.addToErrorHistory(error);
-        console.error('Unhandled promise rejection:', error);
+
+        // Safe console.error call
+        if (console && typeof console.error === 'function') {
+            console.error('Unhandled promise rejection:', error);
+        }
 
         // Show error overlay
         this.showErrorOverlay(error);
@@ -96,24 +110,52 @@ class ErrorMonitor {
     /**
      * Intercept console.error
      * Article V: Security - Safe console interception
+     * Article III: Code Quality - Defensive null checks
      */
     interceptConsoleError() {
-        const originalConsoleError = console.error;
+        // Safely capture original console.error with null check and try-catch
+        let originalConsoleError = null;
+
+        try {
+            if (console && typeof console.error === 'function') {
+                originalConsoleError = console.error.bind(console);
+            }
+        } catch (e) {
+            // Failed to bind - console.error doesn't exist or can't be bound
+            originalConsoleError = null;
+        }
+
         const self = this;
 
-        console.error = function (...args) {
-            // Call original console.error
-            originalConsoleError.apply(console, args);
+        // Only override if console.error exists
+        if (console && typeof console.error === 'function') {
+            console.error = function (...args) {
+                // Call original console.error safely
+                if (originalConsoleError && typeof originalConsoleError === 'function') {
+                    try {
+                        originalConsoleError(...args);
+                    } catch (e) {
+                        // Fallback to console.log if console.error fails
+                        if (console && typeof console.log === 'function') {
+                            console.log('[ERROR]', ...args);
+                        }
+                    }
+                }
 
-            // Log to error history
-            const error = {
-                type: 'console',
-                message: args.map(arg => String(arg)).join(' '),
-                timestamp: new Date().toISOString()
+                // Log to error history
+                try {
+                    const error = {
+                        type: 'console',
+                        message: args.map(arg => String(arg)).join(' '),
+                        timestamp: new Date().toISOString()
+                    };
+
+                    self.addToErrorHistory(error);
+                } catch (e) {
+                    // Silently fail if error history fails
+                }
             };
-
-            self.addToErrorHistory(error);
-        };
+        }
     }
 
     /**
@@ -133,7 +175,11 @@ class ErrorMonitor {
             };
 
             this.addToErrorHistory(error);
-            console.error('Iframe error:', error);
+
+            // Safe console.error call
+            if (console && typeof console.error === 'function') {
+                console.error('Iframe error:', error);
+            }
 
             // Show error overlay
             this.showErrorOverlay(error);
@@ -149,25 +195,56 @@ class ErrorMonitor {
             try {
                 const iframeWindow = iframe.contentWindow;
                 if (iframeWindow && iframeWindow.console) {
-                    const originalIframeError = iframeWindow.console.error;
+                    // Safely capture original iframe console.error with try-catch
+                    let originalIframeError = null;
+
+                    try {
+                        if (iframeWindow.console.error && typeof iframeWindow.console.error === 'function') {
+                            originalIframeError = iframeWindow.console.error.bind(iframeWindow.console);
+                        }
+                    } catch (bindError) {
+                        // Failed to bind - cannot access or bind iframe console.error
+                        originalIframeError = null;
+                    }
+
                     const self = this;
 
-                    iframeWindow.console.error = function (...args) {
-                        originalIframeError.apply(iframeWindow.console, args);
+                    // Only override if iframe console.error exists
+                    if (iframeWindow.console.error && typeof iframeWindow.console.error === 'function') {
+                        iframeWindow.console.error = function (...args) {
+                            // Call original iframe console.error safely
+                            if (originalIframeError && typeof originalIframeError === 'function') {
+                                try {
+                                    originalIframeError(...args);
+                                } catch (e) {
+                                    // Fallback to parent console if iframe console fails
+                                    if (console && typeof console.error === 'function') {
+                                        console.error('[IFRAME ERROR]', ...args);
+                                    }
+                                }
+                            }
 
-                        const error = {
-                            type: 'iframe-console',
-                            message: args.map(arg => String(arg)).join(' '),
-                            url: iframe.src,
-                            timestamp: new Date().toISOString()
+                            // Log to error history
+                            try {
+                                const error = {
+                                    type: 'iframe-console',
+                                    message: args.map(arg => String(arg)).join(' '),
+                                    url: iframe.src,
+                                    timestamp: new Date().toISOString()
+                                };
+
+                                self.addToErrorHistory(error);
+                            } catch (e) {
+                                // Silently fail if error history fails
+                            }
                         };
-
-                        self.addToErrorHistory(error);
-                    };
+                    }
                 }
             } catch (e) {
                 // Cross-origin iframe, cannot access console
-                console.log('Cannot monitor cross-origin iframe console');
+                if (console && typeof console.log === 'function') {
+                    console.log('Cannot monitor cross-origin iframe console');
+                }
             }
         });
     }
@@ -203,10 +280,17 @@ class ErrorMonitor {
             // Send to IDE
             if (this.ideIntegration) {
                 await this.ideIntegration.sendErrorReport(error, screenshot);
-                console.log('Error report sent to IDE');
+
+                // Safe console.log call
+                if (console && typeof console.log === 'function') {
+                    console.log('Error report sent to IDE');
+                }
             }
         } catch (captureError) {
-            console.error('Failed to capture/report error:', captureError);
+            // Safe console.error call
+            if (console && typeof console.error === 'function') {
+                console.error('Failed to capture/report error:', captureError);
+            }
         }
     }
 
@@ -332,7 +416,11 @@ class ErrorMonitor {
      */
     setAutoScreenshot(enabled) {
         this.autoScreenshotEnabled = enabled;
-        console.log('Auto-screenshot on errors:', enabled);
+
+        // Safe console.log call
+        if (console && typeof console.log === 'function') {
+            console.log('Auto-screenshot on errors:', enabled);
+        }
     }
 
     /**
@@ -356,15 +444,22 @@ class ErrorMonitor {
      */
     clearHistory() {
         this.consoleErrors = [];
-        console.log('Error history cleared');
+
+        // Safe console.log call
+        if (console && typeof console.log === 'function') {
+            console.log('Error history cleared');
+        }
     }
 
     /**
      * Cleanup
+     * Article III: Code Quality - Safe cleanup
      */
     destroy() {
-        window.removeEventListener('error', this.handleWindowError);
-        window.removeEventListener('unhandledrejection', this.handleUnhandledRejection);
+        if (typeof window !== 'undefined') {
+            window.removeEventListener('error', this.handleWindowError);
+            window.removeEventListener('unhandledrejection', this.handleUnhandledRejection);
+        }
         this.hideErrorOverlay();
     }
 }

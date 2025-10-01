@@ -1,28 +1,106 @@
 /**
  * Security Configuration for Verridian Showroom
  * Centralizes security-sensitive configuration
- * 
+ *
+ * Article V (Security): Input validation, XSS prevention, CSP enforcement
+ * Article III (Code Quality): Well-documented, defensive coding
+ *
+ * @module security-config
+ * @description Provides browser-safe environment detection and security settings
+ *
  * IMPORTANT: In production, these values should come from:
  * - Environment variables
  * - Secure configuration service
  * - Server-side injection
- * 
+ *
  * This file is for development only
  */
 
 (function() {
     'use strict';
-    
+
+    /**
+     * Detects the current environment (development/production)
+     * Works in both Node.js and browser contexts
+     *
+     * @returns {'development'|'production'} Current environment
+     *
+     * @example
+     * const env = getEnvironment();
+     * if (env === 'development') {
+     *   console.log('Running in dev mode');
+     * }
+     */
+    function getEnvironment() {
+        try {
+            // Check if we're in Node.js environment
+            if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV) {
+                return process.env.NODE_ENV;
+            }
+        } catch (e) {
+            // process is not defined - we're in browser
+            console.debug('process.env not available, using browser detection');
+        }
+
+        // Browser environment detection
+        const { hostname, port, protocol } = window.location;
+
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+            return 'development';
+        }
+
+        if (protocol === 'https:') {
+            return 'production';
+        }
+
+        return 'development'; // Default to development
+    }
+
+    /**
+     * Safely retrieves environment variable from process.env or window
+     *
+     * @param {string} key - Environment variable key
+     * @param {*} defaultValue - Default value if not found
+     * @returns {*} The environment variable value or default
+     */
+    function getEnvVar(key, defaultValue) {
+        try {
+            if (typeof process !== 'undefined' && process.env && process.env[key]) {
+                return process.env[key];
+            }
+        } catch (e) {
+            // process is not defined - we're in browser
+        }
+
+        // Try window object
+        if (typeof window !== 'undefined' && window[key]) {
+            return window[key];
+        }
+
+        return defaultValue;
+    }
+
+    // Determine current environment
+    const isDevelopment = getEnvironment() === 'development';
+    const isProduction = getEnvironment() === 'production';
+
     // Security configuration object
     const SecurityConfig = {
+        // Environment detection
+        environment: {
+            isDevelopment: isDevelopment,
+            isProduction: isProduction,
+            current: getEnvironment()
+        },
+
         // WebSocket Configuration
         websocket: {
             // Use environment variables or defaults
             // In production, a token must be provided by the server (no auto-generate)
             token: (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
-                ? (process.env.WEBSOCKET_TOKEN || window.WEBSOCKET_TOKEN || generateSecureToken())
-                : (window.WEBSOCKET_TOKEN || process.env.WEBSOCKET_TOKEN || null),
-            brokerPort: process.env.BROKER_PORT || window.BROKER_PORT || 7071,
+                ? (getEnvVar('WEBSOCKET_TOKEN', null) || generateSecureToken())
+                : (getEnvVar('WEBSOCKET_TOKEN', null) || null),
+            brokerPort: getEnvVar('BROKER_PORT', 7071),
             secure: window.location.protocol === 'https:',
             reconnectInterval: 5000,
             maxReconnectAttempts: 10
@@ -45,7 +123,7 @@
         
         // Debug Configuration
         debug: {
-            enabled: window.location.hostname === 'localhost',
+            enabled: isDevelopment,
             verboseLogging: false,
             performanceMonitoring: true
         }
@@ -192,9 +270,13 @@
         }
     };
     
+    // Expose helper functions for testing and advanced use
+    SecurityConfig.getEnvironment = getEnvironment;
+    SecurityConfig.getEnvVar = getEnvVar;
+
     // Export to global scope
     window.SecurityConfig = SecurityConfig;
-    
+
     // Auto-initialize
     SecurityConfig.init();
     

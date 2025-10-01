@@ -41,7 +41,7 @@
     /* Button Styles */
     --button-gradient: linear-gradient(90deg, #3a3a3a, #2a2a2a, #1a1a1a);
     --button-gradient-light: linear-gradient(90deg, #d0d0d0, #c0c0c0, #b0b0b0);
-    --button-width: 3px;
+    --button-width: 4px; /* Increased from 3px for better visibility */
     --button-radius: 2px;
 }
 
@@ -51,6 +51,8 @@
 .device-mockup {
     position: relative;
     display: inline-block;
+    box-sizing: border-box; /* FIX: Ensure padding is included in width for correct notch positioning */
+    overflow: visible; /* CRITICAL: Allow buttons to extend outside device frame */
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
                 box-shadow 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
@@ -142,12 +144,13 @@
 .device-iphone-8 .screen::before {
     content: '';
     position: absolute;
-    right: -20px;
+    right: -23px; /* Extended outside frame (padding 20px + button extension 3px) */
     top: 180px;
     width: var(--button-width);
     height: 75px;
     background: var(--button-gradient-light);
     border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
     box-shadow: 1px 0 2px rgba(0,0,0,0.3);
 }
 
@@ -158,12 +161,13 @@
 .device-iphone-8 .screen::after {
     content: '';
     position: absolute;
-    left: -20px;
+    left: -23px; /* Extended outside frame (padding 20px + button extension 3px) */
     top: 160px;
     width: var(--button-width);
     height: 55px;
     background: var(--button-gradient-light);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         -1px 0 2px rgba(0,0,0,0.3),
         0 58px 0 0 var(--button-gradient-light);
@@ -211,7 +215,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important; /* Override GPU acceleration */
     width: 209px;
     height: 30px;
     background: inherit;
@@ -226,7 +230,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
     width: 209px;
     height: 30px;
     background: inherit;
@@ -285,12 +289,13 @@
 .device-iphone-x .screen::before {
     content: '';
     position: absolute;
-    right: -20px;
+    right: -24px; /* Extended outside frame */
     top: 220px;
     width: var(--button-width);
     height: 90px;
     background: var(--button-gradient);
     border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
     box-shadow: 1px 0 2px rgba(0,0,0,0.5);
 }
 
@@ -298,12 +303,13 @@
 .device-iphone-11 .screen::before {
     content: '';
     position: absolute;
-    right: -22px;
+    right: -26px; /* Extended outside frame */
     top: 240px;
     width: var(--button-width);
     height: 95px;
     background: var(--button-gradient);
     border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
     box-shadow: 1px 0 2px rgba(0,0,0,0.5);
 }
 
@@ -311,12 +317,13 @@
 .device-iphone-x .screen::after {
     content: '';
     position: absolute;
-    left: -20px;
+    left: -24px; /* Extended outside frame */
     top: 150px;
     width: var(--button-width);
     height: 25px;
     background: var(--button-gradient);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         -1px 0 2px rgba(0,0,0,0.5),
         0 50px 0 0 var(--button-gradient),
@@ -327,12 +334,13 @@
 .device-iphone-11 .screen::after {
     content: '';
     position: absolute;
-    left: -22px;
+    left: -26px; /* Extended outside frame */
     top: 165px;
     width: var(--button-width);
     height: 28px;
     background: var(--button-gradient);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         -1px 0 2px rgba(0,0,0,0.5),
         0 55px 0 0 var(--button-gradient),
@@ -365,7 +373,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
     width: 165px;
     height: 30px;
     background: inherit;
@@ -404,12 +412,13 @@
 .device-iphone-13 .screen::before {
     content: '';
     position: absolute;
-    right: -18px;
+    right: -22px; /* Extended outside frame */
     top: 230px;
     width: var(--button-width);
     height: 85px;
     background: var(--button-gradient-light);
     border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
 }
 
 /* Volume + mute switch (left side) */
@@ -417,12 +426,13 @@
 .device-iphone-13 .screen::after {
     content: '';
     position: absolute;
-    left: -18px;
+    left: -22px; /* Extended outside frame */
     top: 160px;
     width: var(--button-width);
     height: 28px;
     background: var(--button-gradient-light);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         0 52px 0 0 var(--button-gradient-light),
         0 106px 0 0 var(--button-gradient-light);
@@ -492,7 +502,7 @@
     position: absolute;
     top: 10px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
     width: 125px;
     height: 35px;
     background: #000;
@@ -530,12 +540,13 @@
 .device-iphone-14-pro .screen::before {
     content: '';
     position: absolute;
-    right: -16px;
+    right: -20px; /* Extended outside frame */
     top: 240px;
     width: var(--button-width);
     height: 88px;
     background: var(--button-gradient);
     border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
     box-shadow: 1px 0 3px rgba(0,0,0,0.6);
 }
 
@@ -543,12 +554,13 @@
 .device-iphone-14-pro .screen::after {
     content: '';
     position: absolute;
-    left: -16px;
+    left: -20px; /* Extended outside frame */
     top: 170px;
     width: var(--button-width);
     height: 30px;
     background: var(--button-gradient);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         -1px 0 3px rgba(0,0,0,0.6),
         0 55px 0 0 var(--button-gradient),
@@ -618,25 +630,41 @@
     height: 100%;
 }
 
-/* Action button (left side, replaces mute switch on Pro) */
+/* Action button + Volume buttons (left side, replaces mute switch on Pro) */
 .device-iphone-15-pro .screen::before {
     content: '';
     position: absolute;
-    left: -15px;
+    left: -19px; /* Extended outside frame */
     top: 85px;
     width: var(--button-width);
     height: 35px;
     background: var(--button-gradient);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
+    z-index: 50; /* Above device frame */
     box-shadow:
         -1px 0 3px rgba(0,0,0,0.6),
         0 55px 0 0 var(--button-gradient),
         0 110px 0 0 var(--button-gradient);
 }
 
+/* Power button (right side, titanium) */
+.device-iphone-15 .screen::before,
+.device-iphone-15-pro .screen::after {
+    content: '';
+    position: absolute;
+    right: -19px; /* Extended outside frame */
+    top: 180px;
+    width: var(--button-width);
+    height: 70px;
+    background: var(--button-gradient);
+    border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    z-index: 50; /* Above device frame */
+    box-shadow: 1px 0 3px rgba(0,0,0,0.6);
+}
+
 /* ============================================
    IPHONE 16 PRO - CAMERA CONTROL BUTTON
-   Official Specs: 393×852pt, 6.1" display
+   Official Specs: 294×618pt (from reference HTML)
    ============================================ */
 .device-iphone-16-pro {
     width: 294px;
@@ -697,32 +725,35 @@
 .device-iphone-16-pro .screen::before {
     content: '';
     position: absolute;
-    left: -5px;
+    left: -8px; /* Extended outside frame */
     top: 85px;
-    width: var(--button-width);
+    width: 5px; /* Increased from 3px for visibility */
     height: 35px;
-    background: var(--button-gradient);
-    border-radius: var(--button-radius) 0 0 var(--button-radius);
+    background: linear-gradient(90deg, #5a5652 0%, #4a4642 20%, #3a3632 50%, #4a4642 80%, #5a5652 100%);
+    border-radius: 3px 0 0 3px;
+    z-index: 100; /* High z-index for visibility */
     box-shadow:
-        -1px 0 3px rgba(0,0,0,0.6),
-        0 55px 0 0 var(--button-gradient),
-        0 110px 0 0 var(--button-gradient);
+        -2px 0 4px rgba(0,0,0,0.6),
+        0 55px 0 0 linear-gradient(90deg, #5a5652 0%, #4a4642 20%, #3a3632 50%, #4a4642 80%, #5a5652 100%),
+        0 110px 0 0 linear-gradient(90deg, #5a5652 0%, #4a4642 20%, #3a3632 50%, #4a4642 80%, #5a5652 100%);
 }
 
-/* Right side buttons: Power + Camera Control */
+/* Right side buttons: Power button only (Camera Control rendered via JavaScript) */
 .device-iphone-16-pro .screen::after {
     content: '';
     position: absolute;
-    right: -5px;
+    right: -8px; /* Extended outside frame */
     top: 180px;
-    width: var(--button-width);
+    width: 5px;
     height: 70px;
-    background: var(--button-gradient);
-    border-radius: 0 var(--button-radius) var(--button-radius) 0;
-    box-shadow:
-        1px 0 3px rgba(0,0,0,0.6),
-        0 -95px 0 0 var(--button-gradient);
+    background: linear-gradient(90deg, #5a5652 0%, #4a4642 20%, #3a3632 50%, #4a4642 80%, #5a5652 100%);
+    border-radius: 0 3px 3px 0;
+    z-index: 100; /* High z-index for visibility */
+    box-shadow: 2px 0 4px rgba(0,0,0,0.6);
 }
+
+/* Camera Control button - Second right side button (bottom) */
+/* Note: This is rendered using JavaScript DOM injection since CSS only allows 2 pseudo-elements per element */
 
 /* ============================================
    SAMSUNG GALAXY S7 - PHYSICAL HOME BUTTON
@@ -1437,6 +1468,19 @@
     z-index: 10;
 }
 
+/* Camera Control Button (iPhone 16 Pro only) */
+.device-mockup .camera-control-button {
+    position: absolute;
+    right: -8px;
+    bottom: 85px; /* From reference HTML */
+    width: 5px;
+    height: 50px;
+    background: linear-gradient(90deg, #5a5652 0%, #4a4642 20%, #3a3632 50%, #4a4642 80%, #5a5652 100%);
+    border-radius: 0 3px 3px 0;
+    z-index: 100;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.6);
+}
+
 /* Orientation */
 .device-mockup.portrait {
     /* Default orientation */
@@ -1556,3 +1600,11 @@
 .device-mockup .screen {
     contain: paint;
 }
+
+/* ============================================
+   NOTCH CENTERING FIX - REMOVED
+   The previous fix was causing misalignment.
+   With box-sizing: border-box on .device-mockup,
+   the standard left: 50%; transform: translateX(-50%)
+   now works correctly for all devices.
+   ============================================ */

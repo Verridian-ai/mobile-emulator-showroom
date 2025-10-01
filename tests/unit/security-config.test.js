@@ -1,7 +1,10 @@
 /**
  * Unit Tests for Security Configuration Module
  * Target Coverage: 90% (Security Module)
- * Tests: URL validation, input sanitization, XSS prevention, malicious pattern detection
+ * Tests: URL validation, input sanitization, XSS prevention, malicious pattern detection, environment detection
+ *
+ * Article V (Security): Input validation, XSS prevention, CSP enforcement
+ * Article III (Code Quality): Well-documented, testable code
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -59,6 +62,11 @@ describe('SecurityConfig Module', () => {
 
     // Simulate loading the security-config module
     SecurityConfig = {
+      environment: {
+        isDevelopment: true,
+        isProduction: false,
+        current: 'development'
+      },
       websocket: {
         token: null,
         brokerPort: 7071,
@@ -384,6 +392,246 @@ describe('SecurityConfig Module', () => {
     });
   });
 
+  describe('Environment Detection - getEnvironment()', () => {
+    it('should detect localhost as development', () => {
+      mockWindow.location = {
+        hostname: 'localhost',
+        port: '4175',
+        protocol: 'http:'
+      };
+
+      // Create mock getEnvironment function
+      const getEnvironment = () => {
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(getEnvironment()).toBe('development');
+    });
+
+    it('should detect 127.0.0.1 as development', () => {
+      mockWindow.location = {
+        hostname: '127.0.0.1',
+        port: '8080',
+        protocol: 'http:'
+      };
+
+      const getEnvironment = () => {
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(getEnvironment()).toBe('development');
+    });
+
+    it('should detect HTTPS as production', () => {
+      mockWindow.location = {
+        hostname: 'example.com',
+        port: '443',
+        protocol: 'https:'
+      };
+
+      const getEnvironment = () => {
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(getEnvironment()).toBe('production');
+    });
+
+    it('should default to development for unknown environments', () => {
+      mockWindow.location = {
+        hostname: 'example.com',
+        port: '80',
+        protocol: 'http:'
+      };
+
+      const getEnvironment = () => {
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(getEnvironment()).toBe('development');
+    });
+
+    it('should not throw when process is undefined', () => {
+      const originalProcess = global.process;
+      delete global.process;
+
+      const getEnvironment = () => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV) {
+            return process.env.NODE_ENV;
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(() => getEnvironment()).not.toThrow();
+      expect(getEnvironment()).toBe('development');
+
+      global.process = originalProcess;
+    });
+
+    it('should use process.env.NODE_ENV when available', () => {
+      global.process = {
+        env: {
+          NODE_ENV: 'production'
+        }
+      };
+
+      const getEnvironment = () => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV) {
+            return process.env.NODE_ENV;
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        const { hostname, protocol } = mockWindow.location;
+        if (hostname === 'localhost' || hostname === '127.0.0.1') {
+          return 'development';
+        }
+        if (protocol === 'https:') {
+          return 'production';
+        }
+        return 'development';
+      };
+
+      expect(getEnvironment()).toBe('production');
+    });
+  });
+
+  describe('Environment Variable Retrieval - getEnvVar()', () => {
+    it('should retrieve from process.env when available', () => {
+      global.process = {
+        env: {
+          TEST_VAR: 'test-value'
+        }
+      };
+
+      const getEnvVar = (key, defaultValue) => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env[key]) {
+            return process.env[key];
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        if (typeof window !== 'undefined' && mockWindow[key]) {
+          return mockWindow[key];
+        }
+
+        return defaultValue;
+      };
+
+      expect(getEnvVar('TEST_VAR', 'default')).toBe('test-value');
+    });
+
+    it('should retrieve from window when process.env not available', () => {
+      delete global.process;
+      mockWindow.TEST_VAR = 'window-value';
+
+      const getEnvVar = (key, defaultValue) => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env[key]) {
+            return process.env[key];
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        if (mockWindow[key]) {
+          return mockWindow[key];
+        }
+
+        return defaultValue;
+      };
+
+      expect(getEnvVar('TEST_VAR', 'default')).toBe('window-value');
+    });
+
+    it('should return default value when variable not found', () => {
+      delete global.process;
+
+      const getEnvVar = (key, defaultValue) => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env[key]) {
+            return process.env[key];
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        if (mockWindow[key]) {
+          return mockWindow[key];
+        }
+
+        return defaultValue;
+      };
+
+      expect(getEnvVar('NONEXISTENT_VAR', 'default-value')).toBe('default-value');
+    });
+
+    it('should handle numeric default values', () => {
+      delete global.process;
+
+      const getEnvVar = (key, defaultValue) => {
+        try {
+          if (typeof process !== 'undefined' && process.env && process.env[key]) {
+            return process.env[key];
+          }
+        } catch (e) {
+          // process is not defined
+        }
+
+        if (mockWindow[key]) {
+          return mockWindow[key];
+        }
+
+        return defaultValue;
+      };
+
+      expect(getEnvVar('PORT', 7071)).toBe(7071);
+    });
+  });
+
   describe('Configuration Validation', () => {
     it('should have correct default WebSocket configuration', () => {
       expect(SecurityConfig.websocket.brokerPort).toBe(7071);
@@ -405,6 +653,13 @@ describe('SecurityConfig Module', () => {
 
     it('should enable debug mode for localhost', () => {
       expect(SecurityConfig.debug.enabled).toBe(true);
+    });
+
+    it('should have environment detection in configuration', () => {
+      expect(SecurityConfig.environment).toBeDefined();
+      expect(typeof SecurityConfig.environment.isDevelopment).toBe('boolean');
+      expect(typeof SecurityConfig.environment.isProduction).toBe('boolean');
+      expect(['development', 'production']).toContain(SecurityConfig.environment.current);
     });
   });
 

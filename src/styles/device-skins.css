@@ -11,13 +11,45 @@
 .device-mockup {
     position: relative;
     display: inline-block;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    /* CLS Fix: Optimize transitions - only transform/opacity (no width/height) */
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s ease;
+
+    /* CLS Fix: Reserve minimum space to prevent layout shift */
+    min-height: 900px;
+
+    /* CLS Fix: CSS containment for layout isolation */
+    contain: layout style paint;
+
+    /* CLS Fix: Hint browser about transform changes */
+    will-change: transform;
 }
 
 .device-mockup .screen {
     position: relative;
     overflow: hidden;
     background: #000;
+
+    /* CLS Fix: Isolate iframe rendering */
+    contain: size layout paint;
+}
+
+/* CLS Fix: Loading state skeleton screen */
+.device-mockup.is-loading {
+    background: linear-gradient(90deg,
+        rgba(255,255,255,0.1) 25%,
+        rgba(255,255,255,0.2) 50%,
+        rgba(255,255,255,0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
 .device-mockup .screen > * {
@@ -25,6 +57,96 @@
     height: 100%;
     border: none;
     display: block;
+}
+
+/* CLS Fix: Pre-define device dimensions to prevent layout shift */
+/* These explicit dimensions ensure browser knows exact sizes before rendering */
+
+.device-iphone-6,
+.device-iphone-6s,
+.device-iphone-7,
+.device-iphone-8 {
+    width: 415px;
+    height: 837px;
+}
+
+.device-iphone-x,
+.device-iphone-11 {
+    width: 415px;
+    height: 852px;
+}
+
+.device-iphone-12,
+.device-iphone-13 {
+    width: 426px;
+    height: 880px;
+}
+
+.device-iphone-14 {
+    width: 429px;
+    height: 888px;
+}
+
+.device-iphone-14-pro,
+.device-iphone-15,
+.device-iphone-15-pro,
+.device-iphone-16-pro {
+    width: 425px;
+    height: 884px;
+}
+
+.device-galaxy-s7 {
+    width: 388px;
+    height: 760px;
+}
+
+.device-galaxy-s10,
+.device-galaxy-s21 {
+    width: 384px;
+    height: 784px;
+}
+
+.device-galaxy-s22,
+.device-galaxy-s24 {
+    width: 395px;
+    height: 820px;
+}
+
+.device-galaxy-s25-ultra {
+    width: 428px;
+    height: 899px;
+}
+
+.device-pixel-3,
+.device-pixel-5 {
+    width: 411px;
+    height: 885px;
+}
+
+.device-pixel-7,
+.device-pixel-8 {
+    width: 422px;
+    height: 872px;
+}
+
+.device-pixel-9-pro {
+    width: 430px;
+    height: 902px;
+}
+
+.device-ipad-air-2022 {
+    width: 900px;
+    height: 1260px;
+}
+
+.device-ipad-pro-13-m4 {
+    width: 1074px;
+    height: 1416px;
+}
+
+.device-desktop-chrome {
+    width: 1200px;
+    height: 700px;
 }
 
 /* iPhone 6/6s/7/8 */
@@ -193,14 +315,17 @@
 .device-iphone-14-pro::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     width: 125px;
     height: 35px;
-    background: #1c1c1c;
-    border-radius: 0 0 30px 30px;
+    background: #000;
+    border-radius: 18px;
     z-index: 10;
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        inset 0 0 8px rgba(0,0,0,0.5);
 }
 
 .device-iphone-14 .screen,
@@ -230,14 +355,17 @@
 .device-iphone-16-pro::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
+    width: 125px;
     height: 35px;
-    background: inherit;
-    border-radius: 0 0 30px 30px;
+    background: #000;
+    border-radius: 18px;
     z-index: 10;
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        inset 0 0 8px rgba(0,0,0,0.5);
 }
 
 .device-iphone-15 .screen,
@@ -580,17 +708,23 @@
 
 .device-desktop-chrome .browser-header {
     height: 56px;
-    background: #dee1e6;
+    background: linear-gradient(180deg, #e8eaed 0%, #dee1e6 100%);
     border-radius: 12px 12px 0 0;
     display: flex;
     align-items: center;
     padding: 0 16px;
     gap: 12px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        0 2px 8px rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .device-desktop-chrome .browser-buttons {
     display: flex;
     gap: 8px;
+    padding: 4px;
 }
 
 .device-desktop-chrome .browser-button {
@@ -598,16 +732,36 @@
     height: 12px;
     border-radius: 50%;
     display: inline-block;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.device-desktop-chrome .browser-button.close { background: #ff5f57; }
-.device-desktop-chrome .browser-button.minimize { background: #ffbd2e; }
-.device-desktop-chrome .browser-button.maximize { background: #28ca42; }
+.device-desktop-chrome .browser-button:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.device-desktop-chrome .browser-button.close {
+    background: linear-gradient(135deg, #ff6961 0%, #ff5f57 100%);
+}
+
+.device-desktop-chrome .browser-button.minimize {
+    background: linear-gradient(135deg, #ffc038 0%, #ffbd2e 100%);
+}
+
+.device-desktop-chrome .browser-button.maximize {
+    background: linear-gradient(135deg, #32cd4c 0%, #28ca42 100%);
+}
 
 .device-desktop-chrome .browser-address-bar {
     flex: 1;
     height: 36px;
-    background: #f1f3f4;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
     border-radius: 20px;
     padding: 0 20px;
     display: flex;
@@ -615,6 +769,20 @@
     color: #5f6368;
     font-size: 14px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.08),
+        0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.device-desktop-chrome .browser-address-bar:hover {
+    background: #ffffff;
+    border-color: rgba(66, 133, 244, 0.3);
+    box-shadow:
+        inset 0 1px 2px rgba(0, 0, 0, 0.06),
+        0 2px 4px rgba(66, 133, 244, 0.15),
+        0 1px 0 rgba(255, 255, 255, 1);
 }
 
 .device-desktop-chrome .screen {
