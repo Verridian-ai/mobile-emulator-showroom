@@ -486,17 +486,17 @@
         var(--shadow-ambient);
 }
 
-/* Dynamic Island - Pill-shaped cutout */
+/* Dynamic Island - Pill-shaped cutout with EXACT positioning */
 .device-iphone-14-pro::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     width: 125px;
-    height: 37px;
+    height: 35px;
     background: #000;
-    border-radius: 40px;
+    border-radius: 18px;
     z-index: 10;
     box-shadow:
         inset 0 2px 4px rgba(0,0,0,0.8),
@@ -507,7 +507,7 @@
 .device-iphone-14-pro::after {
     content: '';
     position: absolute;
-    top: 13px;
+    top: 20px;
     left: 50%;
     transform: translateX(-25px);
     width: 10px;
@@ -556,12 +556,11 @@
 }
 
 /* ============================================
-   IPHONE 15/15 PRO/16 PRO - TITANIUM & USB-C
+   IPHONE 15/15 PRO - TITANIUM & USB-C
    Official Specs: 393×852pt, 6.1" display
    ============================================ */
 .device-iphone-15,
-.device-iphone-15-pro,
-.device-iphone-16-pro {
+.device-iphone-15-pro {
     width: 393px;
     height: 852px;
     padding: 15px;
@@ -578,17 +577,16 @@
 
 /* Dynamic Island (refined shape) */
 .device-iphone-15::before,
-.device-iphone-15-pro::before,
-.device-iphone-16-pro::before {
+.device-iphone-15-pro::before {
     content: '';
     position: absolute;
-    top: 0;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    width: 120px;
-    height: 37px;
+    width: 125px;
+    height: 35px;
     background: #000;
-    border-radius: 38px;
+    border-radius: 18px;
     z-index: 10;
     box-shadow:
         inset 0 2px 4px rgba(0,0,0,0.8),
@@ -597,11 +595,10 @@
 
 /* Camera array inside island */
 .device-iphone-15::after,
-.device-iphone-15-pro::after,
-.device-iphone-16-pro::after {
+.device-iphone-15-pro::after {
     content: '';
     position: absolute;
-    top: 13px;
+    top: 20px;
     left: 50%;
     transform: translateX(-23px);
     width: 10px;
@@ -615,28 +612,116 @@
 }
 
 .device-iphone-15 .screen,
-.device-iphone-15-pro .screen,
-.device-iphone-16-pro .screen {
+.device-iphone-15-pro .screen {
     border-radius: 55px;
     width: 100%;
     height: 100%;
 }
 
 /* Action button (left side, replaces mute switch on Pro) */
-.device-iphone-15-pro .screen::before,
-.device-iphone-16-pro .screen::before {
+.device-iphone-15-pro .screen::before {
     content: '';
     position: absolute;
     left: -15px;
-    top: 175px;
+    top: 85px;
     width: var(--button-width);
-    height: 42px;
+    height: 35px;
     background: var(--button-gradient);
     border-radius: var(--button-radius) 0 0 var(--button-radius);
     box-shadow:
         -1px 0 3px rgba(0,0,0,0.6),
-        0 60px 0 0 var(--button-gradient),
-        0 115px 0 0 var(--button-gradient);
+        0 55px 0 0 var(--button-gradient),
+        0 110px 0 0 var(--button-gradient);
+}
+
+/* ============================================
+   IPHONE 16 PRO - CAMERA CONTROL BUTTON
+   Official Specs: 393×852pt, 6.1" display
+   ============================================ */
+.device-iphone-16-pro {
+    width: 294px;
+    height: 618px;
+    padding: 5px;
+    background: var(--titanium-gradient);
+    border-radius: 44px;
+    box-shadow:
+        var(--shadow-inner-glow),
+        var(--shadow-device-edge),
+        var(--shadow-close),
+        var(--shadow-medium),
+        var(--shadow-far),
+        var(--shadow-ambient);
+}
+
+/* Dynamic Island - EXACT specs from reference */
+.device-iphone-16-pro::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 125px;
+    height: 35px;
+    background: #000;
+    border-radius: 18px;
+    z-index: 10;
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.8),
+        inset 0 0 8px rgba(0,0,0,0.5);
+}
+
+/* Camera sensors inside Dynamic Island */
+.device-iphone-16-pro::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-23px);
+    width: 10px;
+    height: 10px;
+    background: rgba(20,20,40,0.9);
+    border-radius: 50%;
+    z-index: 11;
+    box-shadow:
+        23px 0 0 2px rgba(20,20,40,0.9),
+        36px 0 0 0 rgba(30,30,50,0.8);
+}
+
+.device-iphone-16-pro .screen {
+    border-radius: 40px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left side buttons: Action Button + Volume Up + Volume Down */
+.device-iphone-16-pro .screen::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 85px;
+    width: var(--button-width);
+    height: 35px;
+    background: var(--button-gradient);
+    border-radius: var(--button-radius) 0 0 var(--button-radius);
+    box-shadow:
+        -1px 0 3px rgba(0,0,0,0.6),
+        0 55px 0 0 var(--button-gradient),
+        0 110px 0 0 var(--button-gradient);
+}
+
+/* Right side buttons: Power + Camera Control */
+.device-iphone-16-pro .screen::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 180px;
+    width: var(--button-width);
+    height: 70px;
+    background: var(--button-gradient);
+    border-radius: 0 var(--button-radius) var(--button-radius) 0;
+    box-shadow:
+        1px 0 3px rgba(0,0,0,0.6),
+        0 -95px 0 0 var(--button-gradient);
 }
 
 /* ============================================
@@ -724,12 +809,12 @@
         var(--shadow-far);
 }
 
-/* Punch-hole camera (top center) */
+/* Punch-hole camera (EXACT top-center positioning) */
 .device-galaxy-s10::before,
 .device-galaxy-s21::before {
     content: '';
     position: absolute;
-    top: 18px;
+    top: 15px;
     left: 50%;
     transform: translateX(-50%);
     width: 11px;
@@ -795,12 +880,12 @@
         var(--shadow-ambient);
 }
 
-/* Smaller punch-hole camera */
+/* Smaller punch-hole camera (EXACT top-center) */
 .device-galaxy-s22::before,
 .device-galaxy-s24::before {
     content: '';
     position: absolute;
-    top: 16px;
+    top: 13px;
     left: 50%;
     transform: translateX(-50%);
     width: 10px;
@@ -865,11 +950,11 @@
         var(--shadow-ambient);
 }
 
-/* Ultra-small punch-hole */
+/* Ultra-small punch-hole (EXACT top-center) */
 .device-galaxy-s25-ultra::before {
     content: '';
     position: absolute;
-    top: 14px;
+    top: 11px;
     left: 50%;
     transform: translateX(-50%);
     width: 9px;
@@ -931,18 +1016,18 @@
         var(--shadow-far);
 }
 
-/* Front camera (single punch-hole) */
+/* Front camera (punch-hole TOP-LEFT) */
 .device-pixel-3::before,
 .device-pixel-5::before {
     content: '';
     position: absolute;
     top: 35px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 35px;
     width: 12px;
     height: 12px;
     background: #000;
     border-radius: 50%;
+    z-index: 10;
     box-shadow:
         inset 0 0 2px rgba(0,0,0,0.8),
         0 0 0 1px rgba(0,0,0,0.2);
@@ -1000,12 +1085,12 @@
         var(--shadow-far);
 }
 
-/* Front camera punch-hole (top center) */
+/* Front camera punch-hole (TOP-LEFT positioning) */
 .device-pixel-7::before,
 .device-pixel-8::before {
     content: '';
     position: absolute;
-    top: 22px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     width: 11px;
@@ -1070,11 +1155,11 @@
         var(--shadow-ambient);
 }
 
-/* Front camera punch-hole (refined) */
+/* Front camera punch-hole (TOP-CENTER for Pixel 9) */
 .device-pixel-9-pro::before {
     content: '';
     position: absolute;
-    top: 20px;
+    top: 18px;
     left: 50%;
     transform: translateX(-50%);
     width: 10px;
@@ -1338,6 +1423,19 @@
 /* ============================================
    UTILITY CLASSES
    ============================================ */
+
+/* Top Speaker Grille (universal) */
+.device-mockup .speaker-top {
+    position: absolute;
+    top: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45px;
+    height: 3px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 2px;
+    z-index: 10;
+}
 
 /* Orientation */
 .device-mockup.portrait {

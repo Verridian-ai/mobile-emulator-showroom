@@ -103,6 +103,21 @@ import { scaleIframeContent, initViewportScaling } from './viewport-scaler.js';
     // Update frame class
     deviceFrame.className = `device-mockup device-${deviceClass} scale-75 animate-hover`;
 
+    // Add speaker grille for applicable devices (mobile phones, not iPads/Desktop)
+    const devicesWithSpeaker = [
+      'iphone-6', 'iphone-6s', 'iphone-7', 'iphone-8',
+      'iphone-x', 'iphone-11', 'iphone-12', 'iphone-13', 'iphone-14',
+      'iphone-14-pro', 'iphone-15', 'iphone-15-pro', 'iphone-16-pro',
+      'galaxy-s7', 'galaxy-s10', 'galaxy-s21', 'galaxy-s22', 'galaxy-s24', 'galaxy-s25-ultra',
+      'pixel-3', 'pixel-5', 'pixel-7', 'pixel-8', 'pixel-9-pro'
+    ];
+
+    if (devicesWithSpeaker.includes(deviceClass)) {
+      const speaker = document.createElement('div');
+      speaker.className = 'speaker-top';
+      deviceFrame.appendChild(speaker);
+    }
+
     // Build DOM structure programmatically (safer than innerHTML)
     if (deviceClass === 'desktop-chrome') {
       // Create browser header
