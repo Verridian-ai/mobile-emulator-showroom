@@ -95,7 +95,7 @@ const helmetConfig = helmet({
       // Form actions: same-origin only
       formAction: ["'self'"],
       // Force HTTPS for all requests (production)
-      upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
+      upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : [],
       // Report CSP violations to this endpoint
       reportUri: ['/api/csp-report']
     },
