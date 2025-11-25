@@ -7,14 +7,6 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createProxyMiddleware } from './server/proxy-middleware.js';
-// Import security middleware (Article V: Security)
-import {
-  helmetConfig,
-  rateLimiter,
-  httpsRedirect,
-  sanitizeRequest,
-  handleCspViolation,
-} from './server/middleware/security.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -44,26 +36,6 @@ const nodeEnv = process.env.NODE_ENV || 'development';
 
 // Enhanced error handling and logging
 console.log('🚀 Starting Verridian Showroom Server...');
-
-// --- Security Middleware Setup (Article V) ---
-// 1. HTTPS Redirect (production only)
-app.use(httpsRedirect);
-
-// 2. Rate Limiting (prevent brute-force attacks)
-app.use(rateLimiter);
-
-// 3. Helmet Security Headers (including CSP)
-app.use(helmetConfig);
-
-// 4. Input Sanitization (prevent XSS)
-app.use(sanitizeRequest);
-
-// 5. Body parser for CSP violation reports
-app.use(express.json({ type: 'application/csp-report' }));
-
-// 6. CSP Violation Reporting Endpoint
-app.post('/api/csp-report', handleCspViolation);
-
 console.log('📁 Public directory:', path.join(__dirname, 'public'));
 console.log('🌐 Server port:', port);
 console.log('🔧 Environment:', nodeEnv);

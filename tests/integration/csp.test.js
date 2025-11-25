@@ -12,9 +12,6 @@
  * - Security stats endpoint includes CSP data
  */
 
-/**
- * @vitest-environment node
- */
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import express from 'express';
